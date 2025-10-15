@@ -18,6 +18,7 @@ import {
   Textarea,
   Tooltip,
   useBreakpointValue,
+  useToast,
   VStack
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
@@ -85,6 +86,8 @@ const sendAudio = async (url, { arg }) => {
 
 const Index = ({ children, filters, setFilters, source, handleClickAiSearch, handleClickSemanticSearch, handleClickSearch, isUserLogin, chatType }) => {
   const { t } = useTranslation();
+
+  const toast = useToast()
 
   const size = useBreakpointValue({ base: "base", md: "md", xl: "xl" });
 
@@ -154,6 +157,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           role: 2, // user
           content: filters?.search,
           level: (chatHistory?.length ?? 0) + 1, // increment level
+          copied: false
         };
 
         setChatHistory((prev) => {
@@ -166,7 +170,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
         let botMessage = "";
         setChatHistory((prev) => [
           ...(Array.isArray(prev) ? prev : []),
-          { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2 },
+          { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2, copied: false },
         ]);
 
         setBotStream("");
@@ -510,6 +514,23 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     }
   }, [chatType])
 
+  const handleCopyClick = async (content, id) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setChatHistory(chatHistory?.map((item) => (item?.id == id ? { ...item, copied: true } : item)))
+      toast({
+        title: "کپی شد!",
+        description: `متن کپی شد.`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch (err) {
+
+    }
+
+  }
+
 
   return (
     <Tabs w={"100%"} scrollSnapAlign="start">
@@ -610,116 +631,118 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                         px={'0px'}
                         pb={'0px'}
                       >
+                        <Box maxHeight={'696px'}
+                          overflowY={'auto'}>
+                          {chatHistory?.map((chat, index) => {
+                            const isLast = index === chatHistory.length - 1;
 
-                        {chatHistory?.map((chat, index) => {
-                          const isLast = index === chatHistory.length - 1;
+                            return (
 
-                          return (
+                              <Box
+                                key={chat.id}
+                                id={chat.role === 2 ? 'user' : 'bot'}
+                                alignSelf={chat.role === 2 ? 'flex-start' : 'flex-end'}
+                                border={'.3px'}
+                                bgColor={chat.role === 2 ? '#DFE3FF' : 'none'}
+                                px={'18px'}
+                                mx={'30px'}
+                                py={'5px'}
+                                borderRadius={'20px'}
+                                borderBottomRightRadius={chat.role === 2 ? '0px' : '20px'}
+                                w={'auto'}
+                                maxW={chat.role == 2 ? 'fit-content' : '100%'}
+                                mb={'15px'}
+                                justifyContent={'start'}
 
-                            <Box
-                              key={chat.id}
-                              id={chat.role === 2 ? 'user' : 'bot'}
-                              alignSelf={chat.role === 2 ? 'flex-start' : 'flex-end'}
-                              border={'.3px'}
-                              bgColor={chat.role === 2 ? '#3646B3' : 'none'}
-                              px={'18px'}
-                              mx={'15px'}
-                              py={'5px'}
-                              borderRadius={'20px'}
-                              borderBottomRightRadius={chat.role === 2 ? '0px' : '20px'}
-                              w={'auto'}
-                              maxW={chat.role == 2 ? 'fit-content' : '100%'}
-                              mb={'15px'}
-                              justifyContent={'start'}
-                            >
-                              {
-                                chat.role != 2
-                                  ?
-                                  <Box
-                                    padding={"5px"}
-                                    borderRadius={"30px"}
-
-                                  >
-                                    <ReactMarkdown
-                                      remarkPlugins={[remarkBreaks]}
-                                      components={{
-                                        h1: (props) => (
-                                          <Heading as="h2" size="lg" my={2} {...props} />
-                                        ),
-                                        h2: (props) => (
-                                          <Heading as="h3" size="md" my={2} {...props} />
-                                        ),
-                                        h3: (props) => (
-                                          <Heading as="h4" size="sm" my={2} {...props} />
-                                        ),
-                                        p: (props) => (
-                                          <Text
-                                            fontSize="20px"
-                                            fontWeight="400"
-                                            my={1}
-                                            {...props}
-                                          />
-                                        ),
-                                        a: ({ href, children }) => (
-                                          <Link
-                                            href={href}
-                                            color="blue.500"
-                                            isExternal
-                                            _hover={{
-                                              textDecoration: "underline",
-                                              color: "blue.600",
-                                            }}
-                                          >
-                                            {children}
-                                          </Link>
-                                        ),
-                                      }}
+                              >
+                                {
+                                  chat.role != 2
+                                    ?
+                                    <Box
+                                      padding={"5px"}
+                                      borderRadius={"30px"}
                                     >
-                                      {chat?.content}
-                                    </ReactMarkdown>
+                                      <ReactMarkdown
+                                        remarkPlugins={[remarkBreaks]}
+                                        components={{
+                                          h1: (props) => (
+                                            <Heading as="h2" size="lg" my={2} {...props} />
+                                          ),
+                                          h2: (props) => (
+                                            <Heading as="h3" size="md" my={2} {...props} />
+                                          ),
+                                          h3: (props) => (
+                                            <Heading as="h4" size="sm" my={2} {...props} />
+                                          ),
+                                          p: (props) => (
+                                            <Text
+                                              fontSize="20px"
+                                              fontWeight="400"
+                                              my={1}
+                                              {...props}
+                                            />
+                                          ),
+                                          a: ({ href, children }) => (
+                                            <Link
+                                              href={href}
+                                              color="blue.500"
+                                              isExternal
+                                              _hover={{
+                                                textDecoration: "underline",
+                                                color: "blue.600",
+                                              }}
+                                            >
+                                              {children}
+                                            </Link>
+                                          ),
+                                        }}
+                                      >
+                                        {chat?.content}
+                                      </ReactMarkdown>
 
-                                    {isStreaming && chat.role !== 2 && isLast && (
+                                      {isStreaming && chat.role !== 2 && isLast && (
 
-                                      <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream} />
-                                    )}
+                                        <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream} />
+                                      )}
 
-                                    <HStack mt={'10px'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '15px'}>
-                                      <HStack gap={'15px'}>
-                                        <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={'14px'} width={'180px'} fontWeight={'500'}>بررسی عمیق‌تر</Button>
-                                        <Button bgColor={'white'} color={'#CCCCCC'} leftIcon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <path d="M4.00001 5.40001C4.00001 4.62201 4.62201 4.00001 5.40001 4.00001L12.6 4.00001C13.378 4.00001 14 4.62201 14 5.40001V6.00001C14 6.13133 14.0259 6.26136 14.0761 6.38269C14.1264 6.50401 14.2 6.61425 14.2929 6.70711C14.3858 6.79997 14.496 6.87363 14.6173 6.92388C14.7386 6.97414 14.8687 7.00001 15 7.00001C15.1313 7.00001 15.2614 6.97414 15.3827 6.92388C15.504 6.87363 15.6143 6.79997 15.7071 6.70711C15.8 6.61425 15.8736 6.50401 15.9239 6.38269C15.9741 6.26136 16 6.13133 16 6.00001V5.40001C16 3.51801 14.482 2.00001 12.6 2.00001L5.40001 2.00001C4.95329 1.99921 4.51081 2.08662 4.09795 2.25721C3.68508 2.42779 3.30996 2.6782 2.99408 2.99408C2.6782 3.30996 2.42779 3.68508 2.25721 4.09795C2.08662 4.51081 1.99921 4.95329 2.00001 5.40001L2.00001 12.6C2.00001 14.482 3.51801 16 5.40001 16H6.00001C6.26522 16 6.51958 15.8946 6.70711 15.7071C6.89465 15.5196 7.00001 15.2652 7.00001 15C7.00001 14.7348 6.89465 14.4804 6.70711 14.2929C6.51958 14.1054 6.26522 14 6.00001 14H5.40001C4.62201 14 4.00001 13.378 4.00001 12.6L4.00001 5.40001Z" fill="#CCCCCC" />
-                                          <path d="M9 11.4C9 10.7635 9.25286 10.153 9.70294 9.70294C10.153 9.25286 10.7635 9 11.4 9L18.6 9C19.2365 9 19.847 9.25286 20.2971 9.70294C20.7471 10.153 21 10.7635 21 11.4V18.6C21 19.2365 20.7471 19.847 20.2971 20.2971C19.847 20.7471 19.2365 21 18.6 21H11.4C10.7635 21 10.153 20.7471 9.70294 20.2971C9.25286 19.847 9 19.2365 9 18.6L9 11.4Z" fill="#CCCCCC" />
-                                        </svg>
-                                        } borderRadius={'18px'}>کپی</Button>
-                                        <Button bgColor={'white'} color={'#CCCCCC'} leftIcon={<IoMdCheckmarkCircleOutline fontSize={"30px"} />} borderRadius={'18px'}>مفید بود</Button>
-                                        <Button bgColor={'white'} color={'#CCCCCC'} leftIcon={<svg width="29" height="30" viewBox="0 0 29 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <g opacity="0.5">
-                                            <path d="M10.1855 10.459L18.8438 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M18.8457 10.459L10.1875 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                          </g>
-                                          <path opacity="0.5" d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z" stroke="#A1A1A1" stroke-width="3" />
-                                        </svg>
-                                        } borderRadius={'18px'}>اشتباه بود</Button>
+                                      <HStack mt={'10px'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '0px'}>
+                                        <HStack gap={'15px'}>
+                                          <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={'14px'} width={'180px'} fontWeight={'500'}>بررسی عمیق‌تر</Button>
+                                          <Button bgColor={'white'} color={chat?.copied ? '#3646B3' : '#CCCCCC'} leftIcon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.00001 5.40001C4.00001 4.62201 4.62201 4.00001 5.40001 4.00001L12.6 4.00001C13.378 4.00001 14 4.62201 14 5.40001V6.00001C14 6.13133 14.0259 6.26136 14.0761 6.38269C14.1264 6.50401 14.2 6.61425 14.2929 6.70711C14.3858 6.79997 14.496 6.87363 14.6173 6.92388C14.7386 6.97414 14.8687 7.00001 15 7.00001C15.1313 7.00001 15.2614 6.97414 15.3827 6.92388C15.504 6.87363 15.6143 6.79997 15.7071 6.70711C15.8 6.61425 15.8736 6.50401 15.9239 6.38269C15.9741 6.26136 16 6.13133 16 6.00001V5.40001C16 3.51801 14.482 2.00001 12.6 2.00001L5.40001 2.00001C4.95329 1.99921 4.51081 2.08662 4.09795 2.25721C3.68508 2.42779 3.30996 2.6782 2.99408 2.99408C2.6782 3.30996 2.42779 3.68508 2.25721 4.09795C2.08662 4.51081 1.99921 4.95329 2.00001 5.40001L2.00001 12.6C2.00001 14.482 3.51801 16 5.40001 16H6.00001C6.26522 16 6.51958 15.8946 6.70711 15.7071C6.89465 15.5196 7.00001 15.2652 7.00001 15C7.00001 14.7348 6.89465 14.4804 6.70711 14.2929C6.51958 14.1054 6.26522 14 6.00001 14H5.40001C4.62201 14 4.00001 13.378 4.00001 12.6L4.00001 5.40001Z" fill={chat?.copied ? "#3646B3" : "#CCCCCC"} />
+                                            <path d="M9 11.4C9 10.7635 9.25286 10.153 9.70294 9.70294C10.153 9.25286 10.7635 9 11.4 9L18.6 9C19.2365 9 19.847 9.25286 20.2971 9.70294C20.7471 10.153 21 10.7635 21 11.4V18.6C21 19.2365 20.7471 19.847 20.2971 20.2971C19.847 20.7471 19.2365 21 18.6 21H11.4C10.7635 21 10.153 20.7471 9.70294 20.2971C9.25286 19.847 9 19.2365 9 18.6L9 11.4Z" fill={chat?.copied ? "#3646B3" : "#CCCCCC"} />
+                                          </svg>
+                                          } borderRadius={'18px'} padding={'4px'} fontWeight={'500'} onClick={e => handleCopyClick(chat?.content, chat?.id)}>کپی</Button>
+                                          <Button bgColor={'white'} color={'#CCCCCC'} leftIcon={<IoMdCheckmarkCircleOutline fontSize={"30px"} />} borderRadius={'18px'} padding={'4px'}>مفید بود</Button>
+                                          <Button bgColor={'white'} padding={'4px'} color={'#CCCCCC'} leftIcon={<svg width="29" height="28" viewBox="0 0 29 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g opacity="0.5">
+                                              <path d="M10.1855 10.459L18.8438 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                                              <path d="M18.8457 10.459L10.1875 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                                            </g>
+                                            <path opacity="0.5" d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z" stroke="#A1A1A1" stroke-width="3" />
+                                          </svg>
+                                          } borderRadius={'18px'}>اشتباه بود</Button>
+                                        </HStack>
+                                        {(!continueQuestion && isUserLogin) && <Button bgColor={'#3646B3'} color={'white'} fontSize={'14px'} fontWeight={'500'} borderRadius={'18px'} width={'180px'} onClick={e => setContinueQuestion
+                                          (true)}>ادامه گفتگو</Button>}
                                       </HStack>
-                                      {(!continueQuestion && isUserLogin) && <Button bgColor={'#3646B3'} color={'white'} fontSize={'14px'} fontWeight={'500'} borderRadius={'18px'} width={'180px'} onClick={e => setContinueQuestion
-                                        (true)}>ادامه گفتگو</Button>}
-                                    </HStack>
 
-                                  </Box>
-                                  :
-                                  <Text
-                                    fontSize={chat.role === 2 ? '13px' : '14px'}
-                                    fontWeight={'400'}
-                                    whiteSpace="pre-wrap"
-                                    color={chat.role === 2 ? 'white' : 'black'}
-                                  >
-                                    {chat.content}
-                                  </Text>
-                              }
-                            </Box>
-                          );
-                        })}
-
+                                    </Box>
+                                    :
+                                    <Text
+                                      fontSize={chat.role === 2 ? '13px' : '14px'}
+                                      fontWeight={'400'}
+                                      whiteSpace="pre-wrap"
+                                      color={chat.role === 2 ? 'black' : 'black'}
+                                      padding={'5px'}
+                                    >
+                                      {chat.content}
+                                    </Text>
+                                }
+                              </Box>
+                            );
+                          })}
+                        </Box>
                         {continueQuestion && <VStack
                           mb={{ base: "80px", md: "15px" }}
                           gap={0}
@@ -731,12 +754,12 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                           height={{ base: "95px", md: "163px" }}
                           width={{ base: "380px", md: "100%" }}
                           boxShadow={`
-                                0px 18px 40px 0px #00000040,
-                                0px 73px 73px 0px #00000036,
-                                0px 164px 99px 0px #00000021,
-                                0px 292px 117px 0px #0000000A,
-                                0px 457px 128px 0px #00000000
-                              `}
+        0px 4px 9px 0px #0000000D,
+        0px 16px 16px 0px #0000000A,
+        0px 35px 21px 0px #00000008,
+        0px 62px 25px 0px #00000003,
+        0px 98px 27px 0px #00000000
+      `}
 
                           sx={{
                             "@media (min-width: 120em)": {
