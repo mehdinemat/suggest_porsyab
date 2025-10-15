@@ -578,13 +578,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
             pr={{ base: 0, md: "21px" }}
           >
             {filters?.type == "ai" && (
-              <VStack mb={"80px"} alignItems={"start"} w={'100%'}>
-                <Text fontSize={{ base: "11px", md: "16px" }} color={"#C2C2C2"}>
-                  {filters?.search}
-                </Text>
-
-
-
+              <VStack mb={"0px"} alignItems={"start"} w={'100%'}>
                 <Tabs colorScheme="blue" variant="unstyled" w={'100%'}>
                   <TabList>
                     <Tab _selected={{
