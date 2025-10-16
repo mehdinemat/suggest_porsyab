@@ -61,7 +61,14 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title, link })
           {t("show_all")}
         </Text> */}
       </HStack>
-      <Box w="100%" alignItems={"center"} justifyContent={"center"} mx="auto">
+      <Box w="100%" alignItems={"center"} justifyContent={"center"} mx="auto" sx={{
+
+        ".slick-prev::before, .slick-next::before": {
+          color: "#29cccc77",
+          fontSize: "20px",
+          opacity: 1,
+        },
+      }}>
         <Slider {...sliderSettings}>
           {items.map((item, index) => (
             <Flex

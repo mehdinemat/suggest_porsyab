@@ -59,7 +59,14 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
             {t("show_all")}
           </Text> */}
       </HStack>
-      <Box w="calc( 100% - 30px )" alignItems={"center"} justifyContent={"center"} mx="auto" mr={'20px'}>
+      <Box w="calc( 100% - 60px )" alignItems={"center"} justifyContent={"center"} mx="auto" mr={'20px'} sx={{
+
+        ".slick-prev::before, .slick-next::before": {
+          color: "#29cccc77",
+          fontSize: "20px",
+          opacity: 1,
+        },
+      }}>
         <Slider {...sliderSettings}>
           {console.log(items)}
           {items.map((item, index) => (
