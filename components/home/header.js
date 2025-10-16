@@ -690,7 +690,7 @@ const Header = ({
 
                 {/* } */}
               </Flex>
-              <HStack height={"100%"} alignItems={"center"} paddingY={'5px'}>
+              <HStack height={"100%"} alignItems={"center"} >
                 {searchActive && (
                   <Box
                     height={"fit-content"}

@@ -824,7 +824,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                             mt={{ base: "0px", md: "5px" }}
                           >
 
-                            <HStack height={"100%"} alignItems={"center"} paddingY={'5px'}>
+                            <HStack height={"100%"} alignItems={"center"} >
                               {searchActive && (
                                 <Box
                                   height={"fit-content"}
