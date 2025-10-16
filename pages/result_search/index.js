@@ -36,6 +36,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { FaLink } from "react-icons/fa";
 import { IoIosList, IoMdCheckmarkCircleOutline, IoMdClose } from "react-icons/io";
 import { IoOptionsOutline, IoSearch } from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
@@ -170,7 +171,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
         let botMessage = "";
         setChatHistory((prev) => [
           ...(Array.isArray(prev) ? prev : []),
-          { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2, copied: false },
+          { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2, copied: false, done: false },
         ]);
 
         setBotStream("");
@@ -246,6 +247,11 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
               }
 
               if (parsed.done) {
+                setChatHistory((prev) =>
+                  prev.map((msg) =>
+                    msg.id === streamId ? { ...msg, done: true } : msg
+                  )
+                );
                 done = true;
                 break;
               }
@@ -285,7 +291,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     let botMessage = "";
     setChatHistory((prev) => [
       ...(Array.isArray(prev) ? prev : []),
-      { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2 },
+      { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2, done: false, copied: false },
     ]);
 
     // reset stream state
@@ -358,6 +364,11 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           }
 
           if (parsed.done) {
+            setChatHistory((prev) =>
+              prev.map((msg) =>
+                msg.id === streamId ? { ...msg, done: true } : msg
+              )
+            );
             done = true;
             break;
           }
@@ -659,6 +670,9 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                       <ReactMarkdown
                                         remarkPlugins={[remarkBreaks]}
                                         components={{
+                                          ul: (props) => <ul style={{ listStyleType: "none", paddingLeft: 0 }} {...props} />,
+                                          ol: (props) => <ol style={{ listStyleType: "none", paddingLeft: 0 }} {...props} />,
+                                          li: (props) => <li style={{ listStyleType: "none" }} {...props} />,
                                           h1: (props) => (
                                             <Heading as="h2" size="lg" my={2} {...props} />
                                           ),
@@ -680,13 +694,16 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                             <Link
                                               href={href}
                                               color="blue.500"
+                                              display="inline-flex"
+                                              alignItems="center"
+                                              gap="4px"
                                               isExternal
                                               _hover={{
                                                 textDecoration: "underline",
                                                 color: "blue.600",
                                               }}
                                             >
-                                              {children}
+                                              <FaLink /> {children}
                                             </Link>
                                           ),
                                         }}
@@ -699,7 +716,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                         <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream} />
                                       )}
 
-                                      <HStack mt={'10px'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '0px'}>
+                                      {chat?.done && <HStack mt={'10px'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '0px'}>
                                         <HStack gap={'15px'}>
                                           <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={'14px'} width={'180px'} fontWeight={'500'}>بررسی عمیق‌تر</Button>
                                           <Button bgColor={'white'} color={chat?.copied ? '#3646B3' : '#CCCCCC'} leftIcon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -719,7 +736,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                         </HStack>
                                         {(!continueQuestion && isUserLogin) && <Button bgColor={'#3646B3'} color={'white'} fontSize={'14px'} fontWeight={'500'} borderRadius={'18px'} width={'180px'} onClick={e => setContinueQuestion
                                           (true)}>ادامه گفتگو</Button>}
-                                      </HStack>
+                                      </HStack>}
 
                                     </Box>
                                     :

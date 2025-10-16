@@ -33,7 +33,6 @@ import {
   IoIosArrowForward,
   IoMdCheckmarkCircleOutline,
 } from "react-icons/io";
-import { IoArrowDown, IoArrowUp, IoBookmarkOutline } from "react-icons/io5";
 import { TbBookmark } from "react-icons/tb";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -58,8 +57,8 @@ const postActionRequest = (
 ) => {
   return axios.post(
     baseUrl +
-      url +
-      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+    url +
+    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -138,7 +137,7 @@ const Index = () => {
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
   );
   const {
     data: dataQuestionLike,
@@ -146,12 +145,12 @@ const Index = () => {
     mutate: mutateLike,
   } = useSWR(
     query?.id &&
-      `user/action?table_id=${query?.id}&table_type=question&type_param=like`
+    `user/action?table_id=${query?.id}&table_type=question&type_param=like`
   );
 
   const { data: dataAnswerLike, mutate: mutateAnswerLike } = useSWR(
     dataQuestionAnswer?.data &&
-      `user/action?table_id=${dataQuestionAnswer?.data?.[0]?.id}&table_type=answer&type_param=like`
+    `user/action?table_id=${dataQuestionAnswer?.data?.[0]?.id}&table_type=answer&type_param=like`
   );
 
   // const { data: dataQuestionSave, isLoading: isLoadingSave } = useSWR(
@@ -161,7 +160,7 @@ const Index = () => {
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
   const {
@@ -231,8 +230,7 @@ const Index = () => {
 
   const handleClickSource = (source) => {
     router.replace(
-      `/questions?source=${
-        dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
+      `/questions?source=${dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
       }`
     );
   };
@@ -445,7 +443,7 @@ const Index = () => {
                         </VStack>
                       )} */}
                       <HStack
-                        alignItems={"start"}
+                        alignItems={"center"}
                         bgColor={"#3646B31A"}
                         padding={"8px"}
                         borderRadius={"10px"}
@@ -453,7 +451,7 @@ const Index = () => {
                       >
                         <IoIosArrowForward
                           cursor={"pointer"}
-                          style={{ marginRight: "10px", marginTop: "10px" }}
+                          style={{ marginRight: "10px" }}
                           onClick={(e) => router.back()}
                         />
 
