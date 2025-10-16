@@ -14,7 +14,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-const SliderCom = ({ items, height, borderRadius, width = "auto", title , link }) => {
+const SliderCom = ({ items, height, borderRadius, width = "auto", title, link }) => {
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
   const sliderSettings = {
@@ -22,13 +22,13 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title , link }
     infinite: true,
     speed: 500,
     slidesToShow: slidesToShow == 1 ? 2 : 6, // or 1 or 2
-    slidesToScroll: 1,
+    slidesToScroll: 2,
     rtl: false, // for RTL support
 
   };
 
   const handlePublicFiqure = (item) => {
-    window.open(item?.link , '_blank')
+    window.open(item?.link, '_blank')
     // router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
   };
 
@@ -72,10 +72,10 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title , link }
               direction="column"
               justifyContent="space-between"
               alignItems="center"
-              onClick={(e) => handlePublicFiqure(item)}
+
               w={'50px'}
             >
-              <Box bgColor={'#EBEBEB4D'} padding={'6px'} w={'min-content'} borderRadius={'10px'}>
+              <Box bgColor={'#EBEBEB4D'} padding={'6px'} w={'min-content'} borderRadius={'10px'} >
                 <Avatar
                   w="128px"
                   h="128px"
@@ -83,7 +83,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title , link }
                   src={item?.image}
                 />
                 {item.title && (
-                  <Text fontWeight="bold" my={"20px"} fontSize={'8px'}>
+                  <Text fontWeight="bold" my={"20px"} fontSize={'8px'} onClick={(e) => handlePublicFiqure(item)}>
                     {item.title}
                   </Text>
                 )}
