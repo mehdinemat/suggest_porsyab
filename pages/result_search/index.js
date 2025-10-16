@@ -813,7 +813,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                             {...register("search")}
                             onKeyDown={(e) => {
                               if (e.key === "Enter") {
-                                handleClickSearch();
+                                handleAiResponse();
                               }
                             }}
                           />

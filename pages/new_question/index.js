@@ -160,7 +160,7 @@ const Index = () => {
     <MainLayout menuDefault={true}>
       <Head>
         <title>{t("submit_your_question")}</title>
-        <link rel="icon" href="/porsyab_header.png" />
+        <link rel="icon" href="/question.png" />
       </Head>
 
       {!isUserLogin ? (

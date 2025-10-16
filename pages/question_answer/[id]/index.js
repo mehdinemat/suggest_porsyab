@@ -275,12 +275,13 @@ const Index = () => {
       register={registerSearch}
       watchSearch={watchSearch}
     >
+
       <Head>
         <title>
           {dataQuestion?.data?.result?.[0]?.title ||
             dataQuestion?.data?.result?.[0]?.content}
         </title>
-        <link rel="icon" href="/porsyab_header.png" />
+        <link rel="icon" href="/question.png" />
       </Head>
       <Box
         marginTop={{ base: "60px", md: "100px" }}
@@ -443,17 +444,13 @@ const Index = () => {
                         </VStack>
                       )} */}
                       <HStack
-                        alignItems={"center"}
+                        alignItems={"start"}
                         bgColor={"#3646B31A"}
                         padding={"8px"}
                         borderRadius={"10px"}
                         w={"100%"}
                       >
-                        <IoIosArrowForward
-                          cursor={"pointer"}
-                          style={{ marginRight: "10px" }}
-                          onClick={(e) => router.back()}
-                        />
+                        <IconButton size={"lg"} minWidth={"none"} icon={<IoIosArrowForward />} onClick={(e) => router.back()} color={'black'} />
 
                         <VStack w={"100%"} alignItems={"start"} mr={"10px"}>
                           <Text
@@ -503,6 +500,7 @@ const Index = () => {
                           color={"#999999"}
                           fontSize={"16px"}
                           display={{ base: "none", md: "block" }}
+                          mt={'10px'}
                         >
                           {dataQuestionAnswer?.data &&
                             dataQuestionAnswer?.data?.length}{" "}
