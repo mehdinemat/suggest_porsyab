@@ -67,6 +67,7 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
           opacity: 1,
         },
       }}>
+
         <Slider {...sliderSettings}>
           {console.log(items)}
           {items.map((item, index) => (
