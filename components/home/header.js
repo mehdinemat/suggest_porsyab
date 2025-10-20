@@ -656,7 +656,7 @@ const Header = ({
               {...register("search")}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleClickSearch();
+                  handleAiResponse();
                 }
               }}
             />
@@ -1091,6 +1091,7 @@ const Header = ({
           cursor="pointer"
           position={"relative"}
           mb={"30px"}
+          width={'100px'}
           bottom={"0px"}
           onClick={() => {
             const el = document.querySelector(".questions");

@@ -21,13 +21,13 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
     infinite: true,
     speed: 500,
     slidesToShow: slidesToShow == 1 ? 1 : 5, // or 1 or 2
-    slidesToScroll: 1,
+    slidesToScroll: 2,
     rtl: false, // for RTL support
 
   };
 
   const handlePublicFiqure = (item) => {
-    window.open(`http://www.${item?.link}` , '_blank')
+    window.open(`http://www.${item?.link}`, '_blank')
     // router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
   };
 
@@ -59,7 +59,15 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
             {t("show_all")}
           </Text> */}
       </HStack>
-      <Box w="calc( 100% - 30px )" alignItems={"center"} justifyContent={"center"} mx="auto" mr={'20px'}>
+      <Box w="calc( 100% - 60px )" alignItems={"center"} justifyContent={"center"} mx="auto" mr={'20px'} sx={{
+
+        ".slick-prev::before, .slick-next::before": {
+          color: "#29cccc77",
+          fontSize: "20px",
+          opacity: 1,
+        },
+      }}>
+
         <Slider {...sliderSettings}>
           {console.log(items)}
           {items.map((item, index) => (
@@ -72,7 +80,7 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
               direction="row"
               justifyContent="space-between"
               alignItems="center"
-              onClick={(e) => handlePublicFiqure(item)}
+
               padding={'6px'}
               mx={'6px'}
               w={'50px'}
@@ -87,7 +95,7 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
 
                 <VStack w={'100%'} alignItems={'end'}>
                   {item.title && (
-                    <Text fontWeight="500" fontSize={'18px'} textAlign={'end'} >
+                    <Text fontWeight="500" fontSize={'18px'} textAlign={'end'} onClick={(e) => handlePublicFiqure(item)}>
                       {item.title?.substring(0, 12)}
                     </Text>
                   )}

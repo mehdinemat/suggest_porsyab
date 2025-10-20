@@ -1,4 +1,5 @@
 import { Badge, Divider, HStack, Text, VStack, Wrap } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { IoEyeOutline } from "react-icons/io5";
 
@@ -15,37 +16,39 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
 
   return (
     <HStack
-      w={"100%"}
-      _hover={{
-        border: '1px', boxShadow: `
-          0px 8px 17px 0px #0000001A,
-          0px 32px 32px 0px #00000017,
-          0px 71px 43px 0px #0000000D,
-          0px 126px 50px 0px #00000003,
-          0px 197px 55px 0px #00000000
-        `, borderColor: '#29CCCC'
-      }}
-      alignItems={"start"}
-      mb={"30px"}
-      pb={"20px"}
-      gap={"20px"}
-      cursor={"pointer"}
-      bgColor={bgColor ? bgColor : '#F7F7F7'}
-      boxShadow={`
-      0px 3px 6px 0px #0000000D,
-      0px 11px 11px 0px #0000000A,
-      0px 25px 15px 0px #00000008,
-      0px 44px 18px 0px #00000003,
-      0px 69px 19px 0px #00000000
-    `}
-      borderRadius={'13px'}
-      padding={'10px'}
-      onClick={(e) =>
-        handleQuestionRouter(
-          type == "question" ? data?.id : data?.question_id
-        )
+      as={Link}
+      href={
+        type === "question"
+          ? `/question_answer/${data?.id}`
+          : `/question_answer/${data?.question_id}`
       }
-
+      w="100%"
+      _hover={{
+        border: "1px",
+        boxShadow: `
+      0px 8px 17px 0px #0000001A,
+      0px 32px 32px 0px #00000017,
+      0px 71px 43px 0px #0000000D,
+      0px 126px 50px 0px #00000003,
+      0px 197px 55px 0px #00000000
+    `,
+        borderColor: "#29CCCC",
+      }}
+      alignItems="start"
+      mb="30px"
+      pb="20px"
+      gap="20px"
+      cursor="pointer"
+      bgColor={bgColor || "#F7F7F7"}
+      boxShadow={`
+    0px 3px 6px 0px #0000000D,
+    0px 11px 11px 0px #0000000A,
+    0px 25px 15px 0px #00000008,
+    0px 44px 18px 0px #00000003,
+    0px 69px 19px 0px #00000000
+  `}
+      borderRadius="13px"
+      padding="10px"
     >
       {/* <Image src="/minquestion.png" w={'23px'} height={'32px'} mt={'10px'} mr={'10px'} /> */}
       <VStack w={"100%"} alignItems={"start"} gap={"15px"} >
