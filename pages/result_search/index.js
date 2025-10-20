@@ -735,8 +735,8 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                           borderRadius="20px"
                           p={{ base: "5px", md: "12px" }}
                           bgColor={"#FFFFFF"}
-                          height={{ base: "95px", md: "163px" }}
-                          width={{ base: "380px", md: "100%" }}
+                          height={{ base: "111px", md: "163px" }}
+                          width={{ base: "100%", md: "100%" }}
                           boxShadow={`
                                 0px 18px 40px 0px #00000040,
                                 0px 73px 73px 0px #00000036,
@@ -773,7 +773,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                             ref={inputRef}
                             fontSize={{ base: "14px", md: "20px" }}
                             fontWeight={"500"}
-                            width={{ base: "370px", md: "100%" }}
+                            width={{ base: "100%", md: "100%" }}
                             bgColor="#EBEDF8"
                             backdropFilter="blur(9px)"
                             minHeight={{ base: "57px", md: "89px" }}
@@ -880,14 +880,14 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                   padding={"5px"}
                                 >
                                   <Button
-                                    w={{ base: "47px", md: "109px" }}
-                                    height={{ base: "17px", md: "40px" }}
+                                     w={{ base: "87px", md: "109px" }}
+                                     height={{ base: "32px", md: "40px" }}
                                     color={"#3646B3"}
                                     borderRadius="10px"
                                     rightIcon={
                                       <IoSearch fontSize={{ base: "10px", md: "25px" }} size={'25px'} />
                                     }
-                                    fontSize={{ base: "6px", md: "14px" }}
+                                    fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px':'25px'}
                                     onClick={(e) => setSearchActive(true)}
                                     variant={"outline"}
                                   >
@@ -912,9 +912,9 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                               >
                                 <Button
                                   bgColor={"#081438"}
-                                  w={{ base: "80px", md: "179px" }}
-                                  height={{ base: "17px", md: "40px" }}
-                                  fontSize={{ base: "6px", md: "14px" }}
+                                  height={{ base: "32px", md: "40px" }}
+                                  width={{base:'150px'}}
+                                  fontSize={{ base: "12px", md: "14px" }}
                                   fontWeight={"700"}
                                   color={"white"}
                                   borderRadius="10px"
