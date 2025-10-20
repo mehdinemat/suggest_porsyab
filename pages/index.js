@@ -198,7 +198,7 @@ export default function Home({ children }) {
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        p={"20px"}
+        p={{base:"0px" , md:'20px'  }}
         className="questions"
         ref={questionsRef}
       >
@@ -208,7 +208,7 @@ export default function Home({ children }) {
           templateAreas={{
             base: `"main" "right" "left" "slider"`,
           }}
-          gap={"20px"}
+          gap={"0px"}
           w={"100%"}
         >
           <GridItem

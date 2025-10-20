@@ -263,6 +263,7 @@ const Header = ({
     >
       <HStack
         maxW="container.xl"
+        height={'40px'}
         justifyContent="space-between"
         w="100%"
         mt={{ base: "0px", md: "10px" }}
@@ -502,6 +503,7 @@ const Header = ({
         w={"100%"}
         alignItems={"center"}
         justifyContent={"space-between"}
+        mt={'60px'}
       >
         <VStack
           w={"100%"}
@@ -534,15 +536,76 @@ const Header = ({
             {t("home_parsa_header_title")}
           </Text>
 
+          <Box
+            display={{base:'flex' , md:'none'}}
+            w={{ base: "380px", md: "545px" }}
+            h={{ base: "101px", md: "127px" }}
+            flexDir={'column'}
+            borderRadius="13px"
+            position="relative"
+            bg="#FFFFFF12"
+            backdropFilter="blur(5px)"
+            padding={"15px"}
+            // sx={{
+            //   overflow: "hidden", // ensures rounded corners
+            //   _before: {
+            //     content: '""',
+            //     position: "absolute",
+            //     inset: 0,
+            //     borderRadius: "13px",
+            //     padding: "0.7px", // border thickness
+            //     background:
+            //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+            //     WebkitMask:
+            //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            //     WebkitMaskComposite: "xor",
+            //     maskComposite: "exclude",
+            //     pointerEvents: "none",
+            //   },
+            // }}
+          >
+            <Text
+              color={"#76FFFF"}
+              wordBreak="break-word"
+              align={"justify"}
+              mb={"5px"}
+              fontSize={{ base: "6px", md: "10px" }}
+              fontFamily={'doran'}
+            >
+              {hadith?.Masoum?.MasoumTitle}:
+            </Text>
+            <Text
+              color={"#76FFFF"}
+              wordBreak="break-word"
+              align={"justify"}
+              mb={"15px"}
+              fontWeight={"700"}
+              fontSize={{ base: "9px", md: "14px" }}
+              fontFamily={'doran'}
+            >
+              {hadith?.Texts?.[0]?.HadithSimpleText}
+            </Text>
+            <Text
+              color={"#76FFFF"}
+              wordBreak="break-word"
+              align={"justify"}
+              fontWeight={"400"}
+              fontSize={{ base: "7px", md: "12px" }}
+              fontFamily={'doran'}
+            >
+              {hadith?.Texts?.[1]?.HadithSimpleText}
+            </Text>
+          </Box>
+
           <VStack
-            mb={{ base: "80px", md: "15px" }}
+            mb={{ base: "20px", md: "45px" }}
             gap={0}
             alignItems={"center"}
             position="relative"
-            borderRadius="20px"
+            borderRadius={{base:'9px' ,md:"20px"}}
             p={{ base: "5px", md: "12px" }}
             bgColor={"#FFFFFF"}
-            height={{ base: "95px", md: "163px" }}
+            height={{ base: "111px", md: "163px" }}
             width={{ base: "380px", md: "874px" }}
             boxShadow={`
         0px 18px 40px 0px #00000040,
@@ -576,7 +639,7 @@ const Header = ({
             }}
           >
             <Textarea
-              borderRadius="10px"
+              borderRadius={{base:'5px' ,md:"10px"}}
               ref={inputRef}
               fontSize={{ base: "14px", md: "20px" }}
               fontWeight={"500"}
@@ -601,7 +664,7 @@ const Header = ({
               w={"100%"}
               justifyContent={"space-between"}
               alignItems={"center"}
-              mt={{ base: "0px", md: "5px" }}
+              mt={{ base: "3px", md: "5px" }}
             >
               <Flex align="center" gap="2">
                 <>
@@ -611,7 +674,7 @@ const Header = ({
                     ) : (
                       <Icon
                         as={IoMic}
-                        fontSize={{ base: "10px", md: "25px" }}
+                        fontSize={{ base: "16px", md: "25px" }}
                         color="#3646B3"
                         cursor="pointer"
                         mr="10px"
@@ -690,7 +753,7 @@ const Header = ({
 
                 {/* } */}
               </Flex>
-              <HStack height={"100%"} alignItems={"center"} paddingY={'5px'}>
+              <HStack height={"100%"} alignItems={"center"} justifyContent={'end'} paddingY={'5px'}>
                 {searchActive && (
                   <Box
                     height={"fit-content"}
@@ -770,19 +833,19 @@ const Header = ({
                     gap={"5px"}
                     bgColor={"#FFFFFF0D"}
                     borderRadius={"10px"}
-                    padding={"5px"}
                   >
                     <Button
-                      w={{ base: "47px", md: "109px" }}
-                      height={{ base: "17px", md: "40px" }}
+                      w={{ base: "87px", md: "109px" }}
+                      height={{ base: "32px", md: "40px" }}
                       color={"#3646B3"}
-                      borderRadius="10px"
+                      borderRadius="8px"
                       rightIcon={
-                        <IoSearch fontSize={{ base: "10px", md: "25px" }} size={'25px'} />
+                        <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px':'25px'} />
                       }
-                      fontSize={{ base: "6px", md: "14px" }}
+                      fontSize={{ base: "12px", md: "14px" }}
                       onClick={(e) => setSearchActive(true)}
                       variant={"outline"}
+                      
                     >
                       جستجو
                     </Button>
@@ -806,8 +869,9 @@ const Header = ({
                   <Button
                     bgColor={"#081438"}
                     w={{ base: "80px", md: "179px" }}
-                    height={{ base: "17px", md: "40px" }}
-                    fontSize={{ base: "6px", md: "14px" }}
+                    height={{ base: "32px", md: "40px" }}
+                    width={{base:'150px'}}
+                    fontSize={{ base: "12px", md: "14px" }}
                     fontWeight={"700"}
                     color={"white"}
                     borderRadius="10px"
@@ -827,8 +891,8 @@ const Header = ({
                         </svg>
                       ) : (
                         <svg
-                          width="6"
-                          height="7"
+                          width="12"
+                          height="11"
                           viewBox="0 0 6 7"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -858,8 +922,8 @@ const Header = ({
                         </svg>
                       ) : (
                         <svg
-                          width="9"
-                          height="9"
+                          width="14"
+                          height="14"
                           viewBox="0 0 9 9"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -883,30 +947,32 @@ const Header = ({
           </VStack>
 
           <Box
-            w={{ base: "242px", md: "545px" }}
+            display={{base:'none' , md:'flex'}}
+            flexDir={'column'}
+            w={{ base: "380px", md: "545px" }}
             h={{ base: "101px", md: "127px" }}
             borderRadius="13px"
             position="relative"
-            bg="#2A378C4D"
+            bg="#FFFFFF12"
             backdropFilter="blur(5px)"
             padding={"15px"}
-            sx={{
-              overflow: "hidden", // ensures rounded corners
-              _before: {
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                borderRadius: "13px",
-                padding: "0.7px", // border thickness
-                background:
-                  "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                maskComposite: "exclude",
-                pointerEvents: "none",
-              },
-            }}
+            // sx={{
+            //   overflow: "hidden", // ensures rounded corners
+            //   _before: {
+            //     content: '""',
+            //     position: "absolute",
+            //     inset: 0,
+            //     borderRadius: "13px",
+            //     padding: "0.7px", // border thickness
+            //     background:
+            //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+            //     WebkitMask:
+            //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            //     WebkitMaskComposite: "xor",
+            //     maskComposite: "exclude",
+            //     pointerEvents: "none",
+            //   },
+            // }}
           >
             <Text
               color={"#76FFFF"}
@@ -950,31 +1016,31 @@ const Header = ({
               <React.Fragment key={index}>
                 <VStack
                   position="relative"
-                  bgColor="#2A378C4D"
-                  borderRadius="6px"
+                  bgColor="#FFFFFF12"
+                  borderRadius={{base:"9px" ,md:"13px"}}
                   spacing={0}
-                  w={{ base: "58px", md: "132px" }}
-                  h={{ base: "34px", md: "65px" }}
+                  w={{ base: "88px", md: "132px" }}
+                  h={{ base: "48px", md: "65px" }}
                   textAlign="center"
                   display={item?.size != breakpoint ? "flex" : "none"}
-                  justifyContent="space-between"
+                  justifyContent="center"
                   p="5px"
                   backdropFilter="blur(4px)"
                   overflow="hidden"
-                  _before={{
-                    content: '""',
-                    position: "absolute",
-                    inset: 0,
-                    borderRadius: "6px",
-                    padding: "0.7px", // stroke thickness
-                    background:
-                      "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-                    WebkitMask:
-                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                    pointerEvents: "none",
-                  }}
+                  // _before={{
+                  //   content: '""',
+                  //   position: "absolute",
+                  //   inset: 0,
+                  //   borderRadius: "6px",
+                  //   padding: "0.7px", // stroke thickness
+                  //   background:
+                  //     "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+                  //   WebkitMask:
+                  //     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  //   WebkitMaskComposite: "xor",
+                  //   maskComposite: "exclude",
+                  //   pointerEvents: "none",
+                  // }}
                 >
                   <CountUp
                     start={0}
@@ -994,9 +1060,9 @@ const Header = ({
                         <Stack>
                           <Text
                             color="white"
-                            fontWeight="500"
+                            fontWeight="300"
                             ref={countUpRef}
-                            fontSize={{ base: "9px", md: "20px" }}
+                            fontSize={{ base: "14px", md: "20px" }}
                           >
                             {item?.number}
                           </Text>
@@ -1007,7 +1073,7 @@ const Header = ({
                   <Text
                     color="white"
                     fontWeight="200"
-                    fontSize={{ base: "6px", md: "14px" }}
+                    fontSize={{ base: "9px", md: "14px" }}
                   >
                     {t(item?.t_title)}
                   </Text>
