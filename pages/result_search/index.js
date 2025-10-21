@@ -106,6 +106,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
   const [isStreaming, setIsStreaming] = useState(false);
   const [continueQuestion, setContinueQuestion] = useState(false)
   const [chatHistory, setChatHistory] = useState([]);
+  const [chatDone, setChatDone] = useState(false)
   const [input, setInput] = useState("");
 
   const inputRef = useRef(null);
@@ -146,7 +147,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
         setChatSession(data?.data?.data?.id);
         setIsStreaming(true);
         setChatHistory([])
-
+        setChatDone(false)
         const userId = Date.now();
 
         const newUserMsg = {
@@ -242,6 +243,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
               }
 
               if (parsed.done) {
+                setChatDone(true)
                 done = true;
                 break;
               }
@@ -260,7 +262,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
   const handleSubmit = async () => {
     setInput('')
     setIsStreaming(true)
-
+    setChatDone(false)
     const userId = Date.now();
 
     const newUserMsg = {
@@ -354,6 +356,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           }
 
           if (parsed.done) {
+            setChatDone(true)
             done = true;
             break;
           }
@@ -373,7 +376,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     setIsStreaming(true);
     setBotStream("");
     setAiMessage("");
-
+    setChatDone(false)
     setChatHistory([])
 
     const userId = Date.now();
@@ -466,6 +469,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           }
 
           if (parsed.done) {
+            setChatDone(true)
             done = true;
             break;
           }
@@ -684,7 +688,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                       <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream} />
                                     )}
 
-                                    <Flex flexDirection={{ base: 'column', md: 'row' }} mt={'10px'} gap={'10px'} alignItems={'center'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '15px'}>
+                                    {chatDone && <Flex flexDirection={{ base: 'column', md: 'row' }} mt={'10px'} gap={'10px'} alignItems={'center'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '15px'}>
                                       <Stack>
                                         <HStack gap={'15px'}>
                                           <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={{ base: '10px', md: '14px' }} height={{ base: "26px", md: '37px' }} width={{ base: '129px', md: '180px' }} fontWeight={'500'}>بررسی عمیق‌تر</Button>
@@ -716,7 +720,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
 
                                           }}>ادامه گفتگو</Button>}
 
-                                    </Flex>
+                                    </Flex>}
 
                                   </Box>
                                   :
@@ -819,26 +823,26 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                   padding={"5px"}
                                 >
                                   <Button
-                                    leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={'22px'} color="#3646B3" />}
+                                    leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={currentSize == "base" ? '14px' : '22px'} color="#3646B3" />}
                                     bgColor={"#3646B333"}
                                     color={"#081438"}
                                     borderRadius={'6px'}
                                     onClick={(e) => handleClickSearch()}
                                     fontSize={{ base: "6px", md: "14px" }}
-                                    height={{ base: "13px", md: "30px" }}
+                                    height={{ base: "22px", md: "30px" }}
                                     width={{ base: "50px", md: "auto" }}
                                   >
                                     معمولی
                                   </Button>
                                   <Button
-                                    height={{ base: "13px", md: "30px" }}
+                                    height={{ base: "22px", md: "30px" }}
                                     fontSize={{ base: "6px", md: "14px" }}
                                     borderRadius={'6px'}
                                     onClick={(e) => handleClickSemanticSearch()}
                                     leftIcon={
                                       <svg
-                                        width={currentSize == 'base' ? '7' : "17"}
-                                        height={currentSize == 'base' ? '8' : "18"}
+                                        width={currentSize == 'base' ? '13' : "17"}
+                                        height={currentSize == 'base' ? '13' : "18"}
                                         viewBox="0 0 17 18"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -890,11 +894,11 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                     w={{ base: "87px", md: "109px" }}
                                     height={{ base: "32px", md: "40px" }}
                                     color={"#3646B3"}
-                                    borderRadius="10px"
+                                    borderRadius="8px"
                                     rightIcon={
-                                      <IoSearch fontSize={{ base: "10px", md: "25px" }} size={'25px'} />
+                                      <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'} />
                                     }
-                                    fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'}
+                                    fontSize={{ base: "12px", md: "14px" }}
                                     onClick={(e) => setSearchActive(true)}
                                     variant={"outline"}
                                   >
@@ -919,6 +923,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                               >
                                 <Button
                                   bgColor={"#081438"}
+                                  w={{ base: "80px", md: "179px" }}
                                   height={{ base: "32px", md: "40px" }}
                                   width={{ base: '150px' }}
                                   fontSize={{ base: "12px", md: "14px" }}
@@ -941,8 +946,8 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                       </svg>
                                     ) : (
                                       <svg
-                                        width="6"
-                                        height="7"
+                                        width="12"
+                                        height="11"
                                         viewBox="0 0 6 7"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -972,8 +977,8 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                       </svg>
                                     ) : (
                                       <svg
-                                        width="9"
-                                        height="9"
+                                        width="14"
+                                        height="14"
                                         viewBox="0 0 9 9"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
