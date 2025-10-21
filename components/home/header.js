@@ -769,26 +769,26 @@ const Header = ({
                     padding={"5px"}
                   >
                     <Button
-                      leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={'22px'} color="#3646B3" />}
+                      leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={currentSize == "base" ? '14px' : '22px'} color="#3646B3" />}
                       bgColor={"#3646B333"}
                       color={"#081438"}
                       borderRadius={'6px'}
                       onClick={(e) => handleClickSearch()}
                       fontSize={{ base: "6px", md: "14px" }}
-                      height={{ base: "13px", md: "30px" }}
+                      height={{ base: "22px", md: "30px" }}
                       width={{ base: "50px", md: "auto" }}
                     >
                       معمولی
                     </Button>
                     <Button
-                      height={{ base: "13px", md: "30px" }}
+                      height={{ base: "22px", md: "30px" }}
                       fontSize={{ base: "6px", md: "14px" }}
                       borderRadius={'6px'}
                       onClick={(e) => handleClickSemanticSearch()}
                       leftIcon={
                         <svg
-                          width={currentSize == 'base' ? '7' : "17"}
-                          height={currentSize == 'base' ? '8' : "18"}
+                          width={currentSize == 'base' ? '13' : "17"}
+                          height={currentSize == 'base' ? '13' : "18"}
                           viewBox="0 0 17 18"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
