@@ -557,7 +557,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
             pr={{ base: 0, md: "21px" }}
           >
             {filters?.type == "ai" && (
-              <VStack mb={{base:'20px' ,md:"80px"}} alignItems={"start"} w={'100%'}>
+              <VStack mb={{ base: '20px', md: "80px" }} alignItems={"start"} w={'100%'}>
                 {/* <Text fontSize={{ base: "11px", md: "16px" }} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text> */}
@@ -572,8 +572,8 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                     }}>
                       <HStack w={"100%"} alignItems={"center"}>
                         <svg
-                          width={size == "base" ? '14' :"21"}
-                          height={size == "base" ? '14' :"22"}
+                          width={size == "base" ? '14' : "21"}
+                          height={size == "base" ? '14' : "22"}
                           viewBox="0 0 32 32"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -583,14 +583,14 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                             fill="#3646B3"
                           />
                         </svg>
-                        <Text fontSize={{base:'14px' ,md:"22px"}} color={"#3646B3"} fontWeight={'700'} width={'max-content'}>
+                        <Text fontSize={{ base: '14px', md: "22px" }} color={"#3646B3"} fontWeight={'700'} width={'max-content'}>
                           نتایج جستجو هوشمند
                         </Text>
                       </HStack>
                     </Tab>
                     <HStack w={"100%"} alignItems={"center"} color={'#B8B8B8'}>
-                      <IoIosList fontSize={{base:'12px' ,md:'20px'}} />
-                      <Text fontSize={{base:'14px' ,md:"22px"}} fontWeight={'700'} onClick={() => {
+                      <IoIosList fontSize={{ base: '12px', md: '20px' }} />
+                      <Text fontSize={{ base: '14px', md: "22px" }} fontWeight={'700'} onClick={() => {
                         const el = document.querySelector(".questionlist");
                         if (el) {
                           el.scrollIntoView({ behavior: "smooth" });
@@ -639,44 +639,44 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                     borderRadius={"30px"}
 
                                   >
-                                   <Box px={{base:"10px" ,md:'18px'}}>
-                                   <ReactMarkdown
-                                      remarkPlugins={[remarkBreaks]}
-                                      components={{
-                                        h1: (props) => (
-                                          <Heading as="h2" size="lg" my={2} {...props} />
-                                        ),
-                                        h2: (props) => (
-                                          <Heading as="h3" size="md" my={2} {...props} />
-                                        ),
-                                        h3: (props) => (
-                                          <Heading as="h4" size="sm" my={2} {...props} />
-                                        ),
-                                        p: (props) => (
-                                          <Text
-                                            fontSize="20px"
-                                            fontWeight="400"
-                                            my={1}
-                                            {...props}
-                                          />
-                                        ),
-                                        a: ({ href, children }) => (
-                                          <Link
-                                            href={href}
-                                            color="blue.500"
-                                            isExternal
-                                            _hover={{
-                                              textDecoration: "underline",
-                                              color: "blue.600",
-                                            }}
-                                          >
-                                            {children}
-                                          </Link>
-                                        ),
-                                      }}
-                                    >
-                                      {chat?.content}
-                                    </ReactMarkdown>
+                                    <Box px={{ base: "10px", md: '18px' }}>
+                                      <ReactMarkdown
+                                        remarkPlugins={[remarkBreaks]}
+                                        components={{
+                                          h1: (props) => (
+                                            <Heading as="h2" size="lg" my={2} {...props} />
+                                          ),
+                                          h2: (props) => (
+                                            <Heading as="h3" size="md" my={2} {...props} />
+                                          ),
+                                          h3: (props) => (
+                                            <Heading as="h4" size="sm" my={2} {...props} />
+                                          ),
+                                          p: (props) => (
+                                            <Text
+                                              fontSize="20px"
+                                              fontWeight="400"
+                                              my={1}
+                                              {...props}
+                                            />
+                                          ),
+                                          a: ({ href, children }) => (
+                                            <Link
+                                              href={href}
+                                              color="blue.500"
+                                              isExternal
+                                              _hover={{
+                                                textDecoration: "underline",
+                                                color: "blue.600",
+                                              }}
+                                            >
+                                              {children}
+                                            </Link>
+                                          ),
+                                        }}
+                                      >
+                                        {chat?.content}
+                                      </ReactMarkdown>
                                     </Box>
 
                                     {isStreaming && chat.role !== 2 && isLast && (
@@ -684,31 +684,38 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                       <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream} />
                                     )}
 
-                                    <Flex flexDirection={{base:'column' , md:'row'}} mt={'10px'} gap={'10px'} alignItems={'center'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '15px'}>
+                                    <Flex flexDirection={{ base: 'column', md: 'row' }} mt={'10px'} gap={'10px'} alignItems={'center'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '15px'}>
                                       <Stack>
-                                      <HStack gap={'15px'}>
-                                        <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={{base:'10px' ,md:'14px'}} height={{base:"26px" , md:'37px'}} width={{base:'129px' , md:'180px'}} fontWeight={'500'}>بررسی عمیق‌تر</Button>
-                                        <Button bgColor={'white'} color={'#CCCCCC'} height={{base:"26px" , md:'37px'}} fontSize={{base:'10px' ,md:'14px'}} leftIcon={<svg width={size == 'base' ? '17':'24'} height={size =='base' ? '17':"24"}  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <path d="M4.00001 5.40001C4.00001 4.62201 4.62201 4.00001 5.40001 4.00001L12.6 4.00001C13.378 4.00001 14 4.62201 14 5.40001V6.00001C14 6.13133 14.0259 6.26136 14.0761 6.38269C14.1264 6.50401 14.2 6.61425 14.2929 6.70711C14.3858 6.79997 14.496 6.87363 14.6173 6.92388C14.7386 6.97414 14.8687 7.00001 15 7.00001C15.1313 7.00001 15.2614 6.97414 15.3827 6.92388C15.504 6.87363 15.6143 6.79997 15.7071 6.70711C15.8 6.61425 15.8736 6.50401 15.9239 6.38269C15.9741 6.26136 16 6.13133 16 6.00001V5.40001C16 3.51801 14.482 2.00001 12.6 2.00001L5.40001 2.00001C4.95329 1.99921 4.51081 2.08662 4.09795 2.25721C3.68508 2.42779 3.30996 2.6782 2.99408 2.99408C2.6782 3.30996 2.42779 3.68508 2.25721 4.09795C2.08662 4.51081 1.99921 4.95329 2.00001 5.40001L2.00001 12.6C2.00001 14.482 3.51801 16 5.40001 16H6.00001C6.26522 16 6.51958 15.8946 6.70711 15.7071C6.89465 15.5196 7.00001 15.2652 7.00001 15C7.00001 14.7348 6.89465 14.4804 6.70711 14.2929C6.51958 14.1054 6.26522 14 6.00001 14H5.40001C4.62201 14 4.00001 13.378 4.00001 12.6L4.00001 5.40001Z" fill="#CCCCCC" />
-                                          <path d="M9 11.4C9 10.7635 9.25286 10.153 9.70294 9.70294C10.153 9.25286 10.7635 9 11.4 9L18.6 9C19.2365 9 19.847 9.25286 20.2971 9.70294C20.7471 10.153 21 10.7635 21 11.4V18.6C21 19.2365 20.7471 19.847 20.2971 20.2971C19.847 20.7471 19.2365 21 18.6 21H11.4C10.7635 21 10.153 20.7471 9.70294 20.2971C9.25286 19.847 9 19.2365 9 18.6L9 11.4Z" fill="#CCCCCC" />
-                                        </svg>
-                                        } borderRadius={'18px'}>کپی</Button>
-                                        <Button bgColor={'white'} color={'#CCCCCC'} 
-                                         leftIcon={<IoMdCheckmarkCircleOutline fontSize={{base:'10px' , md:"30px"}} />} borderRadius={'18px'} height={{base:"26px" , md:'37px'}} w={{base:'73px' , md:'auto'}} fontSize={{base:'10px' ,md:'24px'}}><Text fontSize={{base:'10px' ,md:'14px'}}>مفید بود</Text></Button>
-                                        <Button bgColor={'white'} color={'#CCCCCC'} leftIcon={<svg width={size == 'base' ? '17':'24'} height={size =='base' ? '17':"24"} viewBox="0 0 29 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <g opacity="0.5">
-                                            <path d="M10.1855 10.459L18.8438 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M18.8457 10.459L10.1875 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                          </g>
-                                          <path opacity="0.5" d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z" stroke="#A1A1A1" stroke-width="3" />
-                                        </svg>
-                                        } borderRadius={'18px'} fontSize={{base:'10px' ,md:'14px'}} height={{base:"26px" , md:'37px'}} w={{base:'73px' , md:'auto'}}>اشتباه بود</Button>
-                                      </HStack>
+                                        <HStack gap={'15px'}>
+                                          <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={{ base: '10px', md: '14px' }} height={{ base: "26px", md: '37px' }} width={{ base: '129px', md: '180px' }} fontWeight={'500'}>بررسی عمیق‌تر</Button>
+                                          <Button bgColor={'white'} color={'#CCCCCC'} height={{ base: "26px", md: '37px' }} fontSize={{ base: '10px', md: '14px' }} leftIcon={<svg width={size == 'base' ? '17' : '24'} height={size == 'base' ? '17' : "24"} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.00001 5.40001C4.00001 4.62201 4.62201 4.00001 5.40001 4.00001L12.6 4.00001C13.378 4.00001 14 4.62201 14 5.40001V6.00001C14 6.13133 14.0259 6.26136 14.0761 6.38269C14.1264 6.50401 14.2 6.61425 14.2929 6.70711C14.3858 6.79997 14.496 6.87363 14.6173 6.92388C14.7386 6.97414 14.8687 7.00001 15 7.00001C15.1313 7.00001 15.2614 6.97414 15.3827 6.92388C15.504 6.87363 15.6143 6.79997 15.7071 6.70711C15.8 6.61425 15.8736 6.50401 15.9239 6.38269C15.9741 6.26136 16 6.13133 16 6.00001V5.40001C16 3.51801 14.482 2.00001 12.6 2.00001L5.40001 2.00001C4.95329 1.99921 4.51081 2.08662 4.09795 2.25721C3.68508 2.42779 3.30996 2.6782 2.99408 2.99408C2.6782 3.30996 2.42779 3.68508 2.25721 4.09795C2.08662 4.51081 1.99921 4.95329 2.00001 5.40001L2.00001 12.6C2.00001 14.482 3.51801 16 5.40001 16H6.00001C6.26522 16 6.51958 15.8946 6.70711 15.7071C6.89465 15.5196 7.00001 15.2652 7.00001 15C7.00001 14.7348 6.89465 14.4804 6.70711 14.2929C6.51958 14.1054 6.26522 14 6.00001 14H5.40001C4.62201 14 4.00001 13.378 4.00001 12.6L4.00001 5.40001Z" fill="#CCCCCC" />
+                                            <path d="M9 11.4C9 10.7635 9.25286 10.153 9.70294 9.70294C10.153 9.25286 10.7635 9 11.4 9L18.6 9C19.2365 9 19.847 9.25286 20.2971 9.70294C20.7471 10.153 21 10.7635 21 11.4V18.6C21 19.2365 20.7471 19.847 20.2971 20.2971C19.847 20.7471 19.2365 21 18.6 21H11.4C10.7635 21 10.153 20.7471 9.70294 20.2971C9.25286 19.847 9 19.2365 9 18.6L9 11.4Z" fill="#CCCCCC" />
+                                          </svg>
+                                          } borderRadius={'18px'}>کپی</Button>
+                                          <Button bgColor={'white'} color={'#CCCCCC'}
+                                            leftIcon={<IoMdCheckmarkCircleOutline fontSize={{ base: '10px', md: "30px" }} />} borderRadius={'18px'} height={{ base: "26px", md: '37px' }} w={{ base: '73px', md: 'auto' }} fontSize={{ base: '10px', md: '24px' }}><Text fontSize={{ base: '10px', md: '14px' }}>مفید بود</Text></Button>
+                                          <Button bgColor={'white'} color={'#CCCCCC'} leftIcon={<svg width={size == 'base' ? '17' : '24'} height={size == 'base' ? '17' : "24"} viewBox="0 0 29 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g opacity="0.5">
+                                              <path d="M10.1855 10.459L18.8438 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                                              <path d="M18.8457 10.459L10.1875 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                                            </g>
+                                            <path opacity="0.5" d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z" stroke="#A1A1A1" stroke-width="3" />
+                                          </svg>
+                                          } borderRadius={'18px'} fontSize={{ base: '10px', md: '14px' }} height={{ base: "26px", md: '37px' }} w={{ base: '73px', md: 'auto' }}>اشتباه بود</Button>
+                                        </HStack>
                                       </Stack>
-                                      {/* {(!continueQuestion && isUserLogin) && */}
-                                       <Button bgColor={'#3646B3'} color={'white'} fontSize={'14px'} fontWeight={'500'} borderRadius={'18px'} width={'180px'} onClick={e => setContinueQuestion
-                                        (true)}>ادامه گفتگو</Button>
-                                        
+                                      {(!continueQuestion) &&
+                                        <Button bgColor={'#3646B3'} color={'white'} fontSize={'14px'} fontWeight={'500'} borderRadius={'18px'} width={'180px'}
+                                          onClick={e => {
+                                            if (isUserLogin) {
+                                              setContinueQuestion(true)
+                                            } else {
+                                              router.push('/login')
+                                            }
+
+                                          }}>ادامه گفتگو</Button>}
+
                                     </Flex>
 
                                   </Box>
@@ -718,7 +725,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                     fontWeight={'400'}
                                     whiteSpace="pre-wrap"
                                     color={chat.role === 2 ? 'white' : 'black'}
-                                    padding={'10px'}
+                                    paddingX={'10px'}
                                   >
                                     {chat.content}
                                   </Text>
@@ -880,14 +887,14 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                   padding={"5px"}
                                 >
                                   <Button
-                                     w={{ base: "87px", md: "109px" }}
-                                     height={{ base: "32px", md: "40px" }}
+                                    w={{ base: "87px", md: "109px" }}
+                                    height={{ base: "32px", md: "40px" }}
                                     color={"#3646B3"}
                                     borderRadius="10px"
                                     rightIcon={
                                       <IoSearch fontSize={{ base: "10px", md: "25px" }} size={'25px'} />
                                     }
-                                    fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px':'25px'}
+                                    fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'}
                                     onClick={(e) => setSearchActive(true)}
                                     variant={"outline"}
                                   >
@@ -913,7 +920,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                 <Button
                                   bgColor={"#081438"}
                                   height={{ base: "32px", md: "40px" }}
-                                  width={{base:'150px'}}
+                                  width={{ base: '150px' }}
                                   fontSize={{ base: "12px", md: "14px" }}
                                   fontWeight={"700"}
                                   color={"white"}
