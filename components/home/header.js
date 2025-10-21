@@ -503,14 +503,14 @@ const Header = ({
         w={"100%"}
         alignItems={"center"}
         justifyContent={"space-between"}
-        mt={'60px'}
+        mt={{ base: '0px', md: '60px' }}
       >
         <VStack
           w={"100%"}
           alignItems={"center"}
           justifyContent={"center"}
           height={"100%"}
-          mt={"-50px"}
+          mt={{ base: "-80px", md: "-50px" }}
         >
           <Text
             fontFamily="morabba"
@@ -537,7 +537,7 @@ const Header = ({
           </Text>
 
           <Box
-            display={{base:'flex' , md:'none'}}
+            display={{ base: 'flex', md: 'none' }}
             w={{ base: "380px", md: "545px" }}
             h={{ base: "101px", md: "127px" }}
             flexDir={'column'}
@@ -546,23 +546,24 @@ const Header = ({
             bg="#FFFFFF12"
             backdropFilter="blur(5px)"
             padding={"15px"}
-            // sx={{
-            //   overflow: "hidden", // ensures rounded corners
-            //   _before: {
-            //     content: '""',
-            //     position: "absolute",
-            //     inset: 0,
-            //     borderRadius: "13px",
-            //     padding: "0.7px", // border thickness
-            //     background:
-            //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-            //     WebkitMask:
-            //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            //     WebkitMaskComposite: "xor",
-            //     maskComposite: "exclude",
-            //     pointerEvents: "none",
-            //   },
-            // }}
+            mb={'20px'}
+          // sx={{
+          //   overflow: "hidden", // ensures rounded corners
+          //   _before: {
+          //     content: '""',
+          //     position: "absolute",
+          //     inset: 0,
+          //     borderRadius: "13px",
+          //     padding: "0.7px", // border thickness
+          //     background:
+          //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+          //     WebkitMask:
+          //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          //     WebkitMaskComposite: "xor",
+          //     maskComposite: "exclude",
+          //     pointerEvents: "none",
+          //   },
+          // }}
           >
             <Text
               color={"#76FFFF"}
@@ -602,7 +603,7 @@ const Header = ({
             gap={0}
             alignItems={"center"}
             position="relative"
-            borderRadius={{base:'9px' ,md:"20px"}}
+            borderRadius={{ base: '9px', md: "20px" }}
             p={{ base: "5px", md: "12px" }}
             bgColor={"#FFFFFF"}
             height={{ base: "111px", md: "163px" }}
@@ -639,7 +640,7 @@ const Header = ({
             }}
           >
             <Textarea
-              borderRadius={{base:'5px' ,md:"10px"}}
+              borderRadius={{ base: '5px', md: "10px" }}
               ref={inputRef}
               fontSize={{ base: "14px", md: "20px" }}
               fontWeight={"500"}
@@ -840,12 +841,12 @@ const Header = ({
                       color={"#3646B3"}
                       borderRadius="8px"
                       rightIcon={
-                        <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px':'25px'} />
+                        <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'} />
                       }
                       fontSize={{ base: "12px", md: "14px" }}
                       onClick={(e) => setSearchActive(true)}
                       variant={"outline"}
-                      
+
                     >
                       جستجو
                     </Button>
@@ -870,7 +871,7 @@ const Header = ({
                     bgColor={"#081438"}
                     w={{ base: "80px", md: "179px" }}
                     height={{ base: "32px", md: "40px" }}
-                    width={{base:'150px'}}
+                    width={{ base: '150px' }}
                     fontSize={{ base: "12px", md: "14px" }}
                     fontWeight={"700"}
                     color={"white"}
@@ -947,7 +948,7 @@ const Header = ({
           </VStack>
 
           <Box
-            display={{base:'none' , md:'flex'}}
+            display={{ base: 'none', md: 'flex' }}
             flexDir={'column'}
             w={{ base: "380px", md: "545px" }}
             h={{ base: "101px", md: "127px" }}
@@ -956,23 +957,23 @@ const Header = ({
             bg="#FFFFFF12"
             backdropFilter="blur(5px)"
             padding={"15px"}
-            // sx={{
-            //   overflow: "hidden", // ensures rounded corners
-            //   _before: {
-            //     content: '""',
-            //     position: "absolute",
-            //     inset: 0,
-            //     borderRadius: "13px",
-            //     padding: "0.7px", // border thickness
-            //     background:
-            //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-            //     WebkitMask:
-            //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            //     WebkitMaskComposite: "xor",
-            //     maskComposite: "exclude",
-            //     pointerEvents: "none",
-            //   },
-            // }}
+          // sx={{
+          //   overflow: "hidden", // ensures rounded corners
+          //   _before: {
+          //     content: '""',
+          //     position: "absolute",
+          //     inset: 0,
+          //     borderRadius: "13px",
+          //     padding: "0.7px", // border thickness
+          //     background:
+          //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+          //     WebkitMask:
+          //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          //     WebkitMaskComposite: "xor",
+          //     maskComposite: "exclude",
+          //     pointerEvents: "none",
+          //   },
+          // }}
           >
             <Text
               color={"#76FFFF"}
@@ -1017,7 +1018,7 @@ const Header = ({
                 <VStack
                   position="relative"
                   bgColor="#FFFFFF12"
-                  borderRadius={{base:"9px" ,md:"13px"}}
+                  borderRadius={{ base: "9px", md: "13px" }}
                   spacing={0}
                   w={{ base: "88px", md: "132px" }}
                   h={{ base: "48px", md: "65px" }}
@@ -1027,20 +1028,20 @@ const Header = ({
                   p="5px"
                   backdropFilter="blur(4px)"
                   overflow="hidden"
-                  // _before={{
-                  //   content: '""',
-                  //   position: "absolute",
-                  //   inset: 0,
-                  //   borderRadius: "6px",
-                  //   padding: "0.7px", // stroke thickness
-                  //   background:
-                  //     "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-                  //   WebkitMask:
-                  //     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  //   WebkitMaskComposite: "xor",
-                  //   maskComposite: "exclude",
-                  //   pointerEvents: "none",
-                  // }}
+                // _before={{
+                //   content: '""',
+                //   position: "absolute",
+                //   inset: 0,
+                //   borderRadius: "6px",
+                //   padding: "0.7px", // stroke thickness
+                //   background:
+                //     "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+                //   WebkitMask:
+                //     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                //   WebkitMaskComposite: "xor",
+                //   maskComposite: "exclude",
+                //   pointerEvents: "none",
+                // }}
                 >
                   <CountUp
                     start={0}
