@@ -561,7 +561,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
             pr={{ base: 0, md: "21px" }}
           >
             {filters?.type == "ai" && (
-              <VStack mb={{ base: '20px', md: "80px" }} alignItems={"start"} w={'100%'}>
+              <VStack mb={{ base: '20px', md: "0px" }} alignItems={"start"} w={'100%'}>
                 {/* <Text fontSize={{ base: "11px", md: "16px" }} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text> */}
@@ -748,13 +748,13 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                           bgColor={"#FFFFFF"}
                           height={{ base: "111px", md: "163px" }}
                           width={{ base: "100%", md: "100%" }}
-                          boxShadow={`
-                                0px 18px 40px 0px #00000040,
-                                0px 73px 73px 0px #00000036,
-                                0px 164px 99px 0px #00000021,
-                                0px 292px 117px 0px #0000000A,
-                                0px 457px 128px 0px #00000000
-                              `}
+                          boxShadow="
+        0px 4px 9px 0px #0000000D,
+        0px 16px 16px 0px #0000000A,
+        0px 35px 21px 0px #00000008,
+        0px 62px 25px 0px #00000003,
+        0px 98px 27px 0px #00000000
+      "
 
                           sx={{
                             "@media (min-width: 120em)": {
@@ -790,7 +790,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                             minHeight={{ base: "57px", md: "89px" }}
                             height={{ base: "57px", md: "89px" }}
                             textIndent="5px"
-                            placeholder={isRecording ? t("listening") : t("search_among")}
+                            placeholder={isRecording ? t("listening") : 'نوشتن متن...'}
                             color="black"
                             border="none" // removes the border completely
                             _placeholder={{ color: "#000000" }}
