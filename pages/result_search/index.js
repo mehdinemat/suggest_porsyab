@@ -108,6 +108,8 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
   const [chatHistory, setChatHistory] = useState([]);
   const [chatDone, setChatDone] = useState(false)
   const [input, setInput] = useState("");
+  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   const inputRef = useRef(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -514,6 +516,21 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     }
   }, [chatType])
 
+  useEffect(() => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+
+    // Only scroll if user is near the bottom (e.g., within 150px)
+    if (distanceFromBottom < 150) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [chatHistory, isStreaming]);
 
   return (
     <Stack w={"100%"} scrollSnapAlign="start">
@@ -565,9 +582,6 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                 {/* <Text fontSize={{ base: "11px", md: "16px" }} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text> */}
-
-
-
                 <Tabs colorScheme="blue" variant="unstyled" w={'100%'}>
                   <TabList w={'100%'}>
                     <Tab _selected={{
@@ -613,6 +627,10 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                         padding={'15px'}
                         px={'0px'}
                         pb={'0px'}
+                        ref={chatContainerRef}
+                        id="chat-container"
+                        overflowY="auto"
+                        maxH="80vh"
                       >
 
                         {chatHistory?.map((chat, index) => {
@@ -734,21 +752,22 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                     {chat.content}
                                   </Text>
                               }
+
                             </Box>
                           );
                         })}
-
-                        {continueQuestion && <VStack
-                          mb={{ base: "80px", md: "15px" }}
-                          gap={0}
-                          alignItems={"center"}
-                          position="relative"
-                          borderRadius="20px"
-                          p={{ base: "5px", md: "12px" }}
-                          bgColor={"#FFFFFF"}
-                          height={{ base: "111px", md: "163px" }}
-                          width={{ base: "100%", md: "100%" }}
-                          boxShadow="
+                      </Box>
+                      {continueQuestion && <VStack
+                        mb={{ base: "80px", md: "15px" }}
+                        gap={0}
+                        alignItems={"center"}
+                        position="relative"
+                        borderRadius="20px"
+                        p={{ base: "5px", md: "12px" }}
+                        bgColor={"#FFFFFF"}
+                        height={{ base: "111px", md: "163px" }}
+                        width={{ base: "100%", md: "100%" }}
+                        boxShadow="
         0px 4px 9px 0px #0000000D,
         0px 16px 16px 0px #0000000A,
         0px 35px 21px 0px #00000008,
@@ -756,269 +775,256 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
         0px 98px 27px 0px #00000000
       "
 
-                          sx={{
-                            "@media (min-width: 120em)": {
-                              marginBottom: "80px",
-                            },
-                            backdropFilter: "blur(23.3px)",
-                            WebkitBackdropFilter: "blur(23.3px)",
-                            overflow: "hidden", // for rounded corners
-                            _before: {
-                              content: '""',
-                              position: "absolute",
-                              inset: 0,
-                              borderRadius: "20px",
-                              padding: "1.5px", // thickness of border
-                              background:
-                                "linear-gradient(360deg, rgba(255, 255, 255, 0.55) -32.14%, rgba(255, 255, 255, 0) 19.32%, rgba(255, 255, 255, 0) 53.62%, rgba(255, 255, 255, 0.33) 100%)",
-                              WebkitMask:
-                                "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                              WebkitMaskComposite: "xor",
-                              maskComposite: "exclude",
-                              pointerEvents: "none",
-                            },
+                        sx={{
+                          "@media (min-width: 120em)": {
+                            marginBottom: "80px",
+                          },
+                          backdropFilter: "blur(23.3px)",
+                          WebkitBackdropFilter: "blur(23.3px)",
+                          overflow: "hidden", // for rounded corners
+                          _before: {
+                            content: '""',
+                            position: "absolute",
+                            inset: 0,
+                            borderRadius: "20px",
+                            padding: "1.5px", // thickness of border
+                            background:
+                              "linear-gradient(360deg, rgba(255, 255, 255, 0.55) -32.14%, rgba(255, 255, 255, 0) 19.32%, rgba(255, 255, 255, 0) 53.62%, rgba(255, 255, 255, 0.33) 100%)",
+                            WebkitMask:
+                              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                            WebkitMaskComposite: "xor",
+                            maskComposite: "exclude",
+                            pointerEvents: "none",
+                          },
+                        }}
+                      >
+                        <Textarea
+                          borderRadius="10px"
+                          ref={inputRef}
+                          fontSize={{ base: "14px", md: "20px" }}
+                          fontWeight={"500"}
+                          width={{ base: "100%", md: "100%" }}
+                          bgColor="#EBEDF8"
+                          backdropFilter="blur(9px)"
+                          minHeight={{ base: "57px", md: "89px" }}
+                          height={{ base: "57px", md: "89px" }}
+                          textIndent="5px"
+                          placeholder={isRecording ? t("listening") : 'نوشتن متن...'}
+                          color="black"
+                          border="none" // removes the border completely
+                          _placeholder={{ color: "#000000" }}
+                          {...register("search")}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleClickSearch();
+                            }
                           }}
+                        />
+                        <HStack
+                          w={"100%"}
+                          justifyContent={"end"}
+                          alignItems={"end"}
+                          mt={{ base: "0px", md: "0px" }}
                         >
-                          <Textarea
-                            borderRadius="10px"
-                            ref={inputRef}
-                            fontSize={{ base: "14px", md: "20px" }}
-                            fontWeight={"500"}
-                            width={{ base: "100%", md: "100%" }}
-                            bgColor="#EBEDF8"
-                            backdropFilter="blur(9px)"
-                            minHeight={{ base: "57px", md: "89px" }}
-                            height={{ base: "57px", md: "89px" }}
-                            textIndent="5px"
-                            placeholder={isRecording ? t("listening") : 'نوشتن متن...'}
-                            color="black"
-                            border="none" // removes the border completely
-                            _placeholder={{ color: "#000000" }}
-                            {...register("search")}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                handleClickSearch();
-                              }
-                            }}
-                          />
-                          <HStack
-                            w={"100%"}
-                            justifyContent={"end"}
-                            alignItems={"end"}
-                            mt={{ base: "0px", md: "5px" }}
-                          >
 
-                            <HStack height={"100%"} alignItems={"center"} paddingY={'5px'}>
-                              {searchActive && (
-                                <Box
-                                  height={"fit-content"}
-                                  display={"flex"}
-                                  flexDir={"row"}
-                                  alignItems={"center"}
-                                  gap={"5px"}
-                                  bgColor={"#FFFFFF0D"}
-                                  border={"1px"}
-                                  borderColor={"#3646B3"}
-                                  borderRadius={"10px"}
-                                  padding={"5px"}
+                          <HStack height={"100%"} alignItems={"center"} paddingY={'5px'}>
+                            {searchActive && (
+                              <Box
+                                height={"fit-content"}
+                                display={"flex"}
+                                flexDir={"row"}
+                                alignItems={"center"}
+                                gap={"5px"}
+                                bgColor={"#FFFFFF0D"}
+                                border={"1px"}
+                                borderColor={"#3646B3"}
+                                borderRadius={"10px"}
+                                padding={"5px"}
+                              >
+                                <Button
+                                  leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={currentSize == "base" ? '14px' : '22px'} color="#3646B3" />}
+                                  bgColor={"#3646B333"}
+                                  color={"#081438"}
+                                  borderRadius={'6px'}
+                                  onClick={(e) => handleClickSearch()}
+                                  fontSize={{ base: "6px", md: "14px" }}
+                                  height={{ base: "22px", md: "30px" }}
+                                  width={{ base: "50px", md: "auto" }}
                                 >
-                                  <Button
-                                    leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={currentSize == "base" ? '14px' : '22px'} color="#3646B3" />}
-                                    bgColor={"#3646B333"}
-                                    color={"#081438"}
-                                    borderRadius={'6px'}
-                                    onClick={(e) => handleClickSearch()}
-                                    fontSize={{ base: "6px", md: "14px" }}
-                                    height={{ base: "22px", md: "30px" }}
-                                    width={{ base: "50px", md: "auto" }}
-                                  >
-                                    معمولی
-                                  </Button>
-                                  <Button
-                                    height={{ base: "22px", md: "30px" }}
-                                    fontSize={{ base: "6px", md: "14px" }}
-                                    borderRadius={'6px'}
-                                    onClick={(e) => handleClickSemanticSearch()}
-                                    leftIcon={
-                                      <svg
-                                        width={currentSize == 'base' ? '13' : "17"}
-                                        height={currentSize == 'base' ? '13' : "18"}
-                                        viewBox="0 0 17 18"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          d="M15.5129 16.6387L12.0137 13.2129L15.5129 16.6387Z"
-                                          fill="black"
-                                        />
-                                        <path
-                                          d="M15.5129 16.6387L12.0137 13.2129"
-                                          stroke="#3646B3"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                        />
-                                        <path
-                                          d="M13.9003 8.745C13.9003 12.2326 11.0124 15.0598 7.45013 15.0598C3.88782 15.0598 1 12.2326 1 8.745C1 5.25742 3.88782 2.43018 7.45013 2.43018"
-                                          stroke="#3646B3"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                        />
-                                        <path
-                                          d="M11.1696 0.232422L11.61 2.01061C11.9087 3.21516 12.8889 4.15473 14.1454 4.44107L16.0003 4.86329L14.1454 5.28552C12.8889 5.57185 11.9087 6.51142 11.61 7.71597L11.1696 9.49416L10.7292 7.71597C10.4305 6.51142 9.45034 5.57185 8.1938 5.28552L6.33887 4.86329L8.1938 4.44107C9.45034 4.15473 10.4305 3.21516 10.7292 2.01061L11.1696 0.232422Z"
-                                          fill="#3646B3"
-                                        />
-                                      </svg>
-                                    }
-                                    bgColor={"#3646B333"}
-                                    color={"#081438"}
-                                    width={{ base: "50px", md: "auto" }}
-                                  >
-                                    معنایی
-                                  </Button>
-                                </Box>
-                              )}
-                              {!searchActive && (
-                                <Box
-                                  height={"fit-content"}
-                                  display={"flex"}
-                                  flexDir={"row"}
-                                  alignItems={"center"}
-                                  gap={"5px"}
-                                  bgColor={"#FFFFFF0D"}
-                                  borderRadius={"10px"}
-                                  padding={"5px"}
+                                  معمولی
+                                </Button>
+                                <Button
+                                  height={{ base: "22px", md: "30px" }}
+                                  fontSize={{ base: "6px", md: "14px" }}
+                                  borderRadius={'6px'}
+                                  onClick={(e) => handleClickSemanticSearch()}
+                                  leftIcon={
+                                    <svg
+                                      width={currentSize == 'base' ? '13' : "17"}
+                                      height={currentSize == 'base' ? '13' : "18"}
+                                      viewBox="0 0 17 18"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M15.5129 16.6387L12.0137 13.2129L15.5129 16.6387Z"
+                                        fill="black"
+                                      />
+                                      <path
+                                        d="M15.5129 16.6387L12.0137 13.2129"
+                                        stroke="#3646B3"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M13.9003 8.745C13.9003 12.2326 11.0124 15.0598 7.45013 15.0598C3.88782 15.0598 1 12.2326 1 8.745C1 5.25742 3.88782 2.43018 7.45013 2.43018"
+                                        stroke="#3646B3"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M11.1696 0.232422L11.61 2.01061C11.9087 3.21516 12.8889 4.15473 14.1454 4.44107L16.0003 4.86329L14.1454 5.28552C12.8889 5.57185 11.9087 6.51142 11.61 7.71597L11.1696 9.49416L10.7292 7.71597C10.4305 6.51142 9.45034 5.57185 8.1938 5.28552L6.33887 4.86329L8.1938 4.44107C9.45034 4.15473 10.4305 3.21516 10.7292 2.01061L11.1696 0.232422Z"
+                                        fill="#3646B3"
+                                      />
+                                    </svg>
+                                  }
+                                  bgColor={"#3646B333"}
+                                  color={"#081438"}
+                                  width={{ base: "50px", md: "auto" }}
                                 >
-                                  <Button
-                                    w={{ base: "87px", md: "109px" }}
-                                    height={{ base: "32px", md: "40px" }}
-                                    color={"#3646B3"}
-                                    borderRadius="8px"
-                                    rightIcon={
-                                      <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'} />
-                                    }
-                                    fontSize={{ base: "12px", md: "14px" }}
-                                    onClick={(e) => setSearchActive(true)}
-                                    variant={"outline"}
-                                  >
-                                    جستجو
-                                  </Button>
-                                </Box>
-                              )}
-                              <Tooltip
-                                label="پاسخ معنایی با استفاده از هوش مصنوعی"
-                                bgColor={"#D9D9D9"}
-                                color={"#333333"}
-                                sx={{
-                                  boxShadow: `
+                                  معنایی
+                                </Button>
+                              </Box>
+                            )}
+                            {!searchActive && (
+                              <Box
+                                height={"fit-content"}
+                                display={"flex"}
+                                flexDir={"row"}
+                                alignItems={"center"}
+                                gap={"5px"}
+                                bgColor={"#FFFFFF0D"}
+                                borderRadius={"10px"}
+                                padding={"5px"}
+                              >
+                                <Button
+                                  w={{ base: "87px", md: "109px" }}
+                                  height={{ base: "32px", md: "40px" }}
+                                  color={"#3646B3"}
+                                  borderRadius="8px"
+                                  rightIcon={
+                                    <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'} />
+                                  }
+                                  fontSize={{ base: "12px", md: "14px" }}
+                                  onClick={(e) => setSearchActive(true)}
+                                  variant={"outline"}
+                                >
+                                  جستجو
+                                </Button>
+                              </Box>
+                            )}
+                            <Tooltip
+                              label="پاسخ معنایی با استفاده از هوش مصنوعی"
+                              bgColor={"#D9D9D9"}
+                              color={"#333333"}
+                              sx={{
+                                boxShadow: `
                                   0px 20px 45px 0px #00000033,
                                   0px 82px 82px 0px #0000002B,
                                   0px 184px 111px 0px #0000001A,
                                   0px 328px 131px 0px #00000008,
                                   0px 512px 143px 0px #00000000
                                 `,
-                                }}
-                                hasArrow
+                              }}
+                              hasArrow
+                            >
+                              <Button
+                                bgColor={"#081438"}
+                                w={{ base: "80px", md: "179px" }}
+                                height={{ base: "32px", md: "40px" }}
+                                width={{ base: '150px' }}
+                                fontSize={{ base: "12px", md: "14px" }}
+                                fontWeight={"700"}
+                                color={"white"}
+                                borderRadius="10px"
+                                leftIcon={
+                                  currentSize != "base" ? (
+                                    <svg
+                                      width="13"
+                                      height="14"
+                                      viewBox="0 0 13 14"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z"
+                                        fill="#29CCCC"
+                                      />
+                                    </svg>
+                                  ) : (
+                                    <svg
+                                      width="12"
+                                      height="11"
+                                      viewBox="0 0 6 7"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M2.89814 0.694336L3.15614 1.86452C3.33111 2.6572 3.90526 3.2755 4.64132 3.46393L5.72791 3.74179L4.64132 4.01964C3.90526 4.20807 3.33111 4.82638 3.15614 5.61906L2.89814 6.78924L2.64013 5.61906C2.46516 4.82638 1.89102 4.20807 1.15496 4.01964L0.0683594 3.74179L1.15496 3.46393C1.89102 3.2755 2.46516 2.6572 2.64013 1.86452L2.89814 0.694336Z"
+                                        fill="#29CCCC"
+                                      />
+                                    </svg>
+                                  )
+                                }
+                                rightIcon={
+                                  currentSize != "base" ? (
+                                    <svg
+                                      width="18"
+                                      height="18"
+                                      viewBox="0 0 18 18"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z"
+                                        fill="white"
+                                      />
+                                    </svg>
+                                  ) : (
+                                    <svg
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 9 9"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M0.950104 4.21324L7.71712 0.8768C8.07107 0.70229 8.47266 0.983484 8.47266 1.40591V3.14211C8.47266 3.50913 8.2339 3.82507 7.90256 3.89633L5.42594 4.42925C5.11027 4.49708 5.11027 4.98763 5.42594 5.05555L7.90256 5.58848C8.2339 5.65973 8.47266 5.97557 8.47266 6.3427V8.0788C8.47266 8.50122 8.07107 8.78251 7.71712 8.60791L0.950104 5.27156C0.531765 5.06524 0.531765 4.41947 0.950104 4.21324"
+                                        fill="white"
+                                      />
+                                    </svg>
+                                  )
+                                }
+                                onClick={(e) => handleAiResponse()}
                               >
-                                <Button
-                                  bgColor={"#081438"}
-                                  w={{ base: "80px", md: "179px" }}
-                                  height={{ base: "32px", md: "40px" }}
-                                  width={{ base: '150px' }}
-                                  fontSize={{ base: "12px", md: "14px" }}
-                                  fontWeight={"700"}
-                                  color={"white"}
-                                  borderRadius="10px"
-                                  leftIcon={
-                                    currentSize != "base" ? (
-                                      <svg
-                                        width="13"
-                                        height="14"
-                                        viewBox="0 0 13 14"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z"
-                                          fill="#29CCCC"
-                                        />
-                                      </svg>
-                                    ) : (
-                                      <svg
-                                        width="12"
-                                        height="11"
-                                        viewBox="0 0 6 7"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          d="M2.89814 0.694336L3.15614 1.86452C3.33111 2.6572 3.90526 3.2755 4.64132 3.46393L5.72791 3.74179L4.64132 4.01964C3.90526 4.20807 3.33111 4.82638 3.15614 5.61906L2.89814 6.78924L2.64013 5.61906C2.46516 4.82638 1.89102 4.20807 1.15496 4.01964L0.0683594 3.74179L1.15496 3.46393C1.89102 3.2755 2.46516 2.6572 2.64013 1.86452L2.89814 0.694336Z"
-                                          fill="#29CCCC"
-                                        />
-                                      </svg>
-                                    )
-                                  }
-                                  rightIcon={
-                                    currentSize != "base" ? (
-                                      <svg
-                                        width="18"
-                                        height="18"
-                                        viewBox="0 0 18 18"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z"
-                                          fill="white"
-                                        />
-                                      </svg>
-                                    ) : (
-                                      <svg
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 9 9"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M0.950104 4.21324L7.71712 0.8768C8.07107 0.70229 8.47266 0.983484 8.47266 1.40591V3.14211C8.47266 3.50913 8.2339 3.82507 7.90256 3.89633L5.42594 4.42925C5.11027 4.49708 5.11027 4.98763 5.42594 5.05555L7.90256 5.58848C8.2339 5.65973 8.47266 5.97557 8.47266 6.3427V8.0788C8.47266 8.50122 8.07107 8.78251 7.71712 8.60791L0.950104 5.27156C0.531765 5.06524 0.531765 4.41947 0.950104 4.21324"
-                                          fill="white"
-                                        />
-                                      </svg>
-                                    )
-                                  }
-                                  onClick={(e) => handleAiResponse()}
-                                >
-                                  پاسخ هوش‌مصنوعی
-                                </Button>
-                              </Tooltip>
-                            </HStack>
+                                پاسخ هوش‌مصنوعی
+                              </Button>
+                            </Tooltip>
                           </HStack>
-                        </VStack>
-                        }
-                      </Box>
+                        </HStack>
+                      </VStack>
+                      }
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
+                <div ref={messagesEndRef} />
 
-
-                {/* {(!showMore && aiMessage?.length > 200) && (
-                  <VStack w={"100%"} justifyContent={"center"}>
-                    <Text
-                      fontSize={"14px"}
-                      color={"#3646B3"}
-                      cursor={"pointer"}
-                      onClick={(e) => setShowMore(true)}
-                    >
-                      مشاهده کامل
-                    </Text>
-                  </VStack>
-                )} */}
               </VStack>
             )}
 
