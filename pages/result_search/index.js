@@ -3,8 +3,10 @@ import {
   Button,
   Flex,
   Grid,
+  GridItem,
   Heading,
   HStack,
+  Icon,
   IconButton,
   Link,
   Spinner,
@@ -18,7 +20,7 @@ import {
   Textarea,
   Tooltip,
   useBreakpointValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -35,12 +37,23 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IoIosList, IoMdCheckmarkCircleOutline, IoMdClose } from "react-icons/io";
-import { IoOptionsOutline, IoSearch } from "react-icons/io5";
+import {
+  IoIosList,
+  IoMdCheckmarkCircleOutline,
+  IoMdClose,
+} from "react-icons/io";
+import {
+  IoClose,
+  IoEllipsisHorizontalSharp,
+  IoMenuOutline,
+  IoOptionsOutline,
+  IoSearch,
+} from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+import { FaArrowLeft } from "react-icons/fa";
 
 export const fetcherWithTiming = async (url) => {
   const startTime = performance.now();
@@ -82,8 +95,17 @@ const sendAudio = async (url, { arg }) => {
   return res.json();
 };
 
-
-const Index = ({ children, filters, setFilters, source, handleClickAiSearch, handleClickSemanticSearch, handleClickSearch, isUserLogin, chatType }) => {
+const Index = ({
+  children,
+  filters,
+  setFilters,
+  source,
+  handleClickAiSearch,
+  handleClickSemanticSearch,
+  handleClickSearch,
+  isUserLogin,
+  chatType,
+}) => {
   const { t } = useTranslation();
 
   const size = useBreakpointValue({ base: "base", md: "md", xl: "xl" });
@@ -104,10 +126,13 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
   const [filter, setFilter] = useState(false);
   const [conditionStream, setConditionStream] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
-  const [continueQuestion, setContinueQuestion] = useState(false)
+  const [continueQuestion, setContinueQuestion] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
-  const [chatDone, setChatDone] = useState(false)
+  const [chatDone, setChatDone] = useState(false);
   const [input, setInput] = useState("");
+  const [showHistory, setShowHistory] = useState(false);
+  const [chatSelected, setChatSelected] = useState("");
+
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
@@ -115,15 +140,15 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
   const [isRecording, setIsRecording] = useState(false);
   const currentSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
 
-  const { register, setValue, watch } = useForm()
+  const { register, setValue, watch } = useForm();
 
   const [searchActive, setSearchActive] = useState(false);
 
   const sourceParams =
     filters?.source?.length > 0
       ? filters.source
-        .map((src) => `&source_list=${encodeURIComponent(src)}`)
-        .join("")
+          .map((src) => `&source_list=${encodeURIComponent(src)}`)
+          .join("")
       : "";
 
   const {
@@ -132,13 +157,27 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     `user/question/search?page=${(page - 1) * 10}` +
-    `&search_type=${filters?.search_type || ""}` +
-    `&content=${filters?.search || ""}` +
-    `&lang=${locale}` +
-    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
-    `&model_name=${filters?.model || ""}` +
-    `${sourceParams}`,
+      `&search_type=${filters?.search_type || ""}` +
+      `&content=${filters?.search || ""}` +
+      `&lang=${locale}` +
+      `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+      `&model_name=${filters?.model || ""}` +
+      `${sourceParams}`,
     fetcherWithTiming
+  );
+
+  const { data: dataHistory, isLoading: isLoadingHistory } = useSWR(
+    isUserLogin && `user/chat/session`
+  );
+
+  const { data: dataSessionChat, isLoading: isLoadingSessionChat } = useSWR(
+    isUserLogin && chatSelected && `user/chat/${chatSelected}`,
+    null,
+    {
+      onSuccess: (data) => {
+        setChatHistory(data?.data?.chats?.reverse());
+      },
+    }
   );
 
   const { trigger: triggerSession } = useSWRMutation(
@@ -148,8 +187,8 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
       onSuccess: async (data) => {
         setChatSession(data?.data?.data?.id);
         setIsStreaming(true);
-        setChatHistory([])
-        setChatDone(false)
+        setChatHistory([]);
+        setChatDone(false);
         const userId = Date.now();
 
         const newUserMsg = {
@@ -164,18 +203,22 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           return [...base, newUserMsg];
         });
 
-
         const streamId = userId + 1;
         let botMessage = "";
         setChatHistory((prev) => [
           ...(Array.isArray(prev) ? prev : []),
-          { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2 },
+          {
+            id: streamId,
+            role: 3,
+            content: "",
+            level: (chatHistory?.length ?? 0) + 2,
+          },
         ]);
 
         setBotStream("");
         setAiMessage("");
 
-        setInput('')
+        setInput("");
 
         const res = await fetch(
           `https://parsa.api.t.etratnet.ir/user/chat/${data?.data?.data?.id}`,
@@ -245,7 +288,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
               }
 
               if (parsed.done) {
-                setChatDone(true)
+                setChatDone(true);
                 done = true;
                 break;
               }
@@ -262,9 +305,9 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
   );
 
   const handleSubmit = async () => {
-    setInput('')
-    setIsStreaming(true)
-    setChatDone(false)
+    setInput("");
+    setIsStreaming(true);
+    setChatDone(false);
     const userId = Date.now();
 
     const newUserMsg = {
@@ -285,24 +328,32 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     let botMessage = "";
     setChatHistory((prev) => [
       ...(Array.isArray(prev) ? prev : []),
-      { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2 },
+      {
+        id: streamId,
+        role: 3,
+        content: "",
+        level: (chatHistory?.length ?? 0) + 2,
+      },
     ]);
 
     // reset stream state
     setBotStream("");
 
     // make request
-    const res = await fetch(`https://parsa.api.t.etratnet.ir/user/chat/${chatSession}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ content: filters?.search }),
-    });
+    const res = await fetch(
+      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ content: filters?.search }),
+      }
+    );
 
     if (!res.body) {
-      setIsStreaming(false)
+      setIsStreaming(false);
       console.error("No streaming body in response");
       return;
     }
@@ -313,7 +364,6 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     let done = false;
 
     while (!done) {
-
       const { value, done: doneReading } = await reader.read();
       done = !!doneReading;
       if (value) buffer += decoder.decode(value, { stream: true });
@@ -341,14 +391,14 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           }
 
           if (!parsed?.chunk) {
-            setConditionStream(parsed?.state)
+            setConditionStream(parsed?.state);
           }
 
           if (parsed.chunk) {
-            setConditionStream('')
-            setIsStreaming(false)
+            setConditionStream("");
+            setIsStreaming(false);
             botMessage += parsed.chunk;
-            console.log(parsed)
+            console.log(parsed);
             // update assistant message in history
             setChatHistory((prev) =>
               prev.map((msg) =>
@@ -358,7 +408,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           }
 
           if (parsed.done) {
-            setChatDone(true)
+            setChatDone(true);
             done = true;
             break;
           }
@@ -372,14 +422,13 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     setBotStream("");
   };
 
-
   const publicChat = async () => {
     let botMessage = "";
     setIsStreaming(true);
     setBotStream("");
     setAiMessage("");
-    setChatDone(false)
-    setChatHistory([])
+    setChatDone(false);
+    setChatHistory([]);
 
     const userId = Date.now();
 
@@ -399,9 +448,13 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
     const streamId = userId + 1;
     setChatHistory((prev) => [
       ...(Array.isArray(prev) ? prev : []),
-      { id: streamId, role: 3, content: "", level: (chatHistory?.length ?? 0) + 2 },
+      {
+        id: streamId,
+        role: 3,
+        content: "",
+        level: (chatHistory?.length ?? 0) + 2,
+      },
     ]);
-
 
     const res = await fetch(
       `https://parsa.api.t.etratnet.ir/user/chat/anonymous`,
@@ -471,7 +524,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
           }
 
           if (parsed.done) {
-            setChatDone(true)
+            setChatDone(true);
             done = true;
             break;
           }
@@ -496,7 +549,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
         if (chatType == 1) {
           triggerSession();
         } else {
-          handleSubmit()
+          handleSubmit();
         }
       } else {
         publicChat();
@@ -505,16 +558,16 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
   }, [filters?.search]);
 
   const handleAiResponse = () => {
-    handleClickAiSearch(2, watch('search'));
+    handleClickAiSearch(2, watch("search"));
   };
 
   useEffect(() => {
     if (chatType == 1) {
-      setContinueQuestion(false)
+      setContinueQuestion(false);
     } else {
-      setContinueQuestion(true)
+      setContinueQuestion(true);
     }
-  }, [chatType])
+  }, [chatType]);
 
   useEffect(() => {
     const container = chatContainerRef.current;
@@ -531,6 +584,10 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
       });
     }
   }, [chatHistory, isStreaming]);
+
+  useEffect(() => {
+    console.log(dataHistory?.data?.chat_sessions);
+  }, [dataHistory]);
 
   return (
     <Stack w={"100%"} scrollSnapAlign="start">
@@ -578,20 +635,41 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
             pr={{ base: 0, md: "21px" }}
           >
             {filters?.type == "ai" && (
-              <VStack mb={{ base: '20px', md: "0px" }} alignItems={"start"} w={'100%'}>
+              <VStack
+                mb={{ base: "20px", md: "0px" }}
+                alignItems={"start"}
+                w={"100%"}
+              >
                 {/* <Text fontSize={{ base: "11px", md: "16px" }} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text> */}
-                <Tabs colorScheme="blue" variant="unstyled" w={'100%'}>
-                  <TabList w={'100%'}>
-                    <Tab _selected={{
-                      borderBottom: "3px solid #3646B3", // active border
-                      color: "#3646B3", // active text color
-                    }}>
+                <Tabs colorScheme="blue" variant="unstyled" w={"100%"}>
+                  <TabList w={"100%"}>
+                    <Tab
+                      _selected={{
+                        borderBottom: "3px solid #3646B3", // active border
+                        color: "#3646B3", // active text color
+                      }}
+                    >
+                      {showHistory ? (
+                        <Icon
+                          fontSize={"25px"}
+                          as={IoClose}
+                          onClick={(e) => setShowHistory(false)}
+                          ml={"20px"}
+                        />
+                      ) : (
+                        <Icon
+                          fontSize={"25px"}
+                          as={IoMenuOutline}
+                          onClick={(e) => setShowHistory(true)}
+                          ml={"20px"}
+                        />
+                      )}
                       <HStack w={"100%"} alignItems={"center"}>
                         <svg
-                          width={size == "base" ? '14' : "21"}
-                          height={size == "base" ? '14' : "22"}
+                          width={size == "base" ? "14" : "21"}
+                          height={size == "base" ? "14" : "22"}
                           viewBox="0 0 32 32"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -601,163 +679,445 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                             fill="#3646B3"
                           />
                         </svg>
-                        <Text fontSize={{ base: '14px', md: "22px" }} color={"#3646B3"} fontWeight={'700'} width={'max-content'}>
+                        <Text
+                          fontSize={{ base: "14px", md: "22px" }}
+                          color={"#3646B3"}
+                          fontWeight={"700"}
+                          width={"max-content"}
+                        >
                           نتایج جستجو هوشمند
                         </Text>
                       </HStack>
                     </Tab>
-                    <HStack w={"100%"} alignItems={"center"} color={'#B8B8B8'}>
-                      <IoIosList fontSize={{ base: '12px', md: '20px' }} />
-                      <Text fontSize={{ base: '14px', md: "22px" }} fontWeight={'700'} onClick={() => {
-                        const el = document.querySelector(".questionlist");
-                        if (el) {
-                          el.scrollIntoView({ behavior: "smooth" });
-                        }
-                      }} cursor={'pointer'}>نتایج بین سوالات پارسا</Text>
+                    <HStack w={"100%"} alignItems={"center"} color={"#B8B8B8"}>
+                      <IoIosList fontSize={{ base: "12px", md: "20px" }} />
+                      <Text
+                        fontSize={{ base: "14px", md: "22px" }}
+                        fontWeight={"700"}
+                        onClick={() => {
+                          const el = document.querySelector(".questionlist");
+                          if (el) {
+                            el.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }}
+                        cursor={"pointer"}
+                      >
+                        نتایج بین سوالات پارسا
+                      </Text>
                     </HStack>
-
                   </TabList>
 
-                  <TabPanels w={'100%'} px={'0px'}>
-                    <TabPanel w={'100%'}>
-                      <Box
-                        bgColor={"#F7F7F7"}
-                        borderRadius={"30px"}
-                        w={"100%"}
-                        padding={'15px'}
-                        px={'0px'}
-                        pb={'0px'}
-                        ref={chatContainerRef}
-                        id="chat-container"
-                        overflowY="auto"
-                        maxH="80vh"
-                      >
-
-                        {chatHistory?.map((chat, index) => {
-                          const isLast = index === chatHistory.length - 1;
-
-                          return (
-
-                            <Box
-                              key={chat.id}
-                              id={chat.role === 2 ? 'user' : 'bot'}
-                              alignSelf={chat.role === 2 ? 'flex-start' : 'flex-end'}
-                              border={'.3px'}
-                              bgColor={chat.role === 2 ? '#3646B3' : 'none'}
-                              mx={'15px'}
-                              py={'5px'}
-                              borderRadius={'20px'}
-                              borderBottomRightRadius={chat.role === 2 ? '0px' : '20px'}
-                              w={'auto'}
-                              maxW={chat.role == 2 ? 'fit-content' : '100%'}
-                              mb={'15px'}
-                              justifyContent={'start'}
-                            >
-                              {
-                                chat.role != 2
-                                  ?
-                                  <Box
-                                    padding={"5px"}
-                                    borderRadius={"30px"}
-
+                  <TabPanels w={"100%"} px={"0px"}>
+                    <TabPanel
+                      w={"100%"}
+                      as={Grid}
+                      templateColumns={{base:"repeat(4, 1fr)" , md:"repeat(5, 1fr)"}}
+                      bgColor={"#F7F7F7"}
+                      borderRadius={"30px"}
+                      padding={"15px"}
+                      px={"0px"}
+                      pb={"0px"}
+                      alignItems={"start"}
+                    >
+                      {showHistory && (
+                        <VStack
+                          alignItems={"start"}
+                          justifyContent={"center"}
+                          h={"100%"}
+                          padding={"20px"}
+                        >
+                          <Text
+                            fontWeight={"800"}
+                            fontSize={"7px"}
+                            lineHeight={"178%"}
+                          >
+                            تاریخچه گفتگو
+                          </Text>
+                          {dataHistory?.data?.chat_sessions?.map((item) => (
+                            <Tooltip label={item?.title}>
+                              <Box
+                                as={Stack}
+                                w={{ base: "110px", md: "140px" }}
+                                h="28px"
+                                position="relative" // important for child positioning
+                                sx={{
+                                  backdropFilter: "blur(30.282px)",
+                                  boxShadow: "0px 6.06px 11.36px 0px #0000001C",
+                                }}
+                                bg={
+                                  chatSelected == item?.id
+                                    ? "#DFE3FF"
+                                    : "#FFFFFF"
+                                }
+                                _hover={{ bgColor: "#DFE3FF" }}
+                                borderRadius="6px"
+                                alignItems="center"
+                                justifyContent="center"
+                                cursor="pointer"
+                                overflow="hidden" // prevents icon overflow animation
+                                transition="all 0.3s ease"
+                                role="group" // ✅ enables hover state for child elements
+                                onClick={(e) => {
+                                  setChatSelected(item?.id);
+                                  setChatSession(item?.id);
+                                }}
+                              >
+                                <HStack
+                                  spacing="8px"
+                                  justify="center"
+                                  align="center"
+                                  transition="all 0.3s ease"
+                                  _groupHover={{
+                                    transform: "translateX(-8px)",
+                                  }} // 👈 text moves left on hover
+                                >
+                                  <Text
+                                    textAlign="center"
+                                    color="#3646B3"
+                                    fontSize="9px"
+                                    transition="all 0.3s ease"
                                   >
-                                    <Box px={{ base: "10px", md: '18px' }}>
-                                      <ReactMarkdown
-                                        remarkPlugins={[remarkBreaks]}
-                                        components={{
-                                          h1: (props) => (
-                                            <Heading as="h2" size="lg" my={2} {...props} />
-                                          ),
-                                          h2: (props) => (
-                                            <Heading as="h3" size="md" my={2} {...props} />
-                                          ),
-                                          h3: (props) => (
-                                            <Heading as="h4" size="sm" my={2} {...props} />
-                                          ),
-                                          p: (props) => (
-                                            <Text
-                                              fontSize="20px"
-                                              fontWeight="400"
-                                              my={1}
-                                              {...props}
-                                            />
-                                          ),
-                                          a: ({ href, children }) => (
-                                            <Link
-                                              href={href}
-                                              color="blue.500"
-                                              isExternal
-                                              _hover={{
-                                                textDecoration: "underline",
-                                                color: "blue.600",
+                                    {item?.title
+                                      ? `${item?.title?.slice(0, showHistory ?10 : 20)}...`
+                                      : "بدون نام"}
+                                  </Text>
+                                </HStack>
+
+                                {/* 👇 Hidden Icon that appears on hover */}
+                                <Box
+                                  position="absolute"
+                                  right="10px"
+                                  opacity="0"
+                                  transform="translateX(10px)"
+                                  transition="all 0.3s ease"
+                                  _groupHover={{
+                                    opacity: 1,
+                                    transform: "translateX(0)",
+                                  }}
+                                >
+                                  <IoEllipsisHorizontalSharp
+                                    color="#3646B3"
+                                    size="20px"
+                                  />
+                                </Box>
+                              </Box>
+                            </Tooltip>
+                          ))}
+                        </VStack>
+                      )}
+
+                      <VStack as={GridItem} colSpan={{base:showHistory ? 3 : 4 ,md:showHistory ? 4 : 5}} justifyContent={'start'}>
+                        <Box
+                          w={"100%"}
+                          ref={chatContainerRef}
+                          id="chat-container"
+                          overflowY="auto"
+                          maxH="80vh"
+                        >
+                          {isLoadingSessionChat ? (
+                            <Spinner />
+                          ) : (
+                            chatHistory?.map((chat, index) => {
+                              const isLast = index === chatHistory.length - 1;
+
+                              return (
+                                <Box
+                                  key={chat.id}
+                                  id={chat.role === 2 ? "user" : "bot"}
+                                  alignSelf={
+                                    chat.role === 2 ? "flex-start" : "flex-end"
+                                  }
+                                  border={".3px"}
+                                  bgColor={chat.role === 2 ? "#3646B3" : "none"}
+                                  mx={"15px"}
+                                  py={"5px"}
+                                  borderRadius={"20px"}
+                                  borderBottomRightRadius={
+                                    chat.role === 2 ? "0px" : "20px"
+                                  }
+                                  w={"auto"}
+                                  maxW={chat.role == 2 ? "fit-content" : "100%"}
+                                  mb={"15px"}
+                                  justifyContent={"start"}
+                                >
+                                  {chat.role != 2 ? (
+                                    <Box padding={"5px"} borderRadius={"30px"}>
+                                      <Box px={{ base: "10px", md: "18px" }}>
+                                        <ReactMarkdown
+                                          remarkPlugins={[remarkBreaks]}
+                                          components={{
+                                            h1: (props) => (
+                                              <Heading
+                                                as="h2"
+                                                size="lg"
+                                                my={2}
+                                                {...props}
+                                              />
+                                            ),
+                                            h2: (props) => (
+                                              <Heading
+                                                as="h3"
+                                                size="md"
+                                                my={2}
+                                                {...props}
+                                              />
+                                            ),
+                                            h3: (props) => (
+                                              <Heading
+                                                as="h4"
+                                                size="sm"
+                                                my={2}
+                                                {...props}
+                                              />
+                                            ),
+                                            p: (props) => (
+                                              <Text
+                                                fontSize="20px"
+                                                fontWeight="400"
+                                                my={1}
+                                                {...props}
+                                              />
+                                            ),
+                                            a: ({ href, children }) => (
+                                              <Link
+                                                href={href}
+                                                color="blue.500"
+                                                isExternal
+                                                _hover={{
+                                                  textDecoration: "underline",
+                                                  color: "blue.600",
+                                                }}
+                                              >
+                                                {children}
+                                              </Link>
+                                            ),
+                                          }}
+                                        >
+                                          {chat?.content}
+                                        </ReactMarkdown>
+                                      </Box>
+
+                                      {isStreaming &&
+                                        chat.role !== 2 &&
+                                        isLast && (
+                                          <LoadingDots
+                                            size="sm"
+                                            color="blue.500"
+                                            conditionStream={conditionStream}
+                                          />
+                                        )}
+
+                                      {chatDone && (
+                                        <Flex
+                                          flexDirection={{
+                                            base: "column",
+                                            md: "row",
+                                          }}
+                                          mt={"10px"}
+                                          gap={"10px"}
+                                          alignItems={"center"}
+                                          justifyContent={"space-between"}
+                                          pb={continueQuestion ? "0px" : "15px"}
+                                          overflow={'hidden'}
+                                        >
+                                          <Stack>
+                                            <HStack gap={"15px"}>
+                                              <Button
+                                                bgColor={"#DFE3FF"}
+                                                color={"#3646B3"}
+                                                borderRadius={"18px"}
+                                                fontSize={{
+                                                  base: "10px",
+                                                  md: "14px",
+                                                }}
+                                                height={{
+                                                  base: "26px",
+                                                  md: "37px",
+                                                }}
+                                                width={{
+                                                  base: "129px",
+                                                  md: "180px",
+                                                }}
+                                                fontWeight={"500"}
+                                              >
+                                                بررسی عمیق‌تر
+                                              </Button>
+                                              <Button
+                                                bgColor={"white"}
+                                                color={"#CCCCCC"}
+                                                height={{
+                                                  base: "26px",
+                                                  md: "37px",
+                                                }}
+                                                fontSize={{
+                                                  base: "10px",
+                                                  md: "14px",
+                                                }}
+                                                leftIcon={
+                                                  <svg
+                                                    width={
+                                                      size == "base"
+                                                        ? "17"
+                                                        : "24"
+                                                    }
+                                                    height={
+                                                      size == "base"
+                                                        ? "17"
+                                                        : "24"
+                                                    }
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <path
+                                                      d="M4.00001 5.40001C4.00001 4.62201 4.62201 4.00001 5.40001 4.00001L12.6 4.00001C13.378 4.00001 14 4.62201 14 5.40001V6.00001C14 6.13133 14.0259 6.26136 14.0761 6.38269C14.1264 6.50401 14.2 6.61425 14.2929 6.70711C14.3858 6.79997 14.496 6.87363 14.6173 6.92388C14.7386 6.97414 14.8687 7.00001 15 7.00001C15.1313 7.00001 15.2614 6.97414 15.3827 6.92388C15.504 6.87363 15.6143 6.79997 15.7071 6.70711C15.8 6.61425 15.8736 6.50401 15.9239 6.38269C15.9741 6.26136 16 6.13133 16 6.00001V5.40001C16 3.51801 14.482 2.00001 12.6 2.00001L5.40001 2.00001C4.95329 1.99921 4.51081 2.08662 4.09795 2.25721C3.68508 2.42779 3.30996 2.6782 2.99408 2.99408C2.6782 3.30996 2.42779 3.68508 2.25721 4.09795C2.08662 4.51081 1.99921 4.95329 2.00001 5.40001L2.00001 12.6C2.00001 14.482 3.51801 16 5.40001 16H6.00001C6.26522 16 6.51958 15.8946 6.70711 15.7071C6.89465 15.5196 7.00001 15.2652 7.00001 15C7.00001 14.7348 6.89465 14.4804 6.70711 14.2929C6.51958 14.1054 6.26522 14 6.00001 14H5.40001C4.62201 14 4.00001 13.378 4.00001 12.6L4.00001 5.40001Z"
+                                                      fill="#CCCCCC"
+                                                    />
+                                                    <path
+                                                      d="M9 11.4C9 10.7635 9.25286 10.153 9.70294 9.70294C10.153 9.25286 10.7635 9 11.4 9L18.6 9C19.2365 9 19.847 9.25286 20.2971 9.70294C20.7471 10.153 21 10.7635 21 11.4V18.6C21 19.2365 20.7471 19.847 20.2971 20.2971C19.847 20.7471 19.2365 21 18.6 21H11.4C10.7635 21 10.153 20.7471 9.70294 20.2971C9.25286 19.847 9 19.2365 9 18.6L9 11.4Z"
+                                                      fill="#CCCCCC"
+                                                    />
+                                                  </svg>
+                                                }
+                                                borderRadius={"18px"}
+                                              >
+                                                کپی
+                                              </Button>
+                                              <Button
+                                                bgColor={"white"}
+                                                color={"#CCCCCC"}
+                                                leftIcon={
+                                                  <IoMdCheckmarkCircleOutline
+                                                    fontSize={{
+                                                      base: "10px",
+                                                      md: "30px",
+                                                    }}
+                                                  />
+                                                }
+                                                borderRadius={"18px"}
+                                                height={{
+                                                  base: "26px",
+                                                  md: "37px",
+                                                }}
+                                                w={{ base: "73px", md: "auto" }}
+                                                fontSize={{
+                                                  base: "10px",
+                                                  md: "24px",
+                                                }}
+                                              >
+                                                <Text
+                                                  fontSize={{
+                                                    base: "10px",
+                                                    md: "14px",
+                                                  }}
+                                                >
+                                                  مفید بود
+                                                </Text>
+                                              </Button>
+                                              <Button
+                                                bgColor={"white"}
+                                                color={"#CCCCCC"}
+                                                leftIcon={
+                                                  <svg
+                                                    width={
+                                                      size == "base"
+                                                        ? "17"
+                                                        : "24"
+                                                    }
+                                                    height={
+                                                      size == "base"
+                                                        ? "17"
+                                                        : "24"
+                                                    }
+                                                    viewBox="0 0 29 30"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <g opacity="0.5">
+                                                      <path
+                                                        d="M10.1855 10.459L18.8438 19.349"
+                                                        stroke="#999999"
+                                                        stroke-width="3"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                      />
+                                                      <path
+                                                        d="M18.8457 10.459L10.1875 19.349"
+                                                        stroke="#999999"
+                                                        stroke-width="3"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                      />
+                                                    </g>
+                                                    <path
+                                                      opacity="0.5"
+                                                      d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z"
+                                                      stroke="#A1A1A1"
+                                                      stroke-width="3"
+                                                    />
+                                                  </svg>
+                                                }
+                                                borderRadius={"18px"}
+                                                fontSize={{
+                                                  base: "10px",
+                                                  md: "14px",
+                                                }}
+                                                height={{
+                                                  base: "26px",
+                                                  md: "37px",
+                                                }}
+                                                w={{ base: "73px", md: "auto" }}
+                                              >
+                                                اشتباه بود
+                                              </Button>
+                                            </HStack>
+                                          </Stack>
+                                          {!continueQuestion && (
+                                            <Button
+                                              bgColor={"#3646B3"}
+                                              color={"white"}
+                                              fontSize={"14px"}
+                                              fontWeight={"500"}
+                                              borderRadius={"18px"}
+                                              width={"180px"}
+                                              onClick={(e) => {
+                                                if (isUserLogin) {
+                                                  setContinueQuestion(true);
+                                                } else {
+                                                  router.push("/login");
+                                                }
                                               }}
                                             >
-                                              {children}
-                                            </Link>
-                                          ),
-                                        }}
-                                      >
-                                        {chat?.content}
-                                      </ReactMarkdown>
+                                              ادامه گفتگو
+                                            </Button>
+                                          )}
+                                        </Flex>
+                                      )}
                                     </Box>
-
-                                    {isStreaming && chat.role !== 2 && isLast && (
-
-                                      <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream} />
-                                    )}
-
-                                    {chatDone && <Flex flexDirection={{ base: 'column', md: 'row' }} mt={'10px'} gap={'10px'} alignItems={'center'} justifyContent={'space-between'} pb={continueQuestion ? '0px' : '15px'}>
-                                      <Stack>
-                                        <HStack gap={'15px'}>
-                                          <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={{ base: '10px', md: '14px' }} height={{ base: "26px", md: '37px' }} width={{ base: '129px', md: '180px' }} fontWeight={'500'}>بررسی عمیق‌تر</Button>
-                                          <Button bgColor={'white'} color={'#CCCCCC'} height={{ base: "26px", md: '37px' }} fontSize={{ base: '10px', md: '14px' }} leftIcon={<svg width={size == 'base' ? '17' : '24'} height={size == 'base' ? '17' : "24"} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.00001 5.40001C4.00001 4.62201 4.62201 4.00001 5.40001 4.00001L12.6 4.00001C13.378 4.00001 14 4.62201 14 5.40001V6.00001C14 6.13133 14.0259 6.26136 14.0761 6.38269C14.1264 6.50401 14.2 6.61425 14.2929 6.70711C14.3858 6.79997 14.496 6.87363 14.6173 6.92388C14.7386 6.97414 14.8687 7.00001 15 7.00001C15.1313 7.00001 15.2614 6.97414 15.3827 6.92388C15.504 6.87363 15.6143 6.79997 15.7071 6.70711C15.8 6.61425 15.8736 6.50401 15.9239 6.38269C15.9741 6.26136 16 6.13133 16 6.00001V5.40001C16 3.51801 14.482 2.00001 12.6 2.00001L5.40001 2.00001C4.95329 1.99921 4.51081 2.08662 4.09795 2.25721C3.68508 2.42779 3.30996 2.6782 2.99408 2.99408C2.6782 3.30996 2.42779 3.68508 2.25721 4.09795C2.08662 4.51081 1.99921 4.95329 2.00001 5.40001L2.00001 12.6C2.00001 14.482 3.51801 16 5.40001 16H6.00001C6.26522 16 6.51958 15.8946 6.70711 15.7071C6.89465 15.5196 7.00001 15.2652 7.00001 15C7.00001 14.7348 6.89465 14.4804 6.70711 14.2929C6.51958 14.1054 6.26522 14 6.00001 14H5.40001C4.62201 14 4.00001 13.378 4.00001 12.6L4.00001 5.40001Z" fill="#CCCCCC" />
-                                            <path d="M9 11.4C9 10.7635 9.25286 10.153 9.70294 9.70294C10.153 9.25286 10.7635 9 11.4 9L18.6 9C19.2365 9 19.847 9.25286 20.2971 9.70294C20.7471 10.153 21 10.7635 21 11.4V18.6C21 19.2365 20.7471 19.847 20.2971 20.2971C19.847 20.7471 19.2365 21 18.6 21H11.4C10.7635 21 10.153 20.7471 9.70294 20.2971C9.25286 19.847 9 19.2365 9 18.6L9 11.4Z" fill="#CCCCCC" />
-                                          </svg>
-                                          } borderRadius={'18px'}>کپی</Button>
-                                          <Button bgColor={'white'} color={'#CCCCCC'}
-                                            leftIcon={<IoMdCheckmarkCircleOutline fontSize={{ base: '10px', md: "30px" }} />} borderRadius={'18px'} height={{ base: "26px", md: '37px' }} w={{ base: '73px', md: 'auto' }} fontSize={{ base: '10px', md: '24px' }}><Text fontSize={{ base: '10px', md: '14px' }}>مفید بود</Text></Button>
-                                          <Button bgColor={'white'} color={'#CCCCCC'} leftIcon={<svg width={size == 'base' ? '17' : '24'} height={size == 'base' ? '17' : "24"} viewBox="0 0 29 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g opacity="0.5">
-                                              <path d="M10.1855 10.459L18.8438 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                              <path d="M18.8457 10.459L10.1875 19.349" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                            </g>
-                                            <path opacity="0.5" d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z" stroke="#A1A1A1" stroke-width="3" />
-                                          </svg>
-                                          } borderRadius={'18px'} fontSize={{ base: '10px', md: '14px' }} height={{ base: "26px", md: '37px' }} w={{ base: '73px', md: 'auto' }}>اشتباه بود</Button>
-                                        </HStack>
-                                      </Stack>
-                                      {(!continueQuestion) &&
-                                        <Button bgColor={'#3646B3'} color={'white'} fontSize={'14px'} fontWeight={'500'} borderRadius={'18px'} width={'180px'}
-                                          onClick={e => {
-                                            if (isUserLogin) {
-                                              setContinueQuestion(true)
-                                            } else {
-                                              router.push('/login')
-                                            }
-
-                                          }}>ادامه گفتگو</Button>}
-
-                                    </Flex>}
-
-                                  </Box>
-                                  :
-                                  <Text
-                                    fontSize={chat.role === 2 ? '13px' : '14px'}
-                                    fontWeight={'400'}
-                                    whiteSpace="pre-wrap"
-                                    color={chat.role === 2 ? 'white' : 'black'}
-                                    paddingX={'10px'}
-                                  >
-                                    {chat.content}
-                                  </Text>
-                              }
-
-                            </Box>
-                          );
-                        })}
-                      </Box>
-                      {continueQuestion && <VStack
+                                  ) : (
+                                    <Text
+                                      fontSize={
+                                        chat.role === 2 ? "13px" : "14px"
+                                      }
+                                      fontWeight={"400"}
+                                      whiteSpace="pre-wrap"
+                                      color={
+                                        chat.role === 2 ? "white" : "black"
+                                      }
+                                      paddingX={"10px"}
+                                    >
+                                      {chat.content}
+                                    </Text>
+                                  )}
+                                </Box>
+                              );
+                            })
+                          )}
+                        </Box>
+                      </VStack>
+                    </TabPanel>
+                    {continueQuestion && (
+                      <VStack
                         mb={{ base: "80px", md: "15px" }}
                         gap={0}
                         alignItems={"center"}
@@ -774,7 +1134,6 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
         0px 62px 25px 0px #00000003,
         0px 98px 27px 0px #00000000
       "
-
                         sx={{
                           "@media (min-width: 120em)": {
                             marginBottom: "80px",
@@ -809,7 +1168,9 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                           minHeight={{ base: "57px", md: "89px" }}
                           height={{ base: "57px", md: "89px" }}
                           textIndent="5px"
-                          placeholder={isRecording ? t("listening") : 'نوشتن متن...'}
+                          placeholder={
+                            isRecording ? t("listening") : "نوشتن متن..."
+                          }
                           color="black"
                           border="none" // removes the border completely
                           _placeholder={{ color: "#000000" }}
@@ -826,8 +1187,11 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                           alignItems={"end"}
                           mt={{ base: "0px", md: "0px" }}
                         >
-
-                          <HStack height={"100%"} alignItems={"center"} paddingY={'3px'}>
+                          <HStack
+                            height={"100%"}
+                            alignItems={"center"}
+                            paddingY={"3px"}
+                          >
                             {searchActive && (
                               <Box
                                 height={"fit-content"}
@@ -842,10 +1206,18 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                 padding={"5px"}
                               >
                                 <Button
-                                  leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={currentSize == "base" ? '14px' : '22px'} color="#3646B3" />}
+                                  leftIcon={
+                                    <IoSearch
+                                      fontSize={{ base: "1px", md: "20px" }}
+                                      size={
+                                        currentSize == "base" ? "14px" : "22px"
+                                      }
+                                      color="#3646B3"
+                                    />
+                                  }
                                   bgColor={"#3646B333"}
                                   color={"#081438"}
-                                  borderRadius={'6px'}
+                                  borderRadius={"6px"}
                                   onClick={(e) => handleClickSearch()}
                                   fontSize={{ base: "6px", md: "14px" }}
                                   height={{ base: "22px", md: "30px" }}
@@ -856,12 +1228,16 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                 <Button
                                   height={{ base: "22px", md: "30px" }}
                                   fontSize={{ base: "6px", md: "14px" }}
-                                  borderRadius={'6px'}
+                                  borderRadius={"6px"}
                                   onClick={(e) => handleClickSemanticSearch()}
                                   leftIcon={
                                     <svg
-                                      width={currentSize == 'base' ? '13' : "17"}
-                                      height={currentSize == 'base' ? '13' : "18"}
+                                      width={
+                                        currentSize == "base" ? "13" : "17"
+                                      }
+                                      height={
+                                        currentSize == "base" ? "13" : "18"
+                                      }
                                       viewBox="0 0 17 18"
                                       fill="none"
                                       xmlns="http://www.w3.org/2000/svg"
@@ -915,7 +1291,15 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                   color={"#3646B3"}
                                   borderRadius="8px"
                                   rightIcon={
-                                    <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'} />
+                                    <IoSearch
+                                      fontSize={{
+                                        base: "10px",
+                                        md: "25px",
+                                      }}
+                                      size={
+                                        currentSize == "base" ? "18px" : "25px"
+                                      }
+                                    />
                                   }
                                   fontSize={{ base: "12px", md: "14px" }}
                                   onClick={(e) => setSearchActive(true)}
@@ -944,7 +1328,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                                 bgColor={"#081438"}
                                 w={{ base: "80px", md: "179px" }}
                                 height={{ base: "32px", md: "40px" }}
-                                width={{ base: '150px' }}
+                                width={{ base: "150px" }}
                                 fontSize={{ base: "12px", md: "14px" }}
                                 fontWeight={"700"}
                                 color={"white"}
@@ -1019,12 +1403,10 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                           </HStack>
                         </HStack>
                       </VStack>
-                      }
-                    </TabPanel>
+                    )}
                   </TabPanels>
                 </Tabs>
                 <div ref={messagesEndRef} />
-
               </VStack>
             )}
 
@@ -1159,7 +1541,7 @@ const Index = ({ children, filters, setFilters, source, handleClickAiSearch, han
                   <Spinner />
                 </HStack>
               ) : (
-                <VStack display={{ base: "none", md: "flex" }} w={"100%"} >
+                <VStack display={{ base: "none", md: "flex" }} w={"100%"}>
                   {dataQuestionSearch?.data?.data?.result?.map(
                     (item, index) => (
                       <QuestionCard
