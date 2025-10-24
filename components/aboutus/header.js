@@ -56,50 +56,76 @@ const Header = ({ children }) => {
   const router = useRouter();
 
   return (
-    <Box
-      scrollSnapAlign="start"
-      marginTop={{ base: '20px', md: "100px" }}
-      as={Stack}
-      justifyContent={"center"}
-      alignItems={"start"}
-      width="100%"
-      height={"500px"}
-      bg={"#3646B3"}
-      p={2}
-      px={4}
-      bgImage={"/bgaboutus.png"}
-      bgSize="cover" // 👈 this makes it cover the container
-      bgRepeat="no-repeat"
-      bgPosition="center"
-
-    >
-      <HStack
-        height={"500px"}
-        w={"100%"}
+    <Box pt={{ base: "60px", md: "80px" }} scrollSnapAlign="start" w={"100%"}>
+      <Box
+        as={Stack}
+        justifyContent={"center"}
         alignItems={"start"}
-        justifyContent={"space-between"}
-        maxW="container.xl"
+        width="100%"
+        height={{base:"600" ,md:"538px"}}
+        bg={"#3646B3"}
+        p={2}
+        px={4}
+        bgImage={{ base: "/aboutusbg2.jpg", md: "/aboutusbg.jpg" }}
+        bgSize="cover" // 👈 this makes it cover the container
+        bgRepeat="no-repeat"
+        bgPosition="center"
       >
-        <VStack
+        <HStack
+          height={"500px"}
           w={"100%"}
           alignItems={"start"}
-          justifyContent={"center"}
-          height={"100%"}
+          justifyContent={"space-between"}
+          maxW="container.xl"
         >
-          <Stack
-            maxW="80%"
-            mx="auto"
-            py={4}
-            top={'0px'}
-            textAlign={'start'}
-          // position={"absolute"}
+          <VStack
+            w={"100%"}
+            alignItems={"start"}
+            justifyContent={"center"}
+            height={"100%"}
+            mt={{base:'90px' , md:'0px'}}
           >
-            <Text color={'#29CCCC'} fontSize={'32px'} fontWeight={'extrabold'}>درباره پارسا</Text>
-            <Text color={'white'} fontWeight={'bold'} fontSize={'26px'} my={'10px'}>شبکه اجتماعی پرسش و پاسخ دینی</Text>
-            <Text color={'white'} w={'470px'}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</Text>
-          </Stack>
-        </VStack>
-      </HStack>
+            <Stack
+              maxW="80%"
+              mx="auto"
+              py={4}
+              top={"0px"}
+              textAlign={"start"}
+              gap={0}
+              // position={"absolute"}
+            >
+              <HStack>
+                <Text
+                  fontFamily={"morabba"}
+                  fontSize={{ base: "25px", md: "64px" }}
+                  color={"white"}
+                  fontWeight={"800"}
+                >
+                  درباره
+                </Text>
+                <Text
+                  fontFamily={"morabba"}
+                  fontSize={{ base: "25px", md: "64px" }}
+                  fontWeight={"800"}
+                  color={"#29CCCC"}
+                >
+                  پارسا
+                </Text>
+              </HStack>
+              <Text
+                fontFamily={"morabba"}
+                color={"white"}
+                fontWeight={"bold"}
+                fontSize={{ base: "18px", md: "26px" }}
+                my={"0px"}
+              >
+                شبکه اجتماعی پرسش و پاسخ دینی
+              </Text>
+              {/* <Text color={'white'} w={'470px'}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</Text> */}
+            </Stack>
+          </VStack>
+        </HStack>
+      </Box>
     </Box>
   );
 };
