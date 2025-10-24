@@ -453,7 +453,6 @@ const MainLayout = ({
             bg="#F7F7F7"
             alignItems={"center"}
             scrollSnapAlign="start"
-            mt={'100px'}
           >
             <Box
               maxW="container.xl"
@@ -545,7 +544,7 @@ const MainLayout = ({
                       </ListItem>
                       <ListItem
                         cursor="pointer"
-                        onClick={() => handleFooterLink("/")}
+                        onClick={() => handleFooterLink("/source_reference")}
                       >
                         منابع و مراجع
                       </ListItem>

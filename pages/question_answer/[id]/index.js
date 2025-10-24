@@ -33,6 +33,7 @@ import {
   IoIosArrowForward,
   IoMdCheckmarkCircleOutline,
 } from "react-icons/io";
+import { IoArrowDown, IoArrowUp, IoBookmarkOutline } from "react-icons/io5";
 import { TbBookmark } from "react-icons/tb";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -57,8 +58,8 @@ const postActionRequest = (
 ) => {
   return axios.post(
     baseUrl +
-    url +
-    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+      url +
+      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -137,7 +138,7 @@ const Index = () => {
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
   );
   const {
     data: dataQuestionLike,
@@ -145,12 +146,12 @@ const Index = () => {
     mutate: mutateLike,
   } = useSWR(
     query?.id &&
-    `user/action?table_id=${query?.id}&table_type=question&type_param=like`
+      `user/action?table_id=${query?.id}&table_type=question&type_param=like`
   );
 
   const { data: dataAnswerLike, mutate: mutateAnswerLike } = useSWR(
     dataQuestionAnswer?.data &&
-    `user/action?table_id=${dataQuestionAnswer?.data?.[0]?.id}&table_type=answer&type_param=like`
+      `user/action?table_id=${dataQuestionAnswer?.data?.[0]?.id}&table_type=answer&type_param=like`
   );
 
   // const { data: dataQuestionSave, isLoading: isLoadingSave } = useSWR(
@@ -160,7 +161,7 @@ const Index = () => {
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
   const {
@@ -230,7 +231,8 @@ const Index = () => {
 
   const handleClickSource = (source) => {
     router.replace(
-      `/questions?source=${dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
+      `/questions?source=${
+        dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
       }`
     );
   };
@@ -275,13 +277,12 @@ const Index = () => {
       register={registerSearch}
       watchSearch={watchSearch}
     >
-
       <Head>
         <title>
           {dataQuestion?.data?.result?.[0]?.title ||
             dataQuestion?.data?.result?.[0]?.content}
         </title>
-        <link rel="icon" href="/question.png" />
+        <link rel="icon" href="/porsyab_header.png" />
       </Head>
       <Box
         marginTop={{ base: "60px", md: "100px" }}
@@ -450,7 +451,11 @@ const Index = () => {
                         borderRadius={"10px"}
                         w={"100%"}
                       >
-                        <IconButton size={"lg"} minWidth={"none"} icon={<IoIosArrowForward />} onClick={(e) => router.back()} color={'black'} />
+                        <IoIosArrowForward
+                          cursor={"pointer"}
+                          style={{ marginRight: "10px", marginTop: "10px" }}
+                          onClick={(e) => router.back()}
+                        />
 
                         <VStack w={"100%"} alignItems={"start"} mr={"10px"}>
                           <Text
@@ -500,7 +505,6 @@ const Index = () => {
                           color={"#999999"}
                           fontSize={"16px"}
                           display={{ base: "none", md: "block" }}
-                          mt={'10px'}
                         >
                           {dataQuestionAnswer?.data &&
                             dataQuestionAnswer?.data?.length}{" "}
