@@ -64,7 +64,7 @@ const Index = () => {
         mt={"30px"}
         pb={'100px'}
         w={"100%"}
-        bgImage={"/referencebg2.jpg"}
+        bgImage={"/referencebg.jpg"}
         bgSize="cover"
         bgRepeat="no-repeat"
         justifyContent={"center"}
