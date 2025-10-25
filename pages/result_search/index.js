@@ -53,7 +53,6 @@ import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { FaArrowLeft } from "react-icons/fa";
 
 export const fetcherWithTiming = async (url) => {
   const startTime = performance.now();
@@ -147,8 +146,8 @@ const Index = ({
   const sourceParams =
     filters?.source?.length > 0
       ? filters.source
-          .map((src) => `&source_list=${encodeURIComponent(src)}`)
-          .join("")
+        .map((src) => `&source_list=${encodeURIComponent(src)}`)
+        .join("")
       : "";
 
   const {
@@ -157,12 +156,12 @@ const Index = ({
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     `user/question/search?page=${(page - 1) * 10}` +
-      `&search_type=${filters?.search_type || ""}` +
-      `&content=${filters?.search || ""}` +
-      `&lang=${locale}` +
-      `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
-      `&model_name=${filters?.model || ""}` +
-      `${sourceParams}`,
+    `&search_type=${filters?.search_type || ""}` +
+    `&content=${filters?.search || ""}` +
+    `&lang=${locale}` +
+    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+    `&model_name=${filters?.model || ""}` +
+    `${sourceParams}`,
     fetcherWithTiming
   );
 
@@ -659,7 +658,7 @@ const Index = ({
                           ml={"20px"}
                         />
                       ) : (
-                        <Icon
+                        isUserLogin && <Icon
                           fontSize={"25px"}
                           as={IoMenuOutline}
                           onClick={(e) => setShowHistory(true)}
@@ -711,7 +710,7 @@ const Index = ({
                     <TabPanel
                       w={"100%"}
                       as={Grid}
-                      templateColumns={{base:"repeat(4, 1fr)" , md:"repeat(5, 1fr)"}}
+                      templateColumns={{ base: "repeat(4, 1fr)", md: "repeat(5, 1fr)" }}
                       bgColor={"#F7F7F7"}
                       borderRadius={"30px"}
                       padding={"15px"}
@@ -722,7 +721,7 @@ const Index = ({
                       {showHistory && (
                         <VStack
                           alignItems={"start"}
-                          justifyContent={"center"}
+                          justifyContent={"start"}
                           h={"100%"}
                           padding={"20px"}
                         >
@@ -778,7 +777,7 @@ const Index = ({
                                     transition="all 0.3s ease"
                                   >
                                     {item?.title
-                                      ? `${item?.title?.slice(0, showHistory ?10 : 20)}...`
+                                      ? `${item?.title?.slice(0, showHistory ? 10 : 20)}...`
                                       : "بدون نام"}
                                   </Text>
                                 </HStack>
@@ -806,7 +805,7 @@ const Index = ({
                         </VStack>
                       )}
 
-                      <VStack as={GridItem} colSpan={{base:showHistory ? 3 : 4 ,md:showHistory ? 4 : 5}} justifyContent={'start'}>
+                      <VStack as={GridItem} colSpan={{ base: showHistory ? 3 : 4, md: showHistory ? 4 : 5 }} justifyContent={'start'}>
                         <Box
                           w={"100%"}
                           ref={chatContainerRef}
