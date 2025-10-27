@@ -50,7 +50,7 @@ const Index = () => {
   return (
     <MainLayout menuDefault={true}>
       {isMobile
-        ? <MobileUserPage />
+        ? <MobileUserPage dataSaved={dataSaved} />
         : <Box
           w="100%"
           alignItems={"center"}
