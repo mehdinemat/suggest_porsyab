@@ -14,7 +14,7 @@ const Bookmarks = ({ item }) => {
       ">
         <VStack w={'100%'} alignItems={'start'} gap={0} height={'100%'} justifyContent={'space-between'}>
           <HStack w={'100%'} justifyContent={'space-between'}>
-            <Text fontWeight={'bold'} fontSize={'14px'} color={'#333333'}>{item?.question__content?.length > 150 ? `${item?.question__content?.slice(0, 150)}...` : item?.question__content}</Text>
+            <Text fontWeight={'bold'} fontSize={'10px'} color={'#333333'}>{item?.question__content?.length > 150 ? `${item?.question__content?.slice(0, 150)}...` : item?.question__content}</Text>
           </HStack>
           <HStack w={'100%'} justifyContent={'space-between'}>
             <HStack w={'100%'}>

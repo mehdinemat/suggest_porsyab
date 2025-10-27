@@ -37,12 +37,13 @@ const Index = () => {
   };
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Head>
         <title>لیست کاربران</title>
         <link rel="icon" href="/question.png" />
       </Head>
       <Box
+        scrollSnapAlign="start"
         marginTop={{ base: "60px", md: "100px" }}
         mb={"20px"}
         w="100%"
@@ -52,6 +53,7 @@ const Index = () => {
         mx="auto"
         p={{ base: "0px", md: "20px" }}
         px={{ base: "20px" }}
+        pt={{ base: '120px', md: '120px' }}
       >
 
         <HStack

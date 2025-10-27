@@ -538,7 +538,7 @@ const MainLayout = ({
                       </ListItem>
                       <ListItem
                         cursor="pointer"
-                        onClick={() => handleFooterLink("/")}
+                        onClick={() => handleFooterLink("/users")}
                       >
                         کاربران
                       </ListItem>

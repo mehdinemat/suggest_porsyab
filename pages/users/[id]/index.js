@@ -47,8 +47,9 @@ const Index = () => {
   } = useSWR(`user/client?username__icontains=${id}`);
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Box
+        scrollSnapAlign="start"
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
@@ -56,10 +57,11 @@ const Index = () => {
         mx="auto"
         p={{ base: "20px", md: "22px" }}
         my={"auto"}
-        mt={"120px"}
+        mt={"100px"}
         bgColor={'#F3F3F3'}
         borderRadius={'15px'}
         mb={'20px'}
+        pt={{ base: '120px', md: '120px' }}
       >
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
@@ -70,7 +72,7 @@ const Index = () => {
           borderRadius={'15px'} boxShadow={' 0px 12px 22px 0px #00000026'}
 
         >
-          <GridItem colSpan={2} display={{ base: "none", md: "flex" }}>
+          <GridItem colSpan={{ base: 1, md: 2 }} display={{ base: "flex", md: "flex" }}>
             {dataUser?.data?.result?.[0] && (
               <RightSidebar user={dataUser?.data?.result?.[0]} mutate={mutateUser} />
             )}

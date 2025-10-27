@@ -14,7 +14,7 @@ const MyQuestion = ({ item }) => {
       ">
         <VStack w={'100%'} alignItems={'start'} gap={0} justifyContent={'space-between'} height={'100%'}>
           <HStack w={'100%'} justifyContent={'space-between'}>
-            <Text fontWeight={'bold'} fontSize={'14px'} color={'#333333'}>{item?.content?.length > 150 ? `${item?.content?.slice(0, 150)}...` : item?.content}</Text>
+            <Text fontWeight={'bold'} fontSize={'10px'} color={'#333333'}>{item?.content?.length > 150 ? `${item?.content?.slice(0, 150)}...` : item?.content}</Text>
           </HStack>
           <HStack w={'100%'} justifyContent={'space-between'}>
             <HStack w={'100%'}>
