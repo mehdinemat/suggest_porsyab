@@ -4,8 +4,14 @@ import { TiInputChecked } from "react-icons/ti"
 
 const Bookmarks = ({ item }) => {
   return (
-    <Card as={VStack} w={'100%'} variant={'unstyled'} flexShrink={0} padding={'3px'} borderRadius={'15px'} bgColor={'#F7F7F7'} height={'88px'}>
-      <HStack w={'100%'} alignItems={'start'} height={'88px'} bgColor={'white'} padding={'10px'} borderRadius={'10px'}>
+    <Card as={VStack} w={'100%'} variant={'unstyled'} flexShrink={0} padding={'3px'} borderRadius={'15px'} bgColor={'#F7F7F7'} height={'88px'} >
+      <HStack w={'100%'} alignItems={'start'} height={'88px'} bgColor={'white'} padding={'10px'} borderRadius={'10px'} boxShadow="
+        0px 2px 5px 0px #0000000D,
+        0px 9px 9px 0px #0000000A,
+        0px 20px 12px 0px #00000008,
+        0px 36px 14px 0px #00000003,
+        0px 56px 16px 0px #00000000
+      ">
         <VStack w={'100%'} alignItems={'start'} gap={0} height={'100%'} justifyContent={'space-between'}>
           <HStack w={'100%'} justifyContent={'space-between'}>
             <Text fontWeight={'bold'} fontSize={'14px'} color={'#333333'}>{item?.question__content?.length > 150 ? `${item?.question__content?.slice(0, 150)}...` : item?.question__content}</Text>
