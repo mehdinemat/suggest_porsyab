@@ -11,21 +11,34 @@ import {
   VStack
 } from "@chakra-ui/react";
 
+import { baseUrl } from "@/components/lib/api";
 import MainLayout from "@/components/mainLayout";
 import { useUser } from "@/context/UserContext";
+import axios from "axios";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import RightSidebar from "../rightSidebar";
 
-
+const patchRequest = (url, { arg: { id, ...data } }) => {
+  return axios.patch(baseUrl + url + id);
+}
 
 const Index = () => {
   const { t } = useTranslation();
 
   const { dataMe } = useUser()
 
-  const { data: dataFollowing } = useSWR(dataMe?.data?.[0]?.id && `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=following`)
+  const { data: dataFollowing, mutate: mutateFollowing } = useSWR(dataMe?.data?.[0]?.id && `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=following`)
+
+  const { data: dataClientsList, isLoading: isLoadingClientList } = useSWR(`user/client?page=1&size=10`)
+
+  const { trigger: triggerFollow, isLoading: isLoadingFollow } = useSWRMutation(`user/client/flow-action/`, patchRequest, {
+    onSuccess: () => {
+      mutateFollowing()
+    }
+  })
 
   const [type, setType] = useState(false)
 
@@ -33,10 +46,14 @@ const Index = () => {
     setType(!type)
   }
 
+  const handleFollow = (id) => {
+    triggerFollow({ id: id })
+  }
+
   return (
-    <MainLayout  menuDefault={true}>
+    <MainLayout menuDefault={true}>
       <Box
-      scrollSnapAlign="start"
+        scrollSnapAlign="start"
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
@@ -71,14 +88,21 @@ const Index = () => {
             </HStack>
             <Grid templateColumns='repeat(4, 1fr)' gap={'70px'} w={'auto'} mt={'30px'}>
               {
-                dataFollowing?.data?.map((item) => (
+                dataClientsList?.data?.result?.map((item) => (
                   <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'} justifyContent={'space-between'}>
                     <VStack w={'100%'}>
                       <Avatar height={'195px'} w={'205px'} />
                       <Text fontSize={'15px'} fontWeight={'bold'}>{item?.first_name} {item?.last_name}</Text>
                       {/* <Text>mohammadi@gmail.com</Text> */}
                     </VStack>
-                    <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+                    {
+                      dataFollowing?.data?.find((user) => (
+                        user?.id == item?.id
+                      ))
+                        ? <Button color={'#29CCCC'} w={'100%'} height={'30px'} borderRadius={'10px'} onClick={e => handleFollow(item?.id)} variant={'outline'}>لغو دنبال کردن</Button>
+                        :
+                        <Button bgColor={'#29CCCC'} w={'100%'} height={'30px'} borderRadius={'10px'} onClick={e => handleFollow(item?.id)}>دنبال کردن</Button>
+                    }
                   </Card>
                 ))
               }

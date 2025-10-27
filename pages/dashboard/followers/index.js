@@ -11,26 +11,48 @@ import {
   VStack
 } from "@chakra-ui/react";
 
+import { baseUrl } from "@/components/lib/api";
 import MainLayout from "@/components/mainLayout";
 import { useUser } from "@/context/UserContext";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import RightSidebar from "../rightSidebar";
 
 
+const patchRequest = (url, { arg: { id, ...data } }) => {
+  return axios.patch(baseUrl + url + id);
+}
 
 const Index = () => {
   const { t } = useTranslation();
 
   const { dataMe } = useUser()
 
-  const { data: dataFollowers } = useSWR(dataMe?.data?.[0]?.id && `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=followers`)
+  const { data: dataFollowers, mutate: mutateFollowing } = useSWR(dataMe?.data?.[0]?.id && `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=followers`)
+
+  const { data: dataClientsList, isLoading: isLoadingClientList } = useSWR(`user/client?page=1&size=10`)
+
+  const { trigger: triggerFollow, isLoading: isLoadingFollow } = useSWRMutation(`user/client/flow-action/`, patchRequest, {
+    onSuccess: () => {
+      mutateFollowing()
+    }
+  })
 
   const [type, setType] = useState(false)
 
   const handleResizeQuestions = () => {
     setType(!type)
+  }
+
+  useEffect(() => {
+    console.log(dataClientsList)
+  }, [dataClientsList])
+
+  const handleFollow = (id) => {
+    triggerFollow({ id: id })
   }
 
   return (
@@ -71,14 +93,27 @@ const Index = () => {
             </HStack>
             <Grid templateColumns='repeat(4, 1fr)' gap={'70px'} w={'auto'} mt={'30px'}>
               {
-                dataFollowers?.data?.map((item) => (
-                  <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'} justifyContent={'space-between'}>
+                dataClientsList?.data?.result?.map((item) => (
+                  <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'} justifyContent={'space-between'} boxShadow={`
+        0px 11px 24px 0px #0000000D,
+        0px 43px 43px 0px #0000000A,
+        0px 96px 58px 0px #00000008,
+        0px 171px 69px 0px #00000003,
+        0px 268px 75px 0px #00000000
+      `}>
                     <VStack w={'100%'}>
                       <Avatar height={'195px'} w={'205px'} />
                       <Text fontSize={'15px'} fontWeight={'bold'}>{item?.first_name} {item?.last_name}</Text>
                       {/* <Text>mohammadi@gmail.com</Text> */}
                     </VStack>
-                    <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+                    {
+                      dataFollowers?.data?.find((user) => (
+                        user?.id == item?.id
+                      ))
+                        ? <Button color={'#29CCCC'} w={'100%'} height={'30px'} borderRadius={'10px'} onClick={e => handleFollow(item?.id)} variant={'outline'}>لغو دنبال کردن</Button>
+                        :
+                        <Button bgColor={'#29CCCC'} w={'100%'} height={'30px'} borderRadius={'10px'} onClick={e => handleFollow(item?.id)}>دنبال کردن</Button>
+                    }
                   </Card>
                 ))
               }
