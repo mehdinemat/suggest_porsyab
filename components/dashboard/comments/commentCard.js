@@ -33,14 +33,14 @@ const CommentCard = ({ titleFontSize = '14px', fontSize = '14px', dateFontSize =
               <HStack gap={'30px'} color={'#3646B3'}>
                 <HStack gap={'5px'} alignItems={'center'} justifyContent={'center'}>
 
-                  <Text fontWeight={'600'} fontSize={'12px'} fontSize={dateFontSize}>3</Text>
+                  <Text fontWeight={'600'} fontSize={dateFontSize}>3</Text>
                   <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9.34424 5.99002C9.00049 7.86502 7.70455 9.63052 5.88612 10.025C4.99923 10.2177 4.07924 10.1002 3.25712 9.68932C2.435 9.27841 1.75267 8.59503 1.30729 7.73647C0.861912 6.87791 0.676184 5.88794 0.776553 4.90753C0.876922 3.92712 1.25827 3.00624 1.8663 2.27602C3.11343 0.777525 5.21924 0.365025 6.93799 1.11502" stroke="#3646B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     <path d="M3.50049 5.24023L5.21924 7.11523L9.34424 2.24023" stroke="#3646B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </HStack>
                 <HStack gap={'2px'}>
-                  <Text fontWeight={'600'} fontSize={'12px'} fontSize={dateFontSize} >4</Text>
+                  <Text fontWeight={'600'} fontSize={dateFontSize} >4</Text>
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_515_4815)">
                       <path d="M4.5 4.5L7.6875 7.6875" stroke="#3646B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
