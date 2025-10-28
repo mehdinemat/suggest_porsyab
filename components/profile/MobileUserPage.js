@@ -1,8 +1,10 @@
 import { useUser } from "@/context/UserContext";
-import { Avatar, Box, Button, Flex, Link, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, HStack, IconButton, Link, Select, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { GoPencil } from "react-icons/go";
 import useSWR from "swr";
+import CommentCard from "../dashboard/comments/commentCard";
 import QuestionCard from "../questionCars";
 import Profile from "./profile";
 
@@ -31,13 +33,33 @@ const MobileUserPage = ({ dataSaved }) => {
   return (
     <Box scrollSnapAlign="start" w={'100%'} padding={'12px'}>
       {getLastPathSegment(activePage) === "profile" && <Profile dataSaved={dataSaved} />}
-      {getLastPathSegment(activePage) === "questions" && <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
+      {getLastPathSegment(activePage) === "questions" && <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} gap={'10px'} overflowY={'auto'} mt={'60px'} padding={'15px'} mb={'90px'}>
         {
           dataQuestion?.data?.map((question) => (
             <QuestionCard data={question} />
           ))
         }
       </Box>}
+
+      {getLastPathSegment(activePage) === "comments" && <Box as={VStack} w={'100%'} bgColor={'#F7F7F7'} borderRadius={'15px'} height={'calc( 100vh - 70px )'} gap={'10px'} overflowY={'auto'} mt={'60px'} padding={'15px'} mb={'90px'}>
+        <HStack w={'100%'} alignItems={'center'} justifyContent={'space-between'}>
+          <HStack>
+            <Text fontSize={'10px'} fontWeight={'400'} color={'#979797'}>مرتبط سازی بر اساس</Text>
+            <Select w={'90px'} bgColor={'white'} color={'#3646B3'} height={'25px'} borderRadius={'13px'}>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </Select>
+          </HStack>
+          <IconButton icon={<GoPencil color="#3646B3" />} bgColor={'white'} borderRadius={'10px'} />
+        </HStack>
+        <CommentCard titleFontSize={'7px'} fontSize="10px" dateFontSize="10px" />
+        <CommentCard titleFontSize={'7px'} fontSize="10px" dateFontSize="10px" />
+        <CommentCard titleFontSize={'7px'} fontSize="10px" dateFontSize="10px" />
+        <CommentCard titleFontSize={'7px'} fontSize="10px" dateFontSize="10px" />
+        <CommentCard titleFontSize={'7px'} fontSize="10px" dateFontSize="10px" />
+      </Box>}
+
       <Flex
         position="fixed"
         bottom="10px"
