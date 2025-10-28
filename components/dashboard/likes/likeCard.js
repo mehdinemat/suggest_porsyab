@@ -74,7 +74,7 @@ const LikeCard = () => {
         </Card>
       </GridItem>
       <GridItem height={'100%'} colSpan={{ base: 4, md: 1 }}>
-        <Card display={'flex'} flexDir={{ base: 'row', md: 'column' }} height={'fit-content'} w={'100%'} variant={'unstyled'} flexShrink={0} position={'relative'} bgColor={"#F3F3F3"}
+        <Card display={'flex'} flexDir={{ base: 'row', md: 'column' }} height={'100%'} w={'100%'} variant={'unstyled'} position={'relative'} bgColor={"#F3F3F3"}
           boxShadow="
     0px 1px 2px 0px #0000001A,
     0px 3px 3px 0px #00000017,
@@ -94,11 +94,21 @@ const LikeCard = () => {
               </VStack>
             </HStack>
           </HStack>
-          <Button leftIcon={<svg width="15" height="12" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.75 5.75L5.75 10.75L0.75 5.75ZM0.75 5.75L5.75 0.75L0.75 5.75ZM0.75 5.75L9.5 5.75L0.75 5.75ZM14.0833 5.75L12 5.75L14.0833 5.75Z" fill="white" />
-            <path d="M0.75 5.75L5.75 10.75M0.75 5.75L5.75 0.75M0.75 5.75L9.5 5.75M14.0833 5.75L12 5.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          } bgColor={'#29CCCC'} w={{ base: '123px', md: '100%' }} h={{ base: '27px', md: '39px' }} borderRadius={'10px'} fontSize={{ base: '10px', md: '12px' }} fontWeight={'400'} position={'absolute'} left={'0px'}>مشاهده فعالیت</Button>
+
+          <Button
+            leftIcon={<svg width="15" height="12" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.75 5.75L5.75 10.75L0.75 5.75ZM0.75 5.75L5.75 0.75L0.75 5.75ZM0.75 5.75L9.5 5.75L0.75 5.75ZM14.0833 5.75L12 5.75L14.0833 5.75Z" fill="white" />
+              <path d="M0.75 5.75L5.75 10.75M0.75 5.75L5.75 0.75M0.75 5.75L9.5 5.75M14.0833 5.75L12 5.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>}
+            bgColor="#29CCCC"
+            w={{ base: "123px", md: "100%" }}
+            h={{ base: "27px", md: "39px" }}
+            borderRadius="10px"
+            fontSize={{ base: "10px", md: "12px" }}
+            fontWeight="400"
+          >
+            مشاهده فعالیت
+          </Button>
         </Card>
       </GridItem>
     </Grid>
