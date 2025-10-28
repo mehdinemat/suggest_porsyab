@@ -1,10 +1,15 @@
 import { useUser } from "@/context/UserContext"
-import { Avatar, Box, Button, Card, HStack, IconButton, Image, Progress, Text, VStack } from "@chakra-ui/react"
+import { Avatar, Box, Button, Card, HStack, IconButton, Image, Text, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { CiBookmark } from "react-icons/ci"
+import { IoIosArrowForward } from "react-icons/io"
 import { IoPencil } from "react-icons/io5"
 import useSWR from "swr"
 import Activities from "../dashboard/activities"
+import Bookmarks from "../dashboard/bookmarks"
+import Friends from "../dashboard/friends"
+import Scores from "../dashboard/scores"
 
 const deepShadow = `
     0px 3px 7px 0px #0000000D,
@@ -35,12 +40,21 @@ const saved = <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns=
   <path d="M0.75 3.6648C0.75 2.64462 0.75 2.13453 0.968 1.74468C1.15974 1.40191 1.46569 1.12323 1.842 0.948571C2.27 0.75 2.83 0.75 3.95 0.75H9.55C10.67 0.75 11.23 0.75 11.658 0.948571C12.0343 1.12323 12.3403 1.40191 12.532 1.74468C12.75 2.13453 12.75 2.64462 12.75 3.6648V15.784C12.75 16.2267 12.75 16.448 12.649 16.5692C12.6054 16.6219 12.5497 16.6653 12.4858 16.6964C12.4219 16.7276 12.3513 16.7457 12.279 16.7495C12.112 16.7586 11.91 16.6357 11.506 16.3906L6.75 13.5023L1.994 16.3897C1.59 16.6357 1.388 16.7586 1.22 16.7495C1.14784 16.7456 1.07748 16.7274 1.01377 16.6962C0.950068 16.6651 0.894535 16.6218 0.851 16.5692C0.75 16.448 0.75 16.2267 0.75 15.784V3.6648Z" stroke="#3646B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
 
+const shadow = ` 
+        0px 1.1px 2.21px 0px #0000000D,
+        0px 4.41px 4.41px 0px #0000000A,
+        0px 9.93px 5.52px 0px #00000008,
+        0px 16.55px 6.62px 0px #00000003,
+        0px 26.47px 7.72px 0px #00000000
+      `
 
-const Profile = () => {
+
+const Profile = ({ dataSaved }) => {
 
 
   const [tab, setTab] = useState(1)
   const [showAll, setShowAll] = useState(false)
+  const [showDetails, setShowDetails] = useState(false)
 
   const { dataMe } = useUser()
   const { data: dataFollowers, isLoading: isLoadingFollowers } = useSWR(dataMe?.data?.[0]?.id && `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=following`)
@@ -67,7 +81,16 @@ const Profile = () => {
   return (
     <>
 
-      {!showAll ? <Card bgColor={'#3646B3'} height={'276px'} width={'100%'} borderRadius={'10px'} position={'relative'} as={VStack} cursor={'pointer'} mt={'120px'}>
+      {!showAll ? <Card
+        bgColor={'#3646B3'}
+        width={'100%'}
+        borderRadius={'10px'}
+        position={'relative'}
+        as={VStack}
+        cursor={'pointer'}
+        mt={'120px'}
+        pb={'0px'}
+      >
         <HStack w={'100%'} justifyContent={'space-between'}>
           <Button position={'absolute'} top={'10px'} right={'10px'} bg={'#F9C96D1A'} color={'#F9C96D'} variant={'outline'} borderRadius={'5px'} w={'70px'} h={'22px'} fontSize={'8px'} leftIcon={<Image src="/orange_star.png" w={'10px'} h={'10px'} />}>سطح مبتدی</Button>
           <IconButton icon={<IoPencil />} bgColor={'#4A58BA'} position={'absolute'} top={'10px'} left={'10px'} height={'25px'} width={'22px'} borderRadius={'5px'} />
@@ -85,33 +108,7 @@ const Profile = () => {
           <Button bgColor={'#4A58BA'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollower()} h={'46px'} borderRadius={'8px'}>دنبال کننده‌ها</Button>
           <Button bgColor={'#4A58BA'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollowing()} h={'46px'} borderRadius={'8px'}>دنبال شونده‌ها</Button>
         </HStack>
-        <VStack w={'calc( 100% - 20px )'} padding={'20px'} alignItems={'start'} bgColor={'#4A58BA'} borderRadius={'12px'} boxShadow="
-        0px 1.1px 2.21px 0px #0000000D,
-        0px 4.41px 4.41px 0px #0000000A,
-        0px 9.93px 5.52px 0px #00000008,
-        0px 16.55px 6.62px 0px #00000003,
-        0px 26.47px 7.72px 0px #00000000
-      ">
-          <HStack w={'100%'} justifyContent={'space-between'}>
-            <Text fontWeight={'bold'} fontSize={'10px'} color={'white'}>سطح کاربر</Text>
-            <Button bgColor={'#6DF9F94D'} color={'#29CCCC'} h={'17px'} w={'63px'} fontSize={'6px'} leftIcon={<Image src="/start.png" h={'11px'} w={'11px'} />}>سطح عادی</Button>
-
-          </HStack>
-          <Box w={'100%'}>
-
-            <Progress
-              value={80}
-              borderRadius="20px"
-              sx={{
-                "& > div": {
-                  background: "linear-gradient(90deg, #6DF9F9 0%, #F9C96D 100%)",
-                  borderRadius: "20px",
-                },
-              }}
-            />
-
-          </Box>
-        </VStack>
+        <Scores shadow={shadow} bgColor={'#3646B3'} subBgColor={'#4A58BA'} color={'white'} showDetails={showDetails} setShowDetails={setShowDetails} />
       </Card>
         :
         <Card bgColor={'#3646B3'} height={'129px'} width={'100%'} borderRadius={'10px'} position={'relative'} cursor={'pointer'} mt={'80px'} alignItems={'start'} padding={'12px'}>
@@ -162,7 +159,7 @@ const Profile = () => {
             <Image src="/activity1.png" h={'34px'} w={'34px'} />
             <Text fontWeight={'bold'}>فعالیت ها</Text>
           </HStack>
-          <Text color={'#3646B3'} fontSize={'8px'} cursor={'pointer'} onClick={e => setShowAll(true)}>مشاهده کامل</Text>
+          {/* <Text color={'#3646B3'} fontSize={'8px'} cursor={'pointer'} onClick={e => setShowAll(true)}>مشاهده کامل</Text> */}
         </HStack>
         <Box as={VStack} gap={'15px'} w={'100%'} transition="height 0.3s ease" height={'320px'} overflowY={'scroll'} mt={'25px'}>
           <Activities />

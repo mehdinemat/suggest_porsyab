@@ -30,7 +30,7 @@ const MobileUserPage = ({ dataSaved }) => {
 
   return (
     <Box scrollSnapAlign="start" w={'100%'} padding={'12px'}>
-      {getLastPathSegment(activePage) === "profile" && <Profile />}
+      {getLastPathSegment(activePage) === "profile" && <Profile dataSaved={dataSaved} />}
       {getLastPathSegment(activePage) === "questions" && <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
         {
           dataQuestion?.data?.map((question) => (
