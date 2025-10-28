@@ -199,8 +199,8 @@ const MainLayout = ({
     setSearch(filters?.search);
   }, [filters?.search]);
 
-  const handleProfileLink = () => {
-    router.push("/dashboard/profile");
+  const handleProfileLink = (link) => {
+    router.push(link);
   };
 
   useOutsideClick({
@@ -377,7 +377,7 @@ const MainLayout = ({
                         bgColor="#3646B30D"
                         my="5px"
                         h="35px"
-                        onClick={() => handleProfileLink()}
+                        onClick={() => handleProfileLink(isUserLogin ? '/dashboard/profile' : '/login')}
                       >
                         {isUserLogin ? 'پروفایل' : 'ورود/ثبت‌نام'}
                       </MenuItem>
