@@ -438,7 +438,7 @@ const MainLayout = ({
       {/* header */}
       <HStack
         height={"calc( 100vh )"}
-        w={"fit-content"}
+        w={"100%"}
         gap={0}
         alignItems={"start"}
         overflowY={"scroll"}
