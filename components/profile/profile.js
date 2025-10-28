@@ -1,15 +1,15 @@
 import { useUser } from "@/context/UserContext"
-import { Avatar, Box, Button, Card, HStack, IconButton, Image, Text, VStack } from "@chakra-ui/react"
+import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { CiBookmark } from "react-icons/ci"
 import { IoIosArrowForward } from "react-icons/io"
-import { IoPencil } from "react-icons/io5"
 import useSWR from "swr"
 import Activities from "../dashboard/activities"
 import Bookmarks from "../dashboard/bookmarks"
 import Friends from "../dashboard/friends"
-import Scores from "../dashboard/scores"
+import Header from "./header"
+import MiniHeader from "./miniHeader"
 
 const deepShadow = `
     0px 3px 7px 0px #0000000D,
@@ -77,65 +77,16 @@ const Profile = ({ dataSaved }) => {
   const handleClickFollower = () => {
     router.push(`/dashboard/followers`)
   }
+  const handleClickProfile = () => {
+    router.replace('/dashboard/profile')
+  }
 
   return (
     <>
 
-      {!showAll ? <Card
-        bgColor={'#3646B3'}
-        width={'100%'}
-        borderRadius={'10px'}
-        position={'relative'}
-        as={VStack}
-        cursor={'pointer'}
-        mt={'120px'}
-        pb={'0px'}
-      >
-        <HStack w={'100%'} justifyContent={'space-between'}>
-          <Button position={'absolute'} top={'10px'} right={'10px'} bg={'#F9C96D1A'} color={'#F9C96D'} variant={'outline'} borderRadius={'5px'} w={'70px'} h={'22px'} fontSize={'8px'} leftIcon={<Image src="/orange_star.png" w={'10px'} h={'10px'} />}>سطح مبتدی</Button>
-          <IconButton icon={<IoPencil />} bgColor={'#4A58BA'} position={'absolute'} top={'10px'} left={'10px'} height={'25px'} width={'22px'} borderRadius={'5px'} />
-        </HStack>
-        <Box border={'5px solid #F9C96D'} borderRadius={'100%'}
-          boxShadow="0px 0px 133.2px 2px #F9C96D" position={'absolute'} top={'-60px'}
-        >
-          <Avatar height={'109'} width={'109'} onClick={e => handleClickProfile()}
-          />
-        </Box>
-        {/* <Image src="/start.png" position={'absolute'} top={'120px'} onClick={e => handleClickProfile()} /> */}
-        <Text color={'white'} fontSize={'15px'} fontWeight={'900'} onClick={e => handleClickProfile()} mt={'60px'}>{dataMe?.data?.[0]?.first_name || 'نامشخص'} {dataMe?.data?.[0]?.last_name}</Text>
-        <Text fontWeight={'300'} fontSize={'10px'} color={'white'} onClick={e => handleClickProfile()} >{dataMe?.data?.[0]?.email || 'نامشخص'}</Text>
-        <HStack w={'100%'} padding={'10px'}>
-          <Button bgColor={'#4A58BA'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollower()} h={'46px'} borderRadius={'8px'}>دنبال کننده‌ها</Button>
-          <Button bgColor={'#4A58BA'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollowing()} h={'46px'} borderRadius={'8px'}>دنبال شونده‌ها</Button>
-        </HStack>
-        <Scores shadow={shadow} bgColor={'#3646B3'} subBgColor={'#4A58BA'} color={'white'} showDetails={showDetails} setShowDetails={setShowDetails} />
-      </Card>
+      {!showAll ? <Header handleClickFollowing={handleClickFollowing} handleClickFollower={handleClickFollower} handleClickProfile={handleClickProfile} setShowDetails={setShowDetails} showDetails={showDetails} shadow={shadow} dataMe={dataMe} />
         :
-        <Card bgColor={'#3646B3'} height={'129px'} width={'100%'} borderRadius={'10px'} position={'relative'} cursor={'pointer'} mt={'80px'} alignItems={'start'} padding={'12px'}>
-          <HStack w={'100%'}>
-            <Box border={'5px solid #F9C96D'} borderRadius={'100%'}
-              boxShadow="0px 0px 133.2px 2px #F9C96D" as={Box} justifyContent={'start'}
-            >
-              <Avatar height={'90px'} width={'90px'} onClick={e => handleClickProfile()}
-              />
-            </Box>
-            <VStack w={'100%'} justifyContent={'start'} mr={'10px'}>
-              <VStack w={'100%'} alignItems={'start'} gap={0} mb={'15px'}>
-                <Text color={'white'} fontSize={'15px'} fontWeight={'900'} onClick={e => handleClickProfile()} >{dataMe?.data?.[0]?.first_name || 'نامشخص'} {dataMe?.data?.[0]?.last_name}</Text>
-                <Text fontWeight={'300'} fontSize={'10px'} color={'white'} onClick={e => handleClickProfile()} >{dataMe?.data?.[0]?.email || 'نامشخص'}</Text>
-              </VStack>
-              <HStack w={'100%'} alignItems={'start'} justifyContent={'space-between'}>
-                <Button bgColor={'#4A58BA'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollower()} h={'32px'} borderRadius={'8px'}>دنبال کننده‌ها</Button>
-                <Button bgColor={'#4A58BA'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollowing()} h={'32px'} borderRadius={'8px'}>دنبال شونده‌ها</Button>
-              </HStack>
-            </VStack>
-            <HStack w={'100%'} justifyContent={'start'} alignItems={'start'} h={'100%'} position={'absolute'} right={'calc( 100% - 125px )'} top={'10px'}>
-              <Button bg={'#F9C96D1A'} color={'#F9C96D'} variant={'outline'} borderRadius={'5px'} w={'62px'} h={'16px'} fontSize={'6px'} leftIcon={<Image src="/orange_star.png" w={'7px'} h={'7px'} />}>سطح مبتدی</Button>
-              <IconButton icon={<IoPencil height={'16px'} width={'16px'} />} bgColor={'#4A58BA'} height={'16px'} width={'16px'} borderRadius={'5px'} />
-            </HStack>
-          </HStack>
-
-        </Card>}
+        <MiniHeader handleClickFollowing={handleClickFollowing} handleClickFollower={handleClickFollower} handleClickProfile={handleClickProfile} dataMe={dataMe} />}
 
 
       <Box bgColor={'#F3F3F3'} h={'80px'} borderRadius={'15px'} mt={'10px'} as={HStack} justifyContent={'space-between'} p={'10px'}>
