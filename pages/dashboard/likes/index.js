@@ -57,7 +57,7 @@ const Index = () => {
                       </Select>
                     </HStack>
                   </HStack>
-                  <Box as={VStack} w={'100%'} height={'calc( 100vh - 140px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
+                  <Box as={VStack} w={'100%'} height={'calc( 100vh - 140px )'} padding={'16px'} gap={'30px'} overflowY={'auto'}>
                     <LikeCard />
                     <LikeCard />
                     <LikeCard />

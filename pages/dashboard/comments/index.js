@@ -52,7 +52,7 @@ const Index = () => {
                 borderRadius={"15px"}
                 padding={'10px'}
               >
-                <Grid templateColumns="repeat(4, 1fr)" gap={6} w={'100%'} height={"calc( 100% - 10px )"} overflowY={'scroll'}>
+                <Grid templateColumns="repeat(4, 1fr)" gap={2} w={'100%'} height={"calc( 100% - 10px )"} overflowY={'scroll'}>
                   <GridItem bgColor={"#F3F3F3"} w={"100%"} colSpan={3} borderRadius={"15px"} >
                     <HStack w={'100%'} justifyContent={'space-between'} paddingX={'16px'}>
                       <HStack color="#979797" alignItems={'baseline'}>
@@ -64,7 +64,7 @@ const Index = () => {
                         </Select>
                       </HStack>
                     </HStack>
-                    <Box as={VStack} w={'100%'} height={'calc( 100vh - 70px )'} paddingY={'16px'} gap={'10px'} overflowY={'auto'}>
+                    <Box as={VStack} w={'100%'} height={'calc( 100vh - 70px )'} paddingY={'16px'} gap={'10px'} overflowY={'auto'} padding={'15px'}>
                       <CommentCard />
                       <CommentCard />
                       <CommentCard />
