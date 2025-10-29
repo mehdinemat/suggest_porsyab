@@ -250,6 +250,7 @@ const Header = ({
       width="100%"
       height={"100vh"}
       scrollSnapAlign="start"
+      scrollSnapStop="always"
       bg={"#3646B3"}
       p={2}
       px={4}

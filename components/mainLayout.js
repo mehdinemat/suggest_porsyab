@@ -444,9 +444,14 @@ const MainLayout = ({
         overflowY={"scroll"}
         ref={scrollContainerRef}
         scrollSnapType="y mandatory"
+        scrollBehavior="smooth"
       >
         {/* Main content area */}
-        <VStack height={"calc( 100vh )"} w={"100%"} gap={0}>
+        <VStack height={"calc( 100vh )"} w={"100%"} gap={0} scrollSnapAlign="start"
+          scrollSnapStop="always"
+          display="flex"
+          flexDirection="column" align="stretch"      // 👈 allows children to fill width
+          justify="stretch" >
           {children}
           <Stack
             w={"100%"}

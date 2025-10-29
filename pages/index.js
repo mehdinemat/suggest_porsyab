@@ -198,7 +198,7 @@ export default function Home({ children }) {
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        p={{base:"0px" , md:'20px'  }}
+        p={{ base: "0px", md: '20px' }}
         className="questions"
         ref={questionsRef}
       >
