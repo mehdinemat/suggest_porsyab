@@ -340,7 +340,7 @@ const Index = ({
 
     // make request
     const res = await fetch(
-      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}${type == 'deep' ? `?deeper_search=true` : ''}`,
+      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}${type == 'deep' ? `?always_search=false&deeper_search=true` : ''}`,
       {
         method: "POST",
         headers: {
