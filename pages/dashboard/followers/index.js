@@ -114,7 +114,7 @@ const Index = () => {
                 <Button bgColor={'#3646B3'} borderRadius={'10px'} h={{ base: '24px', md: '40px' }} fontSize={{ base: '7px', md: '14px' }}>همه</Button>
               </HStack>
             </HStack>
-            <Grid templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(2, 1fr)", xl: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={{ base: '12px', md: '40px' }} w={'100%'} mt={'30px'}>
+            <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(2, 1fr)", xl: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={{ base: '12px', md: '40px' }} w={'100%'} mt={'30px'}>
               {
                 dataClientsList?.data?.result?.map((item) => (
                   <Card bgColor={'white'} height={'fit-content'} as={VStack} padding={'20px'} justifyContent={'space-between'} boxShadow={`
