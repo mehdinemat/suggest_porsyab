@@ -24,7 +24,7 @@ const Friends = ({ item }) => {
   return (
     <Card as={VStack} w={'100%'} variant={'unstyled'} height={'64px'} flexShrink={0} padding={'3px'} borderRadius={'15px'} bgColor={'#F7F7F7'} position={'relative'}>
       <Image src="/start.png" w={'20px'} h={'20px'} right={'10px'} top={'10px'} position={'absolute'} />
-      <VStack w={'100%'} alignItems={'start'} bgColor={'white'} padding={'10px'} borderRadius={'10px'} justifyContent={'space-between'} boxShadow="
+      <VStack w={'100%'} alignItems={'start'} bgColor={'white'} padding={'20px'} borderRadius={'23px'} justifyContent={'space-between'} boxShadow="
         0px 1px 1px 0px #0000000D,
         0px 3px 3px 0px #0000000A,
         0px 6px 4px 0px #00000008,
@@ -35,11 +35,11 @@ const Friends = ({ item }) => {
           <Avatar height={'110px'} width={'108px'} mr={'5px'} />
           <VStack onClick={e => handleClickFriend()} cursor={'pointer'}>
             <HStack w={'100%'} alignItems={'center'}>
-              <Text>{item?.first_name || 'نامشخص'} {item?.last_name}</Text>
+              <Text fontSize={'21px'} fontWeight={'800'}>{item?.first_name || 'نامشخص'} {item?.last_name}</Text>
             </HStack>
             <HStack>
               <Badge
-                colorScheme="gray"
+                bgColor="#F0F0F0"
                 w="92px"
                 h="24px"
                 display="flex"
@@ -48,7 +48,7 @@ const Friends = ({ item }) => {
               >
                 234 سوال
               </Badge>
-              <Badge colorScheme="gray"
+              <Badge bgColor="#F0F0F0"
                 w="92px"
                 h="24px"
                 display="flex"

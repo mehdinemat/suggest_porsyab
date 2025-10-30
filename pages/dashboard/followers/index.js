@@ -1,11 +1,13 @@
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Card,
   Grid,
   GridItem,
   HStack,
+  Image,
   Select,
   Text,
   useBreakpointValue,
@@ -96,7 +98,7 @@ const Index = () => {
           <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
             <RightSidebar />
           </GridItem>
-          <GridItem as={VStack} gap={"8px"} colSpan={7} mr={{ base: '0px', md: "8px" }} bgColor={'#F3F3F3'} padding={'12px'} borderRadius={'15px'} height={'calc( 100% - 70px )'}>
+          <GridItem as={VStack} gap={"8px"} colSpan={7} mr={{ base: '0px', md: "8px" }} bgColor={'#F3F3F3'} padding={'12px'} borderRadius={'15px'} h={'calc( 100vh - 100px )'} overflowY={'auto'}>
             <HStack w={'100%'} alignItems={'center'} justifyContent={'space-between'}>
               <HStack>
                 <Text fontSize={{ base: '10px', md: '18px' }} fontWeight={'600'} color={'#979797'}>مرتبط سازی بر اساس</Text>
@@ -112,21 +114,50 @@ const Index = () => {
                 <Button bgColor={'#3646B3'} borderRadius={'10px'} h={{ base: '24px', md: '40px' }} fontSize={{ base: '7px', md: '14px' }}>همه</Button>
               </HStack>
             </HStack>
-            <Grid templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }} gap={{ base: '12px', md: '70px' }} w={'100%'} mt={'10px'}>
+            <Grid templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(2, 1fr)", xl: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={{ base: '12px', md: '40px' }} w={'100%'} mt={'30px'}>
               {
                 dataClientsList?.data?.result?.map((item) => (
-                  <Card bgColor={'white'} height={'fit-content'} as={VStack} padding={'5px'} justifyContent={'space-between'} boxShadow={`
-        0px 11px 24px 0px #0000000D,
-        0px 43px 43px 0px #0000000A,
-        0px 96px 58px 0px #00000008,
-        0px 171px 69px 0px #00000003,
-        0px 268px 75px 0px #00000000
-      `} borderRadius={'13px'}>
-                    <VStack w={'100%'}>
-                      <Avatar height={{ base: '90px', md: '195px' }} w={{ base: '88px', md: '205px' }} />
-                      <Text fontSize={{ base: '10px', md: '15px' }} fontWeight={'bold'}>{item?.first_name || 'نامشخص'} {item?.last_name}</Text>
+                  <Card bgColor={'white'} height={'fit-content'} as={VStack} padding={'20px'} justifyContent={'space-between'} boxShadow={`
+                 0px 11px 24px 0px #0000000D,
+                 0px 43px 43px 0px #0000000A,
+                 0px 96px 58px 0px #00000008,
+                 0px 171px 69px 0px #00000003,
+                 0px 268px 75px 0px #00000000
+               `} borderRadius={'13px'} sx={{
+                      boxShadow: `
+                   0px 3px 7px 0px #0000000D,
+                   0px 13px 13px 0px #0000000A,
+                   0px 30px 18px 0px #00000008,
+                   0px 54px 21px 0px #00000003,
+                   0px 84px 23px 0px #00000000
+                 `
+                    }}>
+                    <Image src="/start.png" w={'20px'} h={'20px'} right={'10px'} top={'10px'} position={'absolute'} />
+                    <HStack w={'100%'}>
+                      <Avatar height={{ base: '90px', md: '99px' }} w={{ base: '88px', md: '104px' }} />
+                      <VStack w={'100%'} alignItems={'start'}>
+                        <Text fontSize={{ base: '10px', md: '20px' }} fontWeight={'800'}>{item?.first_name || 'نامشخص'} {item?.last_name}</Text>
+                        <HStack>
+                          <Badge
+                            bgColor="#F0F0F0"
+                            w="85px"
+                            h="24px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center" borderRadius={'6px'} fontSize={'8px'} fontWeight={'400'}
+                          >
+                            234 سوال
+                          </Badge>
+                          <Badge bgColor="#F0F0F0"
+                            w="85px"
+                            h="24px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center" borderRadius={'6px'} fontSize={'8px'} fontWeight={'400'}>24 پاسخ</Badge>
+                        </HStack>
+                      </VStack>
                       {/* <Text>mohammadi@gmail.com</Text> */}
-                    </VStack>
+                    </HStack>
                     {
                       dataFollowers?.data?.find((user) => (
                         user?.id == item?.id

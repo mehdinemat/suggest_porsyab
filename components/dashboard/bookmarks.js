@@ -1,10 +1,19 @@
 import { Card, HStack, Text, VStack } from "@chakra-ui/react"
+import { useRouter } from "next/router"
 import { IoChatbubbleEllipsesOutline, IoEyeOutline } from "react-icons/io5"
 import { TiInputChecked } from "react-icons/ti"
 
 const Bookmarks = ({ item }) => {
+
+  const router = useRouter()
+
+  const handleClickLink = (link) => {
+    router.push(`/question_answer/${link}`)
+  }
+
+
   return (
-    <Card as={VStack} w={'100%'} variant={'unstyled'} flexShrink={0} padding={'3px'} borderRadius={'15px'} bgColor={'#F7F7F7'} height={'88px'} >
+    <Card as={VStack} w={'100%'} variant={'unstyled'} flexShrink={0} padding={'3px'} borderRadius={'15px'} bgColor={'#F7F7F7'} height={'88px'} onClick={e => handleClickLink(item?.id)}>
       <HStack w={'100%'} alignItems={'start'} height={'88px'} bgColor={'white'} padding={'10px'} borderRadius={'10px'} boxShadow="
         0px 2px 5px 0px #0000000D,
         0px 9px 9px 0px #0000000A,
@@ -12,6 +21,7 @@ const Bookmarks = ({ item }) => {
         0px 36px 14px 0px #00000003,
         0px 56px 16px 0px #00000000
       ">
+        {console.log(item)}
         <VStack w={'100%'} alignItems={'start'} gap={0} height={'100%'} justifyContent={'space-between'}>
           <HStack w={'100%'} justifyContent={'space-between'}>
             <Text fontWeight={'bold'} fontSize={'10px'} color={'#333333'}>{item?.question__content?.length > 150 ? `${item?.question__content?.slice(0, 150)}...` : item?.question__content}</Text>

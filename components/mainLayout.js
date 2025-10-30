@@ -342,7 +342,7 @@ const MainLayout = ({
                       exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.25 }}
                     >
-                      {isOpen2 ? <IconButton icon={<TfiClose size={'20px'} />} color={'#3646B3'} /> : <Image src="/headermenu.png" height={{ base: "17px", md: "49px" }} width={{ base: "17px", md: "45px" }} mr={{ base: "5px", md: "20px" }} />}
+                      {isOpen2 ? <IconButton icon={<TfiClose size={'20px'} />} color={'#3646B3'} /> : <Image src="/headermenu.png" height={{ base: "27px", md: "49px" }} width={{ base: "27px", md: "45px" }} mr={{ base: "5px", md: "20px" }} />}
                     </MotionBox1>
                   </AnimatePresence>
 
