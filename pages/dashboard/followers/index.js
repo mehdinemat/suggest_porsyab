@@ -86,7 +86,7 @@ const Index = () => {
         px={{ base: "14px", md: '34px' }}
         // p={{ base: "20px", md: "60px" }}
         my={"34px"}
-        mt={{ base: "40px", md: "10px" }}
+        mt={{ base: "10px", md: "10px" }}
       >
         {
           currentSize == 'base' && <MiniHeader handleClickProfile={handleClickProfile} handleClickFollower={handleClickFollower} handleClickFollowing={handleClickFollowing} />

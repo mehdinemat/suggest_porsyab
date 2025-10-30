@@ -12,6 +12,8 @@ const Friends = ({ item }) => {
 
   const { trigger: triggerFollow, isLoading: isLoadingFollow } = useSWRMutation(`user/client/flow-action/`, patchRequest)
 
+
+
   const router = useRouter()
   const handleClickFriend = () => {
     router.push('/dashboard/user/434')
