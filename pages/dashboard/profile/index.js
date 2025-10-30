@@ -60,7 +60,7 @@ const Index = () => {
           px="34px"
           // p={{ base: "20px", md: "60px" }}
           my={"34px"}
-          mt={{ base: "40px", md: "120px" }}
+          mt={{ base: "40px", md: "10px" }}
         >
 
           <Grid

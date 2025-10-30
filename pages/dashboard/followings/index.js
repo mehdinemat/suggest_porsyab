@@ -8,6 +8,7 @@ import {
   HStack,
   Select,
   Text,
+  useBreakpointValue,
   VStack
 } from "@chakra-ui/react";
 
@@ -29,6 +30,9 @@ const patchRequest = (url, { arg: { id, ...data } }) => {
 
 const Index = () => {
   const { t } = useTranslation();
+
+  const currentSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
+
 
   const { dataMe } = useUser()
 
@@ -75,9 +79,9 @@ const Index = () => {
         px={{ base: "14px", md: '34px' }}
         // p={{ base: "20px", md: "60px" }}
         my={"34px"}
-        mt={{ base: "40px", md: "120px" }}
+        mt={{ base: "40px", md: "10px" }}
       >
-        <MiniHeader handleClickProfile={handleClickProfile} handleClickFollower={handleClickFollower} handleClickFollowing={handleClickFollowing} />
+        {currentSize == 'base' && <MiniHeader handleClickProfile={handleClickProfile} handleClickFollower={handleClickFollower} handleClickFollowing={handleClickFollowing} />}
         <Grid mt={{ base: '10px', md: '80px' }}
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
           w={"100%"}
