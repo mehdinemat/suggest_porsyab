@@ -81,7 +81,7 @@ const Index = () => {
         justifyContent={"center"}
         scrollSnapAlign="start"
         // maxW="container.xl"
-        px="34px"
+        px={{ base: "14px", md: '34px' }}
         // p={{ base: "20px", md: "60px" }}
         my={"34px"}
         mt={{ base: "40px", md: "120px" }}
