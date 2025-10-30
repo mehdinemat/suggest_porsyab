@@ -68,9 +68,12 @@ export const fetcherWithTiming = async (url) => {
 };
 
 const postRequest = (url, { arg }) => {
-  console.log("slam");
   return axios.post(baseUrl + url, arg);
 };
+
+const postRequest1 = (url, { arg: { id, ...data } }) => {
+  return axios.post(baseUrl + url + `${id}/like`, data)
+}
 
 const tags = [
   "جامعه اسلامی",
@@ -164,6 +167,8 @@ const Index = ({
     `${sourceParams}`,
     fetcherWithTiming
   );
+
+  const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(`user/chat/`, postRequest1)
 
   const { data: dataHistory, isLoading: isLoadingHistory } = useSWR(
     isUserLogin && `user/chat/session`
@@ -588,9 +593,9 @@ const Index = ({
     }
   }, [chatHistory, isStreaming]);
 
-  useEffect(() => {
-    console.log(dataHistory?.data?.chat_sessions);
-  }, [dataHistory]);
+  const handleLikeChat = (like) => {
+    triggerLike({ is_like: like, id: chatSession })
+  }
 
   return (
     <Stack w={"100%"} scrollSnapAlign="start">
@@ -1008,6 +1013,7 @@ const Index = ({
                                                   base: "10px",
                                                   md: "24px",
                                                 }}
+                                                onClick={e => handleLikeChat(true)}
                                               >
                                                 <Text
                                                   fontSize={{
@@ -1071,6 +1077,7 @@ const Index = ({
                                                   md: "37px",
                                                 }}
                                                 w={{ base: "73px", md: "auto" }}
+                                                onClick={e => handleLikeChat(false)}
                                               >
                                                 اشتباه بود
                                               </Button>
