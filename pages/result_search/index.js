@@ -303,7 +303,7 @@ const Index = ({
     }
   );
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (type = '') => {
     setInput("");
     setIsStreaming(true);
     setChatDone(false);
@@ -340,7 +340,7 @@ const Index = ({
 
     // make request
     const res = await fetch(
-      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}`,
+      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}${type == 'deep' ? `?deeper_search=true` : ''}`,
       {
         method: "POST",
         headers: {
@@ -555,6 +555,10 @@ const Index = ({
       }
     }
   }, [filters?.search]);
+
+  const handleSubmitDeep = () => {
+    handleSubmit('deep')
+  }
 
   const handleAiResponse = () => {
     handleClickAiSearch(2, watch("search"));
@@ -938,6 +942,7 @@ const Index = ({
                                                   md: "180px",
                                                 }}
                                                 fontWeight={"500"}
+                                                onClick={e => handleSubmitDeep()}
                                               >
                                                 بررسی عمیق‌تر
                                               </Button>
