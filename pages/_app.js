@@ -3,15 +3,20 @@ import { Fonts } from "@/components/base/global";
 import { fetcher, useAxiosInterceptors } from "@/components/lib/api";
 import { getTheme } from "@/components/theme";
 import { UserProvider } from "@/context/UserContext";
-import { ChakraProvider, useToast } from "@chakra-ui/react";
+import { Box, Center, ChakraProvider, useToast } from "@chakra-ui/react";
 import { NextAdapter } from "next-query-params";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SWRConfig } from "swr";
 import { QueryParamProvider } from "use-query-params";
 import i18n from "../i18n"; // Assuming i18n.js is in the root directory
+import animationData from "../public/animations/loading.json";
 import "../styles/globals.css";
-
+const Lottie = dynamic(() => import("lottie-react"), {
+  ssr: false,
+});
 const AppWrapper = ({ Component, pageProps }) => {
   const toast = useToast();
   useAxiosInterceptors((options) => toast(options));
@@ -21,6 +26,7 @@ const Adapter = (props) => <NextAdapter {...props} shallow={true} />;
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+  const { ready } = useTranslation();
   const { locale } = router;
   const theme = getTheme(locale || "en");
 
@@ -37,9 +43,15 @@ function MyApp({ Component, pageProps }) {
     }
   }, [router.locale]); // Re-run the effect when locale changes
 
-  if (!isLanguageSet) {
-    // Prevent rendering until the language is set properly
-    return <div>درحال بارگذاری...</div>;
+  const isLoading = !isLanguageSet || !ready;
+
+
+  if (isLoading) {
+    return <Center h={'100vh'}>
+      <Box w="200px" mx="auto">
+        <Lottie animationData={animationData} loop={true} />
+      </Box>
+    </Center>;
   }
 
   return (

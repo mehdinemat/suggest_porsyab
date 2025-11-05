@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 
 import SliderCom from "@/components/slider";
 import SliderSource from "@/components/sliderSource";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,8 +33,11 @@ import {
   useQueryParams,
   withDefault,
 } from "use-query-params";
+import animationData from "../public/animations/loading.json";
 import ResultSearch from "./result_search";
-
+const Lottie = dynamic(() => import("lottie-react"), {
+  ssr: false,
+});
 export default function Home({ children }) {
   const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
   const [isUserLogin, setIsUserLogin] = useState("");
@@ -244,7 +248,9 @@ export default function Home({ children }) {
                     alignItems={"center"}
                     mt={"45px"}
                   >
-                    {isValidating && <Text>درحال بارگذاری...</Text>}
+                    {isValidating && <Box w="200px" mx="auto">
+                      <Lottie animationData={animationData} loop={true} />
+                    </Box>}
                     <HStack>
                       <Button
                         height={"32px"}
