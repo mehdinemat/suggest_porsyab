@@ -134,6 +134,8 @@ const Index = ({
   const [input, setInput] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [chatSelected, setChatSelected] = useState("");
+  const [metaData, setMetaData] = useState('')
+
 
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -232,7 +234,7 @@ const Index = ({
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify({ content: filters?.search }),
+            body: JSON.stringify({ content: filters?.search, ...(metaData ? { metadata: metaData } : {}) }),
           }
         );
 
@@ -289,6 +291,10 @@ const Index = ({
                 );
 
                 setAiMessage(botMessage);
+              }
+
+              if (parsed?.state == "is_metadata") {
+                setMetaData(parsed.metadata)
               }
 
               if (parsed.done) {
@@ -352,7 +358,7 @@ const Index = ({
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ content: filters?.search }),
+        body: JSON.stringify({ content: filters?.search, ...(metaData ? { metadata: metaData } : {}) }),
       }
     );
 
@@ -402,13 +408,16 @@ const Index = ({
             setConditionStream("");
             setIsStreaming(false);
             botMessage += parsed.chunk;
-            console.log(parsed);
             // update assistant message in history
             setChatHistory((prev) =>
               prev.map((msg) =>
                 msg.id === streamId ? { ...msg, content: botMessage } : msg
               )
             );
+          }
+
+          if (parsed?.state == "is_metadata") {
+            setMetaData(parsed.metadata)
           }
 
           if (parsed.done) {
@@ -595,6 +604,23 @@ const Index = ({
 
   const handleLikeChat = (like) => {
     triggerLike({ is_like: like, id: chatSession })
+  }
+
+
+  const continueConversation = () => {
+    setContinueQuestion(true)
+    setTimeout(() => {
+
+      const element = document.getElementById("search_box");
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center", // or "center" depending on where you want it
+        });
+      }
+
+    }, 500)
+
   }
 
   return (
@@ -1093,7 +1119,7 @@ const Index = ({
                                               width={"180px"}
                                               onClick={(e) => {
                                                 if (isUserLogin) {
-                                                  setContinueQuestion(true);
+                                                  continueConversation()
                                                 } else {
                                                   router.push("/login");
                                                 }
@@ -1169,6 +1195,7 @@ const Index = ({
                         }}
                       >
                         <Textarea
+                          id="search_box"
                           borderRadius="10px"
                           ref={inputRef}
                           fontSize={{ base: "14px", md: "20px" }}
@@ -1188,7 +1215,7 @@ const Index = ({
                           {...register("search")}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                              handleClickSearch();
+                              handleAiResponse();
                             }
                           }}
                         />
