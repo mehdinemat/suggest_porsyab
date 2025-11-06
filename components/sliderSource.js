@@ -28,7 +28,6 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
 
   const handlePublicFiqure = (item) => {
     window.open(`http://www.${item?.link}`, '_blank')
-    // router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
   };
 
   const router = useRouter();
@@ -49,15 +48,7 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
         <Text fontWeight={"700"} fontSize={"22px"} fontFamily={'morabba'} color={'#3646B3'} >
           {title}
         </Text>
-        {/* <Text
-            fontWeight={"700"}
-            fontSize={"16px"}
-            color="blue.400"
-            cursor={"pointer"}
-            onClick={(e) => router.push("/references")}
-          >
-            {t("show_all")}
-          </Text> */}
+
       </HStack>
       <Box w="calc( 100% - 60px )" alignItems={"center"} justifyContent={"center"} mx="auto" mr={'20px'} sx={{
 

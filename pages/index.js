@@ -130,9 +130,7 @@ export default function Home({ children }) {
       type: undefined,
     });
     moveToQuestionBox();
-    // router.push(
-    //   `/result_search?search=${watchSearch("search")}&search_type=search`
-    // );
+
   };
   const handleClickSemanticSearch = () => {
     setFilters({
@@ -154,7 +152,6 @@ export default function Home({ children }) {
 
   const handleVoiceSearch = (text) => {
     setValueSearch("search", text)
-    // router.push(`/result_search?search=${text}&search_type=semantic_search`);
   };
 
   useEffect(() => {
