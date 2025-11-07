@@ -71,7 +71,6 @@ const MotionMenuList = chakra(motion(MenuList));
 const MotionBox = motion(Box);
 const MotionBox1 = motion.div;
 
-
 const sendAudio = async (url, { arg }) => {
   const formData = new FormData();
   formData.append("file", arg, "voice.wav");
@@ -100,6 +99,8 @@ const Header = ({
   handleVoiceSearch,
   hadith,
   handleClickAiSearch,
+  setIsUserLogin,
+  isUserLogin,
 }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -120,7 +121,6 @@ const Header = ({
   const [voiceText, setVoiceText] = useState("");
   const [searchActive, setSearchActive] = useState(false);
   const [recordingActive, setRecordingActive] = useState(false);
-  const [isUserLogin, setIsUserLogin] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [loadingRecording, setLoadingRecording] = useState(false);
 
@@ -239,6 +239,7 @@ const Header = ({
 
   const handleExit = () => {
     localStorage.removeItem("token");
+    setIsUserLogin(false);
     router.replace("/");
   };
   return (
@@ -264,7 +265,7 @@ const Header = ({
     >
       <HStack
         maxW="container.xl"
-        height={'40px'}
+        height={"40px"}
         justifyContent="space-between"
         w="100%"
         mt={{ base: "0px", md: "10px" }}
@@ -309,8 +310,8 @@ const Header = ({
                   {locale == "en"
                     ? t("header_english")
                     : locale == "fa"
-                      ? t("header_persian")
-                      : locale == "ar" && t("header_arabic")}
+                    ? t("header_persian")
+                    : locale == "ar" && t("header_arabic")}
                 </Text>
                 <IoIosArrowDown width="12px" fontSize="12px" />
               </HStack>
@@ -376,17 +377,20 @@ const Header = ({
             onClose={() => setIsOpen(false)}
             placement="bottom-end"
           >
-            <MenuButton as={Button} _hover={{
-              backdropFilter: "blur(12.8px)",
-              boxShadow: `
+            <MenuButton
+              as={Button}
+              _hover={{
+                backdropFilter: "blur(12.8px)",
+                boxShadow: `
       0px 3px 7px 0px #0000000D,
       0px 12px 12px 0px #0000000A,
       0px 28px 17px 0px #00000008,
       0px 50px 20px 0px #00000003,
       0px 77px 22px 0px #00000000
     `,
-            }}
-              borderRadius={"10px"}>
+              }}
+              borderRadius={"10px"}
+            >
               <AnimatePresence mode="wait" initial={false}>
                 <MotionBox1
                   key={isOpen ? "close" : "menu"}
@@ -395,11 +399,18 @@ const Header = ({
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {isOpen ? <IconButton icon={<TfiClose size={'20px'} />} bgColor={'#3646B31A'} /> : <Image
-                    src="/menuheader.png"
-                    height={{ base: "17px", md: "29px" }}
-                    width={{ base: "17px", md: "28px" }}
-                  />}
+                  {isOpen ? (
+                    <IconButton
+                      icon={<TfiClose size={"20px"} />}
+                      bgColor={"#3646B31A"}
+                    />
+                  ) : (
+                    <Image
+                      src="/menuheader.png"
+                      height={{ base: "17px", md: "29px" }}
+                      width={{ base: "17px", md: "28px" }}
+                    />
+                  )}
                 </MotionBox1>
               </AnimatePresence>
               {/* <Image
@@ -439,7 +450,11 @@ const Header = ({
                     bgColor="#3646B30D"
                     my="5px"
                     h="35px"
-                    onClick={() => handleProfileLink(isUserLogin ? '/dashboard/profile' : '/login')}
+                    onClick={() =>
+                      handleProfileLink(
+                        isUserLogin ? "/dashboard/profile" : "/login"
+                      )
+                    }
                   >
                     {isUserLogin ? "پروفایل" : "ورود/ثبت‌نام"}
                   </MenuItem>
@@ -504,7 +519,7 @@ const Header = ({
         w={"100%"}
         alignItems={"center"}
         justifyContent={"space-between"}
-        mt={{ base: '0px', md: '60px' }}
+        mt={{ base: "0px", md: "60px" }}
       >
         <VStack
           w={"100%"}
@@ -538,33 +553,33 @@ const Header = ({
           </Text>
 
           <Box
-            display={{ base: 'flex', md: 'none' }}
+            display={{ base: "flex", md: "none" }}
             w={{ base: "380px", md: "545px" }}
             h={{ base: "101px", md: "127px" }}
-            flexDir={'column'}
+            flexDir={"column"}
             borderRadius="13px"
             position="relative"
             bg="#FFFFFF12"
             backdropFilter="blur(5px)"
             padding={"15px"}
-            mb={'20px'}
-          // sx={{
-          //   overflow: "hidden", // ensures rounded corners
-          //   _before: {
-          //     content: '""',
-          //     position: "absolute",
-          //     inset: 0,
-          //     borderRadius: "13px",
-          //     padding: "0.7px", // border thickness
-          //     background:
-          //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-          //     WebkitMask:
-          //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          //     WebkitMaskComposite: "xor",
-          //     maskComposite: "exclude",
-          //     pointerEvents: "none",
-          //   },
-          // }}
+            mb={"20px"}
+            // sx={{
+            //   overflow: "hidden", // ensures rounded corners
+            //   _before: {
+            //     content: '""',
+            //     position: "absolute",
+            //     inset: 0,
+            //     borderRadius: "13px",
+            //     padding: "0.7px", // border thickness
+            //     background:
+            //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+            //     WebkitMask:
+            //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            //     WebkitMaskComposite: "xor",
+            //     maskComposite: "exclude",
+            //     pointerEvents: "none",
+            //   },
+            // }}
           >
             <Text
               color={"#76FFFF"}
@@ -572,7 +587,7 @@ const Header = ({
               align={"justify"}
               mb={"5px"}
               fontSize={{ base: "6px", md: "10px" }}
-              fontFamily={'doran'}
+              fontFamily={"doran"}
             >
               {hadith?.Masoum?.MasoumTitle}:
             </Text>
@@ -583,7 +598,7 @@ const Header = ({
               mb={"15px"}
               fontWeight={"700"}
               fontSize={{ base: "9px", md: "14px" }}
-              fontFamily={'doran'}
+              fontFamily={"doran"}
             >
               {hadith?.Texts?.[0]?.HadithSimpleText}
             </Text>
@@ -593,7 +608,7 @@ const Header = ({
               align={"justify"}
               fontWeight={"400"}
               fontSize={{ base: "7px", md: "12px" }}
-              fontFamily={'doran'}
+              fontFamily={"doran"}
             >
               {hadith?.Texts?.[1]?.HadithSimpleText}
             </Text>
@@ -604,7 +619,7 @@ const Header = ({
             gap={0}
             alignItems={"center"}
             position="relative"
-            borderRadius={{ base: '9px', md: "20px" }}
+            borderRadius={{ base: "9px", md: "20px" }}
             p={{ base: "5px", md: "12px" }}
             bgColor={"#FFFFFF"}
             height={{ base: "111px", md: "163px" }}
@@ -616,7 +631,6 @@ const Header = ({
         0px 292px 117px 0px #0000000A,
         0px 457px 128px 0px #00000000
       `}
-
             sx={{
               "@media (min-width: 120em)": {
                 marginBottom: "80px",
@@ -641,7 +655,7 @@ const Header = ({
             }}
           >
             <Textarea
-              borderRadius={{ base: '5px', md: "10px" }}
+              borderRadius={{ base: "5px", md: "10px" }}
               ref={inputRef}
               fontSize={{ base: "14px", md: "20px" }}
               fontWeight={"500"}
@@ -755,7 +769,12 @@ const Header = ({
 
                 {/* } */}
               </Flex>
-              <HStack height={"100%"} alignItems={"center"} justifyContent={'end'} paddingY={'5px'}>
+              <HStack
+                height={"100%"}
+                alignItems={"center"}
+                justifyContent={"end"}
+                paddingY={"5px"}
+              >
                 {searchActive && (
                   <Box
                     height={"fit-content"}
@@ -770,10 +789,16 @@ const Header = ({
                     padding={"5px"}
                   >
                     <Button
-                      leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={currentSize == "base" ? '14px' : '22px'} color="#3646B3" />}
+                      leftIcon={
+                        <IoSearch
+                          fontSize={{ base: "1px", md: "20px" }}
+                          size={currentSize == "base" ? "14px" : "22px"}
+                          color="#3646B3"
+                        />
+                      }
                       bgColor={"#3646B333"}
                       color={"#081438"}
-                      borderRadius={'6px'}
+                      borderRadius={"6px"}
                       onClick={(e) => handleClickSearch()}
                       fontSize={{ base: "6px", md: "14px" }}
                       height={{ base: "22px", md: "30px" }}
@@ -784,12 +809,12 @@ const Header = ({
                     <Button
                       height={{ base: "22px", md: "30px" }}
                       fontSize={{ base: "6px", md: "14px" }}
-                      borderRadius={'6px'}
+                      borderRadius={"6px"}
                       onClick={(e) => handleClickSemanticSearch()}
                       leftIcon={
                         <svg
-                          width={currentSize == 'base' ? '13' : "17"}
-                          height={currentSize == 'base' ? '13' : "18"}
+                          width={currentSize == "base" ? "13" : "17"}
+                          height={currentSize == "base" ? "13" : "18"}
                           viewBox="0 0 17 18"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -842,12 +867,14 @@ const Header = ({
                       color={"#3646B3"}
                       borderRadius="8px"
                       rightIcon={
-                        <IoSearch fontSize={{ base: "10px", md: "25px" }} size={currentSize == 'base' ? '18px' : '25px'} />
+                        <IoSearch
+                          fontSize={{ base: "10px", md: "25px" }}
+                          size={currentSize == "base" ? "18px" : "25px"}
+                        />
                       }
                       fontSize={{ base: "12px", md: "14px" }}
                       onClick={(e) => setSearchActive(true)}
                       variant={"outline"}
-
                     >
                       جستجو
                     </Button>
@@ -872,7 +899,7 @@ const Header = ({
                     bgColor={"#081438"}
                     w={{ base: "80px", md: "179px" }}
                     height={{ base: "32px", md: "40px" }}
-                    width={{ base: '150px' }}
+                    width={{ base: "150px" }}
                     fontSize={{ base: "12px", md: "14px" }}
                     fontWeight={"700"}
                     color={"white"}
@@ -949,8 +976,8 @@ const Header = ({
           </VStack>
 
           <Box
-            display={{ base: 'none', md: 'flex' }}
-            flexDir={'column'}
+            display={{ base: "none", md: "flex" }}
+            flexDir={"column"}
             w={{ base: "380px", md: "545px" }}
             h={{ base: "101px", md: "127px" }}
             borderRadius="13px"
@@ -958,23 +985,23 @@ const Header = ({
             bg="#FFFFFF12"
             backdropFilter="blur(5px)"
             padding={"15px"}
-          // sx={{
-          //   overflow: "hidden", // ensures rounded corners
-          //   _before: {
-          //     content: '""',
-          //     position: "absolute",
-          //     inset: 0,
-          //     borderRadius: "13px",
-          //     padding: "0.7px", // border thickness
-          //     background:
-          //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-          //     WebkitMask:
-          //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          //     WebkitMaskComposite: "xor",
-          //     maskComposite: "exclude",
-          //     pointerEvents: "none",
-          //   },
-          // }}
+            // sx={{
+            //   overflow: "hidden", // ensures rounded corners
+            //   _before: {
+            //     content: '""',
+            //     position: "absolute",
+            //     inset: 0,
+            //     borderRadius: "13px",
+            //     padding: "0.7px", // border thickness
+            //     background:
+            //       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+            //     WebkitMask:
+            //       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            //     WebkitMaskComposite: "xor",
+            //     maskComposite: "exclude",
+            //     pointerEvents: "none",
+            //   },
+            // }}
           >
             <Text
               color={"#76FFFF"}
@@ -982,7 +1009,7 @@ const Header = ({
               align={"justify"}
               mb={"5px"}
               fontSize={{ base: "6px", md: "10px" }}
-              fontFamily={'doran'}
+              fontFamily={"doran"}
             >
               {hadith?.Masoum?.MasoumTitle}:
             </Text>
@@ -993,7 +1020,7 @@ const Header = ({
               mb={"15px"}
               fontWeight={"700"}
               fontSize={{ base: "9px", md: "14px" }}
-              fontFamily={'doran'}
+              fontFamily={"doran"}
             >
               {hadith?.Texts?.[0]?.HadithSimpleText}
             </Text>
@@ -1003,7 +1030,7 @@ const Header = ({
               align={"justify"}
               fontWeight={"400"}
               fontSize={{ base: "7px", md: "12px" }}
-              fontFamily={'doran'}
+              fontFamily={"doran"}
             >
               {hadith?.Texts?.[1]?.HadithSimpleText}
             </Text>
@@ -1029,20 +1056,20 @@ const Header = ({
                   p="5px"
                   backdropFilter="blur(4px)"
                   overflow="hidden"
-                // _before={{
-                //   content: '""',
-                //   position: "absolute",
-                //   inset: 0,
-                //   borderRadius: "6px",
-                //   padding: "0.7px", // stroke thickness
-                //   background:
-                //     "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
-                //   WebkitMask:
-                //     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                //   WebkitMaskComposite: "xor",
-                //   maskComposite: "exclude",
-                //   pointerEvents: "none",
-                // }}
+                  // _before={{
+                  //   content: '""',
+                  //   position: "absolute",
+                  //   inset: 0,
+                  //   borderRadius: "6px",
+                  //   padding: "0.7px", // stroke thickness
+                  //   background:
+                  //     "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+                  //   WebkitMask:
+                  //     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  //   WebkitMaskComposite: "xor",
+                  //   maskComposite: "exclude",
+                  //   pointerEvents: "none",
+                  // }}
                 >
                   <CountUp
                     start={0}
@@ -1093,7 +1120,7 @@ const Header = ({
           cursor="pointer"
           position={"relative"}
           mb={"30px"}
-          width={'100px'}
+          width={"100px"}
           bottom={"0px"}
           onClick={() => {
             const el = document.querySelector(".questions");

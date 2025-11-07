@@ -42,7 +42,7 @@ export default function Home({ children }) {
   const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
   const [isUserLogin, setIsUserLogin] = useState("");
 
-  const [chatType, setChatType] = useState(1)
+  const [chatType, setChatType] = useState(1);
 
   const [showMore, setShowMore] = useState(false);
 
@@ -81,11 +81,11 @@ export default function Home({ children }) {
 
   const getKey = (pageIndex, previousPageData) => {
     // stop if no more data
-    console.log(previousPageData);
     if (previousPageData && !previousPageData?.data?.result.length) return null;
 
-    return `user/question?lang=${locale}&page=${pageIndex + 1}${categoryId ? `&categories__id=${categoryId}` : ""
-      }`;
+    return `user/question?lang=${locale}&page=${pageIndex + 1}${
+      categoryId ? `&categories__id=${categoryId}` : ""
+    }`;
   };
 
   const { data, size, setSize, error, isLoading, isValidating } =
@@ -130,7 +130,6 @@ export default function Home({ children }) {
       type: undefined,
     });
     moveToQuestionBox();
-
   };
   const handleClickSemanticSearch = () => {
     setFilters({
@@ -140,8 +139,8 @@ export default function Home({ children }) {
     });
     moveToQuestionBox();
   };
-  const handleClickAiSearch = (type = 1, search = '') => {
-    setChatType(type)
+  const handleClickAiSearch = (type = 1, search = "") => {
+    setChatType(type);
     setFilters({
       search_type: "semantic_search",
       search: search || watchSearch("search"),
@@ -151,7 +150,7 @@ export default function Home({ children }) {
   };
 
   const handleVoiceSearch = (text) => {
-    setValueSearch("search", text)
+    setValueSearch("search", text);
   };
 
   useEffect(() => {
@@ -173,6 +172,8 @@ export default function Home({ children }) {
       questionsRef={questionsRef}
       register={registerSearch}
       watchSearch={watchSearch}
+      setIsUserLogin={setIsUserLogin}
+      isUserLogin={isUserLogin}
     >
       <Head>
         <title>
@@ -191,6 +192,8 @@ export default function Home({ children }) {
         handleClickSemanticSearch={handleClickSemanticSearch}
         handleClickAiSearch={handleClickAiSearch}
         handleVoiceSearch={handleVoiceSearch}
+        setIsUserLogin={setIsUserLogin}
+        isUserLogin={isUserLogin}
       />
       <Box
         scrollSnapAlign="start"
@@ -199,7 +202,7 @@ export default function Home({ children }) {
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        p={{ base: "0px", md: '20px' }}
+        p={{ base: "0px", md: "20px" }}
         className="questions"
         ref={questionsRef}
       >
@@ -245,9 +248,11 @@ export default function Home({ children }) {
                     alignItems={"center"}
                     mt={"45px"}
                   >
-                    {isValidating && <Box w="200px" mx="auto">
-                      <Lottie animationData={animationData} loop={true} />
-                    </Box>}
+                    {isValidating && (
+                      <Box w="200px" mx="auto">
+                        <Lottie animationData={animationData} loop={true} />
+                      </Box>
+                    )}
                     <HStack>
                       <Button
                         height={"32px"}

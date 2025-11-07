@@ -98,13 +98,14 @@ const menuList = [
 const MotionMenuList = chakra(motion(MenuList));
 const MotionBox1 = motion.div;
 
-
 const MainLayout = ({
   children,
   questionsRef,
   menuDefault = false,
   register,
   watchSearch,
+  setIsUserLogin,
+  isUserLogin,
 }) => {
   const { t } = useTranslation();
   const [isOpen2, setIsOpen2] = useState(false);
@@ -127,9 +128,7 @@ const MainLayout = ({
   const [isSticky, setIsSticky] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showInput, setShowInput] = useState(false);
-  const [isUserLogin, setIsUserLogin] = useState(false);
   const inputRef = useRef(null);
-
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -152,7 +151,11 @@ const MainLayout = ({
   };
 
   const handleClickSearch = () => {
-    setFilters({ search_type: 'search', search: watchSearch("search"), type: undefined })
+    setFilters({
+      search_type: "search",
+      search: watchSearch("search"),
+      type: undefined,
+    });
   };
 
   useEffect(() => {
@@ -160,8 +163,8 @@ const MainLayout = ({
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-          ? 1
-          : 0
+        ? 1
+        : 0
     );
   }, [router]);
 
@@ -192,6 +195,7 @@ const MainLayout = ({
 
   const handleExit = () => {
     localStorage.removeItem("token");
+    setIsUserLogin(false);
     router.replace("/");
   };
 
@@ -325,14 +329,20 @@ const MainLayout = ({
 
                   <Image
                     src="/headerpersonlogo.png"
-                    height={{ base: "15px", md: "29px" }} width={{ base: "15px", md: "28px" }}
+                    height={{ base: "15px", md: "29px" }}
+                    width={{ base: "15px", md: "28px" }}
                   />
                 </HStack>
               ) : (
                 <Avatar fontSize={"46px"} src="/avatar.png" />
               )}
 
-              <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)} placement="bottom-end">
+              <Menu
+                isOpen={isOpen2}
+                onOpen={() => setIsOpen2(true)}
+                onClose={() => setIsOpen2(false)}
+                placement="bottom-end"
+              >
                 <MenuButton as={Button}>
                   <AnimatePresence mode="wait" initial={false}>
                     <MotionBox1
@@ -342,19 +352,30 @@ const MainLayout = ({
                       exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.25 }}
                     >
-                      {isOpen2 ? <IconButton icon={<TfiClose size={'20px'} />} color={'#3646B3'} /> : <Image src="/headermenu.png" height={{ base: "27px", md: "49px" }} width={{ base: "27px", md: "45px" }} mr={{ base: "5px", md: "20px" }} />}
+                      {isOpen2 ? (
+                        <IconButton
+                          icon={<TfiClose size={"20px"} />}
+                          color={"#3646B3"}
+                        />
+                      ) : (
+                        <Image
+                          src="/headermenu.png"
+                          height={{ base: "27px", md: "49px" }}
+                          width={{ base: "27px", md: "45px" }}
+                          mr={{ base: "5px", md: "20px" }}
+                        />
+                      )}
                     </MotionBox1>
                   </AnimatePresence>
-
                 </MenuButton>
 
                 <AnimatePresence>
                   {isOpen2 && (
                     <MotionMenuList
                       // 👇 animation
-                      initial={{ opacity: 0, height: '0px' }}
-                      animate={{ opacity: 1, height: 'fit-content' }}
-                      exit={{ opacity: 0, height: '0px' }}
+                      initial={{ opacity: 0, height: "0px" }}
+                      animate={{ opacity: 1, height: "fit-content" }}
+                      exit={{ opacity: 0, height: "0px" }}
                       transition={{ duration: 1.6, ease: "easeInOut" }}
                       // 👇 your original Chakra UI props
                       bgColor={"#EBEDF8E5"}
@@ -377,9 +398,13 @@ const MainLayout = ({
                         bgColor="#3646B30D"
                         my="5px"
                         h="35px"
-                        onClick={() => handleProfileLink(isUserLogin ? '/dashboard/profile' : '/login')}
+                        onClick={() =>
+                          handleProfileLink(
+                            isUserLogin ? "/dashboard/profile" : "/login"
+                          )
+                        }
                       >
-                        {isUserLogin ? 'پروفایل' : 'ورود/ثبت‌نام'}
+                        {isUserLogin ? "پروفایل" : "ورود/ثبت‌نام"}
                       </MenuItem>
                       <MenuItem
                         _hover={{ bgColor: "#3646B333" }}
@@ -417,16 +442,18 @@ const MainLayout = ({
                       >
                         پشتیبانی و راه ارتباطی
                       </MenuItem>
-                      {isUserLogin && <MenuItem
-                        _hover={{ bgColor: "#3646B333" }}
-                        borderRadius="15px"
-                        bgColor="#3646B30D"
-                        my="5px"
-                        h="35px"
-                        onClick={() => handleExit()}
-                      >
-                        خروج از حساب کاربری
-                      </MenuItem>}
+                      {isUserLogin && (
+                        <MenuItem
+                          _hover={{ bgColor: "#3646B333" }}
+                          borderRadius="15px"
+                          bgColor="#3646B30D"
+                          my="5px"
+                          h="35px"
+                          onClick={() => handleExit()}
+                        >
+                          خروج از حساب کاربری
+                        </MenuItem>
+                      )}
                     </MotionMenuList>
                   )}
                 </AnimatePresence>
@@ -447,11 +474,17 @@ const MainLayout = ({
         scrollBehavior="smooth"
       >
         {/* Main content area */}
-        <VStack height={"calc( 100vh )"} w={"100%"} gap={0} scrollSnapAlign="start"
+        <VStack
+          height={"calc( 100vh )"}
+          w={"100%"}
+          gap={0}
+          scrollSnapAlign="start"
           scrollSnapStop="always"
           display="flex"
-          flexDirection="column" align="stretch"      // 👈 allows children to fill width
-          justify="stretch" >
+          flexDirection="column"
+          align="stretch" // 👈 allows children to fill width
+          justify="stretch"
+        >
           {children}
           <Stack
             w={"100%"}
@@ -485,7 +518,11 @@ const MainLayout = ({
                   height={"100%"}
                   w={"100%"}
                 >
-                  <Flex flexDir={{ base: 'row', md: 'column' }} gap={'10px'} alignItems={'center'}>
+                  <Flex
+                    flexDir={{ base: "row", md: "column" }}
+                    gap={"10px"}
+                    alignItems={"center"}
+                  >
                     <Image src="/question.png" width={"51px"} height={"72px"} />
                     <Image
                       src="/parsaheader.png"
@@ -499,7 +536,7 @@ const MainLayout = ({
                     textAlign={"justify"}
                     color={"#333333"}
                     letterSpacing={"-3%"}
-                    width={{ base: '100%', md: 'fit-content' }}
+                    width={{ base: "100%", md: "fit-content" }}
                   >
                     {t("footer_parsa_info")}
                   </Text>
@@ -568,11 +605,12 @@ const MainLayout = ({
                       {/* add more items */}
                     </UnorderedList>
                   </VStack>
-                  <Flex flexDir={{ base: 'column', md: 'row' }}
+                  <Flex
+                    flexDir={{ base: "column", md: "row" }}
                     alignItems={"start"}
                     justifyContent={"start"}
                     w={"100%"}
-                    mb={{ base: '10px', md: 'none' }}
+                    mb={{ base: "10px", md: "none" }}
                   >
                     <Text
                       color={"#3646B3"}
@@ -580,7 +618,7 @@ const MainLayout = ({
                       fontWeight={"bold"}
                       fontFamily={"morabba"}
                       width={"fit-content"}
-                      mb={{ base: '10px', md: 'none' }}
+                      mb={{ base: "10px", md: "none" }}
                     >
                       {t("social_media")}
                     </Text>
@@ -652,7 +690,9 @@ const MainLayout = ({
                     <IconButton
                       icon={<IoLocation color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text fontSize={"18px"} dir="ltr">0253 222 33 44</Text>
+                    <Text fontSize={"18px"} dir="ltr">
+                      0253 222 33 44
+                    </Text>
                   </HStack>
                   <HStack>
                     <IconButton

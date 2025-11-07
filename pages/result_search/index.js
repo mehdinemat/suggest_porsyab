@@ -20,6 +20,7 @@ import {
   Textarea,
   Tooltip,
   useBreakpointValue,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
@@ -72,8 +73,8 @@ const postRequest = (url, { arg }) => {
 };
 
 const postRequest1 = (url, { arg: { id, ...data } }) => {
-  return axios.post(baseUrl + url + `${id}/like`, data)
-}
+  return axios.post(baseUrl + url + `${id}/like`, data);
+};
 
 const tags = [
   "جامعه اسلامی",
@@ -116,6 +117,8 @@ const Index = ({
 
   const { locale } = useRouter();
 
+  const toast = useToast();
+
   const [page, setPage] = useState(1);
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -134,8 +137,7 @@ const Index = ({
   const [input, setInput] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [chatSelected, setChatSelected] = useState("");
-  const [metaData, setMetaData] = useState('')
-
+  const [metaData, setMetaData] = useState("");
 
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -151,8 +153,8 @@ const Index = ({
   const sourceParams =
     filters?.source?.length > 0
       ? filters.source
-        .map((src) => `&source_list=${encodeURIComponent(src)}`)
-        .join("")
+          .map((src) => `&source_list=${encodeURIComponent(src)}`)
+          .join("")
       : "";
 
   const {
@@ -161,16 +163,19 @@ const Index = ({
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     `user/question/search?page=${(page - 1) * 10}` +
-    `&search_type=${filters?.search_type || ""}` +
-    `&content=${filters?.search || ""}` +
-    `&lang=${locale}` +
-    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
-    `&model_name=${filters?.model || ""}` +
-    `${sourceParams}`,
+      `&search_type=${filters?.search_type || ""}` +
+      `&content=${filters?.search || ""}` +
+      `&lang=${locale}` +
+      `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+      `&model_name=${filters?.model || ""}` +
+      `${sourceParams}`,
     fetcherWithTiming
   );
 
-  const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(`user/chat/`, postRequest1)
+  const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(
+    `user/chat/`,
+    postRequest1
+  );
 
   const { data: dataHistory, isLoading: isLoadingHistory } = useSWR(
     isUserLogin && `user/chat/session`
@@ -187,7 +192,7 @@ const Index = ({
   );
 
   const { trigger: triggerSession } = useSWRMutation(
-    `user/chat/session`,
+    isUserLogin && `user/chat/session`,
     postRequest,
     {
       onSuccess: async (data) => {
@@ -234,7 +239,10 @@ const Index = ({
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify({ content: filters?.search, ...(metaData ? { metadata: metaData } : {}) }),
+            body: JSON.stringify({
+              content: filters?.search,
+              ...(metaData ? { metadata: metaData } : {}),
+            }),
           }
         );
 
@@ -294,10 +302,15 @@ const Index = ({
               }
 
               if (parsed?.state == "is_metadata") {
-                setMetaData(parsed.metadata)
+                setMetaData(parsed.metadata);
               }
 
               if (parsed.done) {
+                setChatHistory((prev) =>
+                  prev.map((msg) =>
+                    msg.id === streamId ? { ...msg, is_like: false } : msg
+                  )
+                );
                 setChatDone(true);
                 done = true;
                 break;
@@ -314,7 +327,11 @@ const Index = ({
     }
   );
 
-  const handleSubmit = async (type = '') => {
+  useEffect(() => {
+    console.log(chatHistory);
+  }, [chatHistory]);
+
+  const handleSubmit = async (type = "") => {
     setInput("");
     setIsStreaming(true);
     setChatDone(false);
@@ -351,14 +368,19 @@ const Index = ({
 
     // make request
     const res = await fetch(
-      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}${type == 'deep' ? `?always_search=false&deeper_search=true` : ''}`,
+      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}${
+        type == "deep" ? `?always_search=false&deeper_search=true` : ""
+      }`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ content: filters?.search, ...(metaData ? { metadata: metaData } : {}) }),
+        body: JSON.stringify({
+          content: filters?.search,
+          ...(metaData ? { metadata: metaData } : {}),
+        }),
       }
     );
 
@@ -417,7 +439,7 @@ const Index = ({
           }
 
           if (parsed?.state == "is_metadata") {
-            setMetaData(parsed.metadata)
+            setMetaData(parsed.metadata);
           }
 
           if (parsed.done) {
@@ -571,8 +593,8 @@ const Index = ({
   }, [filters?.search]);
 
   const handleSubmitDeep = () => {
-    handleSubmit('deep')
-  }
+    handleSubmit("deep");
+  };
 
   const handleAiResponse = () => {
     handleClickAiSearch(2, watch("search"));
@@ -602,15 +624,17 @@ const Index = ({
     }
   }, [chatHistory, isStreaming]);
 
-  const handleLikeChat = (like) => {
-    triggerLike({ is_like: like, id: chatSession })
-  }
+  const handleLikeChat = (like, id) => {
+    setChatHistory((prev) =>
+      prev.map((msg) => (msg.id === id ? { ...msg, is_like: like } : msg))
+    );
 
+    triggerLike({ is_like: like, id: chatSession });
+  };
 
   const continueConversation = () => {
-    setContinueQuestion(true)
+    setContinueQuestion(true);
     setTimeout(() => {
-
       const element = document.getElementById("search_box");
       if (element) {
         element.scrollIntoView({
@@ -618,10 +642,24 @@ const Index = ({
           block: "center", // or "center" depending on where you want it
         });
       }
+    }, 500);
+  };
 
-    }, 500)
-
-  }
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        position: "bottom-left",
+        render: () => (
+          <Box color="white" p={3} bg="blue.500">
+            کپی شد!
+          </Box>
+        ),
+      });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
   return (
     <Stack w={"100%"} scrollSnapAlign="start">
@@ -693,12 +731,14 @@ const Index = ({
                           ml={"20px"}
                         />
                       ) : (
-                        isUserLogin && <Icon
-                          fontSize={"25px"}
-                          as={IoMenuOutline}
-                          onClick={(e) => setShowHistory(true)}
-                          ml={"20px"}
-                        />
+                        isUserLogin && (
+                          <Icon
+                            fontSize={"25px"}
+                            as={IoMenuOutline}
+                            onClick={(e) => setShowHistory(true)}
+                            ml={"20px"}
+                          />
+                        )
                       )}
                       <HStack w={"100%"} alignItems={"center"}>
                         <svg
@@ -745,7 +785,10 @@ const Index = ({
                     <TabPanel
                       w={"100%"}
                       as={Grid}
-                      templateColumns={{ base: "repeat(4, 1fr)", md: "repeat(5, 1fr)" }}
+                      templateColumns={{
+                        base: "repeat(4, 1fr)",
+                        md: "repeat(5, 1fr)",
+                      }}
                       bgColor={"#F7F7F7"}
                       borderRadius={"30px"}
                       padding={"15px"}
@@ -812,7 +855,10 @@ const Index = ({
                                     transition="all 0.3s ease"
                                   >
                                     {item?.title
-                                      ? `${item?.title?.slice(0, showHistory ? 10 : 20)}...`
+                                      ? `${item?.title?.slice(
+                                          0,
+                                          showHistory ? 10 : 20
+                                        )}...`
                                       : "بدون نام"}
                                   </Text>
                                 </HStack>
@@ -840,7 +886,14 @@ const Index = ({
                         </VStack>
                       )}
 
-                      <VStack as={GridItem} colSpan={{ base: showHistory ? 3 : 4, md: showHistory ? 4 : 5 }} justifyContent={'start'}>
+                      <VStack
+                        as={GridItem}
+                        colSpan={{
+                          base: showHistory ? 3 : 4,
+                          md: showHistory ? 4 : 5,
+                        }}
+                        justifyContent={"start"}
+                      >
                         <Box
                           w={"100%"}
                           ref={chatContainerRef}
@@ -952,7 +1005,7 @@ const Index = ({
                                           alignItems={"center"}
                                           justifyContent={"space-between"}
                                           pb={continueQuestion ? "0px" : "15px"}
-                                          overflow={'hidden'}
+                                          overflow={"hidden"}
                                         >
                                           <Stack>
                                             <HStack gap={"15px"}>
@@ -973,11 +1026,16 @@ const Index = ({
                                                   md: "180px",
                                                 }}
                                                 fontWeight={"500"}
-                                                onClick={e => handleSubmitDeep()}
+                                                onClick={(e) =>
+                                                  handleSubmitDeep()
+                                                }
                                               >
                                                 بررسی عمیق‌تر
                                               </Button>
                                               <Button
+                                                onClick={(e) =>
+                                                  copyToClipboard(chat?.content)
+                                                }
                                                 bgColor={"white"}
                                                 color={"#CCCCCC"}
                                                 height={{
@@ -1020,7 +1078,11 @@ const Index = ({
                                               </Button>
                                               <Button
                                                 bgColor={"white"}
-                                                color={"#CCCCCC"}
+                                                color={
+                                                  chat?.is_like
+                                                    ? "green"
+                                                    : "#CCCCCC"
+                                                }
                                                 leftIcon={
                                                   <IoMdCheckmarkCircleOutline
                                                     fontSize={{
@@ -1039,7 +1101,9 @@ const Index = ({
                                                   base: "10px",
                                                   md: "24px",
                                                 }}
-                                                onClick={e => handleLikeChat(true)}
+                                                onClick={(e) =>
+                                                  handleLikeChat(true, chat?.id)
+                                                }
                                               >
                                                 <Text
                                                   fontSize={{
@@ -1052,7 +1116,11 @@ const Index = ({
                                               </Button>
                                               <Button
                                                 bgColor={"white"}
-                                                color={"#CCCCCC"}
+                                                color={
+                                                  !chat?.is_like
+                                                    ? "red"
+                                                    : "#CCCCCC"
+                                                }
                                                 leftIcon={
                                                   <svg
                                                     width={
@@ -1072,14 +1140,22 @@ const Index = ({
                                                     <g opacity="0.5">
                                                       <path
                                                         d="M10.1855 10.459L18.8438 19.349"
-                                                        stroke="#999999"
+                                                        stroke={
+                                                          !chat?.is_like
+                                                            ? "red"
+                                                            : "#999999"
+                                                        }
                                                         stroke-width="3"
                                                         stroke-linecap="round"
                                                         stroke-linejoin="round"
                                                       />
                                                       <path
                                                         d="M18.8457 10.459L10.1875 19.349"
-                                                        stroke="#999999"
+                                                        stroke={
+                                                          !chat?.is_like
+                                                            ? "red"
+                                                            : "#999999"
+                                                        }
                                                         stroke-width="3"
                                                         stroke-linecap="round"
                                                         stroke-linejoin="round"
@@ -1088,7 +1164,11 @@ const Index = ({
                                                     <path
                                                       opacity="0.5"
                                                       d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z"
-                                                      stroke="#A1A1A1"
+                                                      stroke={
+                                                        !chat?.is_like
+                                                          ? "red"
+                                                          : "#A1A1A1"
+                                                      }
                                                       stroke-width="3"
                                                     />
                                                   </svg>
@@ -1103,7 +1183,12 @@ const Index = ({
                                                   md: "37px",
                                                 }}
                                                 w={{ base: "73px", md: "auto" }}
-                                                onClick={e => handleLikeChat(false)}
+                                                onClick={(e) =>
+                                                  handleLikeChat(
+                                                    false,
+                                                    chat?.id
+                                                  )
+                                                }
                                               >
                                                 اشتباه بود
                                               </Button>
@@ -1119,7 +1204,7 @@ const Index = ({
                                               width={"180px"}
                                               onClick={(e) => {
                                                 if (isUserLogin) {
-                                                  continueConversation()
+                                                  continueConversation();
                                                 } else {
                                                   router.push("/login");
                                                 }
