@@ -261,9 +261,6 @@ const Index = () => {
     setIsUserLogin(!!localStorage.getItem("token"));
   }, []);
 
-  useEffect(() => {
-    console.log(dataMe?.data?.[0]?.username);
-  }, [dataMe]);
 
   const handleLikeQuestion = () => {
     setLike(!like);
