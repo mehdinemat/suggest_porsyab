@@ -7,7 +7,7 @@ trigger:
     - push
     - custom
   branch:
-    - main
+    - porsyab1
     
 clone:
   disable: true
@@ -22,7 +22,7 @@ steps:
       - echo "172.30.0.112 git.t.etratnet.ir" >> /etc/hosts
       - git config --global credential.helper store
       - echo $GITEA_DEPLOY_TOKEN
-      - GIT_SSL_NO_VERIFY=true git clone https://drone-deploy:$GITEA_DEPLOY_TOKEN@git.t.etratnet.ir/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}.git
+      - GIT_SSL_NO_VERIFY=true git clone --branch porsyab1 --single-branch https://drone-deploy:$GITEA_DEPLOY_TOKEN@git.t.etratnet.ir/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}.git
   
   - name: build-image
     image: docker.arvancloud.ir/docker
@@ -31,7 +31,8 @@ steps:
         path: /var/run/docker.sock
     commands:
       - cd ${DRONE_REPO_NAME}/
-      - docker build -t ${DRONE_REPO_NAME}:latest .
+      - docker build -t porsyab_front:latest .
+      - docker builder prune -f
 
   - name: deploy
     image: docker.arvancloud.ir/docker
@@ -44,9 +45,9 @@ steps:
     commands:
       - cd ${DRONE_REPO_NAME}/
       - echo "$ENV_FILE" > .env
-      - docker stop ${DRONE_REPO_NAME} || true
-      - docker rm ${DRONE_REPO_NAME} || true
-      - docker run -d --name ${DRONE_REPO_NAME} --env-file .env --restart unless-stopped -p 3000:3000 ${DRONE_REPO_NAME}:latest
+      - docker stop porsyab_front || true
+      - docker rm porsyab_front || true
+      - docker run -d --name porsyab_front --env-file .env --restart unless-stopped -p 3005:3000 porsyab_front:latest
       - docker image prune -f
       - rm .env
 
