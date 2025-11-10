@@ -98,6 +98,7 @@ const menuList = [
 const MotionMenuList = chakra(motion(MenuList));
 const MotionBox1 = motion.div;
 
+
 const MainLayout = ({
   children,
   questionsRef,
@@ -105,7 +106,7 @@ const MainLayout = ({
   register,
   watchSearch,
   setIsUserLogin,
-  isUserLogin,
+  isUserLogin
 }) => {
   const { t } = useTranslation();
   const [isOpen2, setIsOpen2] = useState(false);
@@ -130,6 +131,7 @@ const MainLayout = ({
   const [showInput, setShowInput] = useState(false);
   const inputRef = useRef(null);
 
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
@@ -151,11 +153,7 @@ const MainLayout = ({
   };
 
   const handleClickSearch = () => {
-    setFilters({
-      search_type: "search",
-      search: watchSearch("search"),
-      type: undefined,
-    });
+    setFilters({ search_type: 'search', search: watchSearch("search"), type: undefined })
   };
 
   useEffect(() => {
@@ -163,8 +161,8 @@ const MainLayout = ({
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
   }, [router]);
 
@@ -244,16 +242,8 @@ const MainLayout = ({
           >
             <HStack>
               <Image
-                src="/headerparsalogo2.png"
-                width={{ base: "16px", md: "29px" }}
-                height={{ base: "23px", md: "42px" }}
-                ml={"5px"}
-                onClick={(e) => router.push("/")}
-                cursor={"pointer"}
-              />
-              <Image
-                src="/headerlogo2.png"
-                width={{ base: "56px", md: "100px" }}
+                src="/logoheader2.png"
+                width={{ base: "49px", md: "144px" }}
                 height={{ base: "23px", md: "41px" }}
                 onClick={(e) => router.push("/")}
                 cursor={"pointer"}
@@ -264,7 +254,7 @@ const MainLayout = ({
                 {!showInput ? (
                   <Icon
                     as={CiSearch}
-                    color={"#3646B3"}
+                    color={"#006A71"}
                     fontSize={{ base: "20px", md: "29px" }}
                     style={{ marginLeft: "20px", cursor: "pointer" }}
                     onClick={() => setShowInput(true)}
@@ -293,7 +283,7 @@ const MainLayout = ({
                         cursor="pointer"
                         onClick={handleClickSearch}
                         fontSize={{ base: "20px", md: "30px" }}
-                        color="#3646B3"
+                        color="#006A71"
                       />
                     </InputRightElement>
                   </InputGroup>
@@ -315,7 +305,7 @@ const MainLayout = ({
                     fontFamily="iransans"
                     fontWeight="500"
                     fontSize="20px"
-                    color="#3646B3"
+                    color="#006A71"
                     display={"none"} // hidden initially
                     transform="translateX(-10px)" // slight left offset
                     transition="all 0.3s ease"
@@ -329,20 +319,14 @@ const MainLayout = ({
 
                   <Image
                     src="/headerpersonlogo.png"
-                    height={{ base: "15px", md: "29px" }}
-                    width={{ base: "15px", md: "28px" }}
+                    height={{ base: "15px", md: "29px" }} width={{ base: "15px", md: "28px" }}
                   />
                 </HStack>
               ) : (
                 <Avatar fontSize={"46px"} src="/avatar.png" />
               )}
 
-              <Menu
-                isOpen={isOpen2}
-                onOpen={() => setIsOpen2(true)}
-                onClose={() => setIsOpen2(false)}
-                placement="bottom-end"
-              >
+              <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)} placement="bottom-end">
                 <MenuButton as={Button}>
                   <AnimatePresence mode="wait" initial={false}>
                     <MotionBox1
@@ -352,30 +336,19 @@ const MainLayout = ({
                       exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.25 }}
                     >
-                      {isOpen2 ? (
-                        <IconButton
-                          icon={<TfiClose size={"20px"} />}
-                          color={"#3646B3"}
-                        />
-                      ) : (
-                        <Image
-                          src="/headermenu.png"
-                          height={{ base: "27px", md: "49px" }}
-                          width={{ base: "27px", md: "45px" }}
-                          mr={{ base: "5px", md: "20px" }}
-                        />
-                      )}
+                      {isOpen2 ? <IconButton icon={<TfiClose size={'20px'} />} color={'#3646B3'} /> : <Image src="/headermenu.png" height={{ base: "27px", md: "29px" }} width={{ base: "27px", md: "25px" }} mr={{ base: "5px", md: "20px" }} />}
                     </MotionBox1>
                   </AnimatePresence>
+
                 </MenuButton>
 
                 <AnimatePresence>
                   {isOpen2 && (
                     <MotionMenuList
                       // 👇 animation
-                      initial={{ opacity: 0, height: "0px" }}
-                      animate={{ opacity: 1, height: "fit-content" }}
-                      exit={{ opacity: 0, height: "0px" }}
+                      initial={{ opacity: 0, height: '0px' }}
+                      animate={{ opacity: 1, height: 'fit-content' }}
+                      exit={{ opacity: 0, height: '0px' }}
                       transition={{ duration: 1.6, ease: "easeInOut" }}
                       // 👇 your original Chakra UI props
                       bgColor={"#EBEDF8E5"}
@@ -398,13 +371,9 @@ const MainLayout = ({
                         bgColor="#3646B30D"
                         my="5px"
                         h="35px"
-                        onClick={() =>
-                          handleProfileLink(
-                            isUserLogin ? "/dashboard/profile" : "/login"
-                          )
-                        }
+                        onClick={() => handleProfileLink(isUserLogin ? '/dashboard/profile' : '/login')}
                       >
-                        {isUserLogin ? "پروفایل" : "ورود/ثبت‌نام"}
+                        {isUserLogin ? 'پروفایل' : 'ورود/ثبت‌نام'}
                       </MenuItem>
                       <MenuItem
                         _hover={{ bgColor: "#3646B333" }}
@@ -442,18 +411,16 @@ const MainLayout = ({
                       >
                         پشتیبانی و راه ارتباطی
                       </MenuItem>
-                      {isUserLogin && (
-                        <MenuItem
-                          _hover={{ bgColor: "#3646B333" }}
-                          borderRadius="15px"
-                          bgColor="#3646B30D"
-                          my="5px"
-                          h="35px"
-                          onClick={() => handleExit()}
-                        >
-                          خروج از حساب کاربری
-                        </MenuItem>
-                      )}
+                      {isUserLogin && <MenuItem
+                        _hover={{ bgColor: "#3646B333" }}
+                        borderRadius="15px"
+                        bgColor="#3646B30D"
+                        my="5px"
+                        h="35px"
+                        onClick={() => handleExit()}
+                      >
+                        خروج از حساب کاربری
+                      </MenuItem>}
                     </MotionMenuList>
                   )}
                 </AnimatePresence>
@@ -474,17 +441,11 @@ const MainLayout = ({
         scrollBehavior="smooth"
       >
         {/* Main content area */}
-        <VStack
-          height={"calc( 100vh )"}
-          w={"100%"}
-          gap={0}
-          scrollSnapAlign="start"
+        <VStack height={"calc( 100vh )"} w={"100%"} gap={0} scrollSnapAlign="start"
           scrollSnapStop="always"
           display="flex"
-          flexDirection="column"
-          align="stretch" // 👈 allows children to fill width
-          justify="stretch"
-        >
+          flexDirection="column" align="stretch"      // 👈 allows children to fill width
+          justify="stretch" >
           {children}
           <Stack
             w={"100%"}
@@ -518,16 +479,13 @@ const MainLayout = ({
                   height={"100%"}
                   w={"100%"}
                 >
-                  <Flex
-                    flexDir={{ base: "row", md: "column" }}
-                    gap={"10px"}
-                    alignItems={"center"}
-                  >
-                    <Image src="/question.png" width={"51px"} height={"72px"} />
+                  <Flex flexDir={{ base: 'row', md: 'column' }} gap={'10px'} alignItems={'center'}>
                     <Image
-                      src="/parsaheader.png"
-                      width={"118px"}
-                      height={"48px"}
+                      src="/logoheader2.png"
+                      width={{ base: "49px", md: "250px" }}
+                      height={{ base: "23px", md: "70px" }}
+                      onClick={(e) => router.push("/")}
+                      cursor={"pointer"}
                     />
                   </Flex>
                   <Text
@@ -536,7 +494,7 @@ const MainLayout = ({
                     textAlign={"justify"}
                     color={"#333333"}
                     letterSpacing={"-3%"}
-                    width={{ base: "100%", md: "fit-content" }}
+                    width={{ base: '100%', md: 'fit-content' }}
                   >
                     {t("footer_parsa_info")}
                   </Text>
@@ -550,7 +508,7 @@ const MainLayout = ({
                     w={"100%"}
                   >
                     <Text
-                      color={"#3646B3"}
+                      color={"#006A71"}
                       fontSize={"22px"}
                       fontWeight={"bold"}
                       fontFamily={"morabba"}
@@ -567,7 +525,7 @@ const MainLayout = ({
                         li: {
                           color: "black",
                           "::marker": {
-                            color: "#29CCCC", // custom bullet color
+                            color: "#009875", // custom bullet color
                           },
                         },
                       }}
@@ -605,27 +563,26 @@ const MainLayout = ({
                       {/* add more items */}
                     </UnorderedList>
                   </VStack>
-                  <Flex
-                    flexDir={{ base: "column", md: "row" }}
+                  <Flex flexDir={{ base: 'column', md: 'row' }}
                     alignItems={"start"}
                     justifyContent={"start"}
                     w={"100%"}
-                    mb={{ base: "10px", md: "none" }}
+                    mb={{ base: '10px', md: 'none' }}
                   >
                     <Text
-                      color={"#3646B3"}
+                      color={"#006A71"}
                       fontSize={"22px"}
                       fontWeight={"bold"}
                       fontFamily={"morabba"}
                       width={"fit-content"}
-                      mb={{ base: "10px", md: "none" }}
+                      mb={{ base: '10px', md: 'none' }}
                     >
                       {t("social_media")}
                     </Text>
                     <HStack gap={"20px"}>
                       <IconButton
                         icon={
-                          <IoLogoTwitter color="#29CCCC" fontSize={"20px"} />
+                          <IoLogoTwitter color="#009875" fontSize={"20px"} />
                         }
                         boxShadow={`
                         0px 2px 4px 0px #0000000D,
@@ -637,7 +594,7 @@ const MainLayout = ({
                       />
                       <IconButton
                         icon={
-                          <IoLogoInstagram color="#29CCCC" fontSize={"20px"} />
+                          <IoLogoInstagram color="#009875" fontSize={"20px"} />
                         }
                         boxShadow={`
                         0px 2px 4px 0px #0000000D,
@@ -648,7 +605,7 @@ const MainLayout = ({
                       `}
                       />
                       <IconButton
-                        icon={<FaTelegram color="#29CCCC" fontSize={"20px"} />}
+                        icon={<FaTelegram color="#009875" fontSize={"20px"} />}
                         boxShadow={`
                         0px 2px 4px 0px #0000000D,
                         0px 8px 8px 0px #0000000A,
@@ -674,7 +631,7 @@ const MainLayout = ({
                   padding={"20px"}
                 >
                   <Text
-                    color={"#3646B3"}
+                    color={"#006A71"}
                     bgColor={"#F7F7F7"}
                     px={"10px"}
                     fontSize={"22px"}
@@ -688,22 +645,20 @@ const MainLayout = ({
                   </Text>
                   <HStack alignItems={"center"} textAlign={"start"} mt={"20px"}>
                     <IconButton
-                      icon={<IoLocation color="#29CCCC" fontSize={"20px"} />}
+                      icon={<IoLocation color="#009875" fontSize={"20px"} />}
                     />
-                    <Text fontSize={"18px"} dir="ltr">
-                      0253 222 33 44
-                    </Text>
+                    <Text fontSize={"18px"} dir="ltr">0253 222 33 44</Text>
                   </HStack>
                   <HStack>
                     <IconButton
-                      icon={<IoCall color="#29CCCC" fontSize={"20px"} />}
+                      icon={<IoCall color="#009875" fontSize={"20px"} />}
                     />
                     <Text fontSize={"18px"}>ParsaQa@info.com</Text>
                   </HStack>
 
                   <Grid
                     templateColumns={{ base: "repeat(2, 1fr)" }}
-                    bgColor={"#3646B333"}
+                    bgColor={"#006A711A"}
                     height={"46px"}
                     borderRadius={"9px"}
                     alignItems={"center"}
@@ -718,7 +673,7 @@ const MainLayout = ({
                     </GridItem>
                     <GridItem
                       padding={"5px"}
-                      bgColor={"#3646B3"}
+                      bgColor={"#006A71"}
                       borderRadius={"4px"}
                     >
                       <Text
@@ -742,7 +697,7 @@ const MainLayout = ({
             p={4}
             textAlign="center"
             w={"100%"}
-            bgColor={"#3646B3"}
+            bgColor={"#006A71"}
           >
             تمامی حقوق این وبسایت متعلق به موسسه هوش مصنوعی و تمدن اسلامی (همتا)
             است.
