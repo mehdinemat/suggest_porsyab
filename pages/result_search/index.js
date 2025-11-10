@@ -153,8 +153,8 @@ const Index = ({
   const sourceParams =
     filters?.source?.length > 0
       ? filters.source
-          .map((src) => `&source_list=${encodeURIComponent(src)}`)
-          .join("")
+        .map((src) => `&source_list=${encodeURIComponent(src)}`)
+        .join("")
       : "";
 
   const {
@@ -163,12 +163,12 @@ const Index = ({
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     `user/question/search?page=${(page - 1) * 10}` +
-      `&search_type=${filters?.search_type || ""}` +
-      `&content=${filters?.search || ""}` +
-      `&lang=${locale}` +
-      `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
-      `&model_name=${filters?.model || ""}` +
-      `${sourceParams}`,
+    `&search_type=${filters?.search_type || ""}` +
+    `&content=${filters?.search || ""}` +
+    `&lang=${locale}` +
+    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+    `&model_name=${filters?.model || ""}` +
+    `${sourceParams}`,
     fetcherWithTiming
   );
 
@@ -308,7 +308,7 @@ const Index = ({
               if (parsed.done) {
                 setChatHistory((prev) =>
                   prev.map((msg) =>
-                    msg.id === streamId ? { ...msg, is_like: false } : msg
+                    msg.id === streamId ? { ...msg, is_like: 'null' } : msg
                   )
                 );
                 setChatDone(true);
@@ -368,8 +368,7 @@ const Index = ({
 
     // make request
     const res = await fetch(
-      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}${
-        type == "deep" ? `?always_search=false&deeper_search=true` : ""
+      `https://parsa.api.t.etratnet.ir/user/chat/${chatSession}${type == "deep" ? `?always_search=false&deeper_search=true` : ""
       }`,
       {
         method: "POST",
@@ -856,9 +855,9 @@ const Index = ({
                                   >
                                     {item?.title
                                       ? `${item?.title?.slice(
-                                          0,
-                                          showHistory ? 10 : 20
-                                        )}...`
+                                        0,
+                                        showHistory ? 10 : 20
+                                      )}...`
                                       : "بدون نام"}
                                   </Text>
                                 </HStack>
@@ -1079,7 +1078,7 @@ const Index = ({
                                               <Button
                                                 bgColor={"white"}
                                                 color={
-                                                  chat?.is_like
+                                                  (chat?.is_like != 'null' && chat?.is_like) 
                                                     ? "green"
                                                     : "#CCCCCC"
                                                 }
@@ -1117,7 +1116,7 @@ const Index = ({
                                               <Button
                                                 bgColor={"white"}
                                                 color={
-                                                  !chat?.is_like
+                                                  (chat?.is_like != 'null' && !chat?.is_like) 
                                                     ? "red"
                                                     : "#CCCCCC"
                                                 }
@@ -1141,7 +1140,7 @@ const Index = ({
                                                       <path
                                                         d="M10.1855 10.459L18.8438 19.349"
                                                         stroke={
-                                                          !chat?.is_like
+                                                          (chat?.is_like != 'null' && !chat?.is_like)  
                                                             ? "red"
                                                             : "#999999"
                                                         }
@@ -1152,7 +1151,7 @@ const Index = ({
                                                       <path
                                                         d="M18.8457 10.459L10.1875 19.349"
                                                         stroke={
-                                                          !chat?.is_like
+                                                          (chat?.is_like != 'null' && !chat?.is_like)  
                                                             ? "red"
                                                             : "#999999"
                                                         }
@@ -1165,7 +1164,7 @@ const Index = ({
                                                       opacity="0.5"
                                                       d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z"
                                                       stroke={
-                                                        !chat?.is_like
+                                                        (chat?.is_like != 'null' && !chat?.is_like)  
                                                           ? "red"
                                                           : "#A1A1A1"
                                                       }
