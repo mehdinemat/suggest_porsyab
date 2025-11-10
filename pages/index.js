@@ -83,9 +83,8 @@ export default function Home({ children }) {
     // stop if no more data
     if (previousPageData && !previousPageData?.data?.result.length) return null;
 
-    return `user/question?lang=${locale}&page=${pageIndex + 1}${
-      categoryId ? `&categories__id=${categoryId}` : ""
-    }`;
+    return `user/question?lang=${locale}&page=${pageIndex + 1}${categoryId ? `&categories__id=${categoryId}` : ""
+      }`;
   };
 
   const { data, size, setSize, error, isLoading, isValidating } =
