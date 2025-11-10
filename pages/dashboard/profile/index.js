@@ -31,7 +31,7 @@ const Index = () => {
 
   const isMobile = useBreakpointValue({ base: true, md: false });
 
-
+  const [isUserLogin, setIsUserLogin] = useState('')
 
   const { dataMe, isLoadingMe } = useUser();
   const { data: dataQuestions, isLoading: isLoadingQuestions } = useSWR(`user/question?lang=${locale}`)
@@ -48,7 +48,7 @@ const Index = () => {
   }
 
   return (
-    <MainLayout menuDefault={true}>
+    <MainLayout menuDefault={true} isUserLogin={isUserLogin} setIsUserLogin={setIsUserLogin}>
       {isMobile
         ? <MobileUserPage dataSaved={dataSaved} />
         : <Box

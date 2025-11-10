@@ -74,7 +74,7 @@ const MobileUserPage = ({ dataSaved }) => {
         bottom="10px"
         left="0"
         right="0"
-        bg="#3646B3"
+        bg="#006A71"
         w={'calc( 100% - 20px )'}
         mx="auto"
         boxShadow="0px -2px 10px rgba(0, 0, 0, 0.1)"
@@ -89,8 +89,8 @@ const MobileUserPage = ({ dataSaved }) => {
         <Link href="/dashboard/profile">
           <Button
             variant="ghost"
-            bg={getLastPathSegment(activePage) === "profile" ? "#4A58BA" : "none"}
-            color={getLastPathSegment(activePage) === "profile" ? "#29CCCC" : "gray.500"}
+            bg={getLastPathSegment(activePage) === "profile" ? "#19797F" : "none"}
+            color={getLastPathSegment(activePage) === "profile" ? "#00D2A1" : "gray.500"}
             borderRadius={'999px'}
             display="flex"
             flexDirection="row"
