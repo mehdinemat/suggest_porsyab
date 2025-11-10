@@ -114,7 +114,7 @@ const Index = () => {
             <Image
               cursor={"pointer"}
               onClick={(e) => router.push("/")}
-              src="/loginlogo.png"
+              src="/logoheader2.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
             />
@@ -196,7 +196,7 @@ const Index = () => {
             </HStack>
             <Button
               w={"100%"}
-              bgColor={"#3646B3"}
+              bgColor={"#006A71"}
               height={"46px"}
               mt={"20px"}
               type="submit"
@@ -235,7 +235,7 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="/loginlogo1.jpg" objectFit="cover" w="100%" h="100%" />
+          <Image src="/logbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
           {/* <Image

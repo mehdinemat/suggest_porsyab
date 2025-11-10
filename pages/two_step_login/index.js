@@ -30,9 +30,9 @@ const Index = () => {
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
     "user/auth/send-code", postRequest, {
-      onSuccess: () => {
-        router.push(`/verify_code?phone=${getValues('phone')}`)
-      }
+    onSuccess: () => {
+      router.push(`/verify_code?phone=${getValues('phone')}`)
+    }
   }
   );
 
@@ -65,7 +65,7 @@ const Index = () => {
             as={'form'}
             onSubmit={handleSubmitUser(handleLogin)}
           >
-            <Image src="./loginlogo.png" width={{ base: '120px', md: "165px" }} height={"68px"} />
+            <Image src="./logoheader2.png" width={{ base: '120px', md: "165px" }} height={"68px"} />
             <Text fontSize={{ base: '20px', md: "23px" }} color={"#333333"} textAlign={'center'} w={"327px"} mb={"20px"}>
               شبکه اجتماعی پرسش و پاسخ دینی
             </Text>
@@ -84,7 +84,7 @@ const Index = () => {
                 },
               }}
             />
-            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit">
+            <Button w={"100%"} bgColor={"#006A71"} height={"46px"} my={"20px"} type="submit">
               ورود
             </Button>
             {/* <Button
@@ -99,19 +99,10 @@ const Index = () => {
         </Box>
         <Box position="relative" w="60%" h="100%" display={{ base: "none", md: 'flex' }}>
           {/* Base / background image */}
-          <Image src="./loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="./logbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
-          <Image
-            src="./loginlogoqu.png"
-            alt="Centered Image"
-            position="absolute"
-            top="50%"
-            left="50%"
-            width={"130px"}
-            height={"158px"}
-            transform="translate(-50%, -50%)"
-          />
+
         </Box>
       </HStack>
     </Box>

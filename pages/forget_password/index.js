@@ -1,3 +1,4 @@
+import PhoneInput from "@/components/base/PhoneInput";
 import { baseUrl } from "@/components/lib/api";
 import {
   Box,
@@ -5,21 +6,19 @@ import {
   Divider,
   HStack,
   Image,
-  Input,
   Text,
   useToast,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWRMutation from "swr/mutation";
 import * as Yup from "yup";
-import { useEffect, useState } from "react";
-import PhoneInput from "@/components/base/PhoneInput";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -123,7 +122,7 @@ const Index = () => {
             height={"100%"}
           >
             <Image
-              src="/loginlogo.png"
+              src="/logoheader2.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
               onClick={(e) => router.replace("/")}
@@ -149,7 +148,7 @@ const Index = () => {
             <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
             <Button
               w={"100%"}
-              bgColor={"#29CCCC"}
+              bgColor={"#006A71"}
               height={"46px"}
               mt={"20px"}
               type="submit"
@@ -167,10 +166,10 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="/loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/logbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
-          <Image
+          {/* <Image
             src="/loginlogoqu.png"
             alt="Centered Image"
             position="absolute"
@@ -179,7 +178,7 @@ const Index = () => {
             width={"130px"}
             height={"158px"}
             transform="translate(-50%, -50%)"
-          />
+          /> */}
         </Box>
       </HStack>
     </Box>

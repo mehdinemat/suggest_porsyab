@@ -8,14 +8,11 @@ import { t } from "i18next";
 import { useState } from "react";
 
 const countries = [
-  { code: "US", dialCode: "+1", label: "United States" },
-  { code: "GB", dialCode: "+44", label: "United Kingdom" },
-  { code: "FR", dialCode: "+33", label: "France" },
   { code: "IR", dialCode: "+98", label: "Iran" },
 ];
 
 export default function PhoneInput({ fullNumber, setFullNumber }) {
-  const [country, setCountry] = useState(countries[3]);
+  const [country, setCountry] = useState(countries[0]);
   const [number, setNumber] = useState("");
 
   const handleCountryChange = (e) => {
@@ -55,7 +52,7 @@ export default function PhoneInput({ fullNumber, setFullNumber }) {
         borderColor={'#B7B7B7'}
         borderRadius={'10px'}
         w={'150px'}
-        value={country.code}
+        value={country?.code}
         onChange={handleCountryChange}
         fontSize="sm"
         bg="transparent"

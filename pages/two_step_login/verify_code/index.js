@@ -124,7 +124,7 @@ const Index = () => {
             height={"100%"}
           >
             <Image
-              src="/loginlogo.png"
+              src="/logoheader2.png"
               width={{ base: "120px", md: "165px" }}
               height={"68px"}
               onClick={handleLoginClick}
@@ -167,7 +167,7 @@ const Index = () => {
             </HStack>
             <Button
               w={"100%"}
-              bgColor={"#29CCCC"}
+              bgColor={"#006A71"}
               height={"46px"}
               my={"20px"}
               type="submit"
@@ -184,19 +184,10 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="../../loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/logbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
-          <Image
-            src="../../loginlogoqu.png"
-            alt="Centered Image"
-            position="absolute"
-            top="50%"
-            left="50%"
-            width={"130px"}
-            height={"158px"}
-            transform="translate(-50%, -50%)"
-          />
+
         </Box>
       </HStack>
     </Box>
