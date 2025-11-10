@@ -35,6 +35,8 @@ const Index = () => {
 
   const currentSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
 
+  const [isUserLogin, setIsUserLogin] = useState('')
+
 
   const { dataMe } = useUser()
 
@@ -71,7 +73,7 @@ const Index = () => {
   }
 
   return (
-    <MainLayout menuDefault={true}>
+    <MainLayout menuDefault={true} isUserLogin={isUserLogin} setIsUserLogin={setIsUserLogin}>
       <Box
         scrollSnapAlign="start"
         w={{ base: '100%', md: "100%" }}
@@ -95,7 +97,7 @@ const Index = () => {
             <HStack w={'100%'} alignItems={'center'} justifyContent={'space-between'}>
               <HStack>
                 <Text fontSize={{ base: '10px', md: '18px' }} fontWeight={'600'} color={'#979797'}>مرتبط سازی بر اساس</Text>
-                <Select w={{ base: '89px', md: '120px' }} bgColor={'white'} color={'#3646B3'} height={{ base: '25px', md: '40px' }} borderRadius={'13px'}>
+                <Select w={{ base: '89px', md: '120px' }} bgColor={'white'} color={'#006A71'} height={{ base: '25px', md: '40px' }} borderRadius={'13px'}>
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
@@ -104,7 +106,7 @@ const Index = () => {
               <HStack color={'white'} borderRadius={'10px'}>
                 <Button bgColor={'#C2C2C2'} borderRadius={'10px'} h={{ base: '24px', md: '40px' }} fontSize={{ base: '7px', md: '14px' }}>دنبال شونده ها</Button>
                 <Button bgColor={'#C2C2C2'} borderRadius={'10px'} h={{ base: '24px', md: '40px' }} fontSize={{ base: '7px', md: '14px' }}>دنبال کننده ‌ها</Button>
-                <Button bgColor={'#3646B3'} borderRadius={'10px'} h={{ base: '24px', md: '40px' }} fontSize={{ base: '7px', md: '14px' }}>همه</Button>
+                <Button bgColor={'#006A71'} borderRadius={'10px'} h={{ base: '24px', md: '40px' }} fontSize={{ base: '7px', md: '14px' }}>همه</Button>
               </HStack>
             </HStack>
             <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(2, 1fr)", xl: "repeat(2, 1fr)", "2xl": "repeat(3, 1fr)" }} gap={{ base: '12px', md: '40px' }} w={'100%'} mt={'30px'}>
@@ -155,9 +157,9 @@ const Index = () => {
                       dataFollowing?.data?.find((user) => (
                         user?.id == item?.id
                       ))
-                        ? <Button color={'#29CCCC'} w={'100%'} height={'30px'} fontSize={{ base: '10px', md: '14px' }} borderRadius={'10px'} onClick={e => handleFollow(item?.id)} variant={'outline'}>لغو دنبال کردن</Button>
+                        ? <Button color={'#006A71'} w={'100%'} height={'30px'} fontSize={{ base: '10px', md: '14px' }} borderRadius={'10px'} onClick={e => handleFollow(item?.id)} variant={'outline'}>لغو دنبال کردن</Button>
                         :
-                        <Button bgColor={'#29CCCC'} w={'100%'} height={'30px'} fontSize={{ base: '10px', md: '14px' }} borderRadius={'10px'} onClick={e => handleFollow(item?.id)}>دنبال کردن</Button>
+                        <Button bgColor={'#006A71'} w={'100%'} height={'30px'} fontSize={{ base: '10px', md: '14px' }} borderRadius={'10px'} onClick={e => handleFollow(item?.id)}>دنبال کردن</Button>
                     }
                   </Card>
                 ))
