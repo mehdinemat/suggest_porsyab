@@ -41,8 +41,8 @@ const LikeCard = () => {
           </HStack>
           <HStack w={'100%'} alignItems={'start'} pr={'30px'}>
             <HStack w={'100%'}>
-              <Text fontWeight={'400'} fontSize={{ base: '6px', md: '14px' }} color={'#3646B3'}>1404/4/1</Text>
-              <Text fontWeight={'400'} fontSize={{ base: '6px', md: '14px' }} color={'#3646B3'}>15:30</Text>
+              <Text fontWeight={'400'} fontSize={{ base: '6px', md: '14px' }} color={'#006A71'}>1404/4/1</Text>
+              <Text fontWeight={'400'} fontSize={{ base: '6px', md: '14px' }} color={'#006A71'}>15:30</Text>
 
               {/* <Avatar height={'19px'} width={'19px'} />
                         <VStack gap={0} alignItems={'start'}>
@@ -51,11 +51,11 @@ const LikeCard = () => {
                         </VStack> */}
             </HStack>
             <HStack>
-              <HStack gap={'14px'} color={'#3646B3'}>
+              <HStack gap={'14px'} color={'#006A71'}>
                 <HStack gap={'2px'} >
                   <svg width={currentSize == 'base' ? "12" : "20"} height={currentSize == 'base' ? "12" : "20"} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.8125 10.9373C17.1875 14.0623 14.8313 17.0048 11.525 17.6623C9.91249 17.9834 8.23976 17.7876 6.745 17.1028C5.25024 16.418 4.00965 15.279 3.19987 13.848C2.39009 12.4171 2.0524 10.7672 2.23489 9.13316C2.41738 7.49914 3.11074 5.96434 4.21625 4.74731C6.48375 2.24981 10.3125 1.56231 13.4375 2.81231" stroke="#3646B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M7.1875 9.6875L10.3125 12.8125L17.8125 4.6875" stroke="#3646B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M17.8125 10.9373C17.1875 14.0623 14.8313 17.0048 11.525 17.6623C9.91249 17.9834 8.23976 17.7876 6.745 17.1028C5.25024 16.418 4.00965 15.279 3.19987 13.848C2.39009 12.4171 2.0524 10.7672 2.23489 9.13316C2.41738 7.49914 3.11074 5.96434 4.21625 4.74731C6.48375 2.24981 10.3125 1.56231 13.4375 2.81231" stroke="#006A71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.1875 9.6875L10.3125 12.8125L17.8125 4.6875" stroke="#006A71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
 
                   <Text fontWeight={'400'} fontSize={{ base: '6px', md: '12px' }} >3پسند</Text>
