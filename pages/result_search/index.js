@@ -73,8 +73,8 @@ const postRequest = (url, { arg }) => {
 };
 
 const postRequest1 = (url, { arg: { id, ...data } }) => {
-  return axios.post(baseUrl + url + `${id}/like`, data);
-};
+  return axios.post(baseUrl + url + `${id}/like`, data)
+}
 
 const tags = [
   "جامعه اسلامی",
@@ -117,7 +117,7 @@ const Index = ({
 
   const { locale } = useRouter();
 
-  const toast = useToast();
+  const toast = useToast()
 
   const [page, setPage] = useState(1);
   const scrollRef = useRef(null);
@@ -172,10 +172,7 @@ const Index = ({
     fetcherWithTiming
   );
 
-  const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(
-    `user/chat/`,
-    postRequest1
-  );
+  const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(isUserLogin && `user/chat/`, postRequest1)
 
   const { data: dataHistory, isLoading: isLoadingHistory } = useSWR(
     isUserLogin && `user/chat/session`
@@ -305,6 +302,7 @@ const Index = ({
                 setMetaData(parsed.metadata);
               }
 
+
               if (parsed.done) {
                 setChatHistory((prev) =>
                   prev.map((msg) =>
@@ -327,11 +325,7 @@ const Index = ({
     }
   );
 
-  useEffect(() => {
-    console.log(chatHistory);
-  }, [chatHistory]);
-
-  const handleSubmit = async (type = "") => {
+  const handleSubmit = async (type = '') => {
     setInput("");
     setIsStreaming(true);
     setChatDone(false);
@@ -429,6 +423,7 @@ const Index = ({
             setConditionStream("");
             setIsStreaming(false);
             botMessage += parsed.chunk;
+            console.log(parsed);
             // update assistant message in history
             setChatHistory((prev) =>
               prev.map((msg) =>
@@ -558,6 +553,11 @@ const Index = ({
           }
 
           if (parsed.done) {
+            setChatHistory((prev) =>
+              prev.map((msg) =>
+                msg.id === streamId ? { ...msg, is_like: 'null' } : msg
+              )
+            );
             setChatDone(true);
             done = true;
             break;
@@ -592,8 +592,8 @@ const Index = ({
   }, [filters?.search]);
 
   const handleSubmitDeep = () => {
-    handleSubmit("deep");
-  };
+    handleSubmit('deep')
+  }
 
   const handleAiResponse = () => {
     handleClickAiSearch(2, watch("search"));
@@ -624,25 +624,15 @@ const Index = ({
   }, [chatHistory, isStreaming]);
 
   const handleLikeChat = (like, id) => {
+    if (!isUserLogin) {
+      router.push('/login')
+      return
+    }
     setChatHistory((prev) =>
       prev.map((msg) => (msg.id === id ? { ...msg, is_like: like } : msg))
     );
-
-    triggerLike({ is_like: like, id: chatSession });
-  };
-
-  const continueConversation = () => {
-    setContinueQuestion(true);
-    setTimeout(() => {
-      const element = document.getElementById("search_box");
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "center", // or "center" depending on where you want it
-        });
-      }
-    }, 500);
-  };
+    triggerLike({ is_like: like, id: chatSession })
+  }
 
   const copyToClipboard = async (text) => {
     try {
@@ -660,9 +650,26 @@ const Index = ({
     }
   };
 
+  const continueConversation = () => {
+    setContinueQuestion(true)
+    setTimeout(() => {
+
+      const element = document.getElementById("search_box");
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center", // or "center" depending on where you want it
+        });
+      }
+
+    }, 500)
+
+  }
+
   return (
     <Stack w={"100%"} scrollSnapAlign="start">
       <Head>
+
         <title>
           {t("parsa")} :{" "}
           {t(
@@ -672,7 +679,7 @@ const Index = ({
           )}{" "}
           :{filters?.search}
         </title>
-        <link rel="icon" href="/question.png" />
+        <link rel="icon" href="/porsyab_header.png" />
       </Head>
       <Box
         w="100%"
@@ -714,31 +721,35 @@ const Index = ({
                 {/* <Text fontSize={{ base: "11px", md: "16px" }} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text> */}
-                <Tabs colorScheme="blue" variant="unstyled" w={"100%"}>
-                  <TabList w={"100%"}>
+                <Tabs colorScheme="green" variant='soft-rounded' w={"100%"}>
+                  <TabList w={"100%"} as={HStack} mb={'10px'} >
+                    {showHistory ? (
+                      <Icon
+                        cursor={'pointer'}
+                        fontSize={"25px"}
+                        as={IoClose}
+                        onClick={(e) => setShowHistory(false)}
+                        ml={"20px"}
+                        color={'#006A71'}
+                      />
+                    ) : (
+                      isUserLogin && <Icon
+                        color={'#006A71'}
+                        cursor={'pointer'}
+                        fontSize={"25px"}
+                        as={IoMenuOutline}
+                        onClick={(e) => setShowHistory(true)}
+                        ml={"20px"}
+                      />
+                    )}
                     <Tab
+
                       _selected={{
-                        borderBottom: "3px solid #3646B3", // active border
-                        color: "#3646B3", // active text color
+                        color: "#00464B", // active text color
+                        bgColor: '#82E5BE',
+                        borderRadius: '60px'
                       }}
                     >
-                      {showHistory ? (
-                        <Icon
-                          fontSize={"25px"}
-                          as={IoClose}
-                          onClick={(e) => setShowHistory(false)}
-                          ml={"20px"}
-                        />
-                      ) : (
-                        isUserLogin && (
-                          <Icon
-                            fontSize={"25px"}
-                            as={IoMenuOutline}
-                            onClick={(e) => setShowHistory(true)}
-                            ml={"20px"}
-                          />
-                        )
-                      )}
                       <HStack w={"100%"} alignItems={"center"}>
                         <svg
                           width={size == "base" ? "14" : "21"}
@@ -749,21 +760,21 @@ const Index = ({
                         >
                           <path
                             d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
-                            fill="#3646B3"
+                            fill="#00464B"
                           />
                         </svg>
                         <Text
                           fontSize={{ base: "14px", md: "22px" }}
-                          color={"#3646B3"}
+                          color={"#00464B"}
                           fontWeight={"700"}
                           width={"max-content"}
                         >
-                          نتایج جستجو هوشمند
+                          پاسخ اجمالی هوشمند
                         </Text>
                       </HStack>
                     </Tab>
                     <HStack w={"100%"} alignItems={"center"} color={"#B8B8B8"}>
-                      <IoIosList fontSize={{ base: "12px", md: "20px" }} />
+                      <IoIosList fontSize={{ base: "12px", md: "25px" }} size={'25px'} />
                       <Text
                         fontSize={{ base: "14px", md: "22px" }}
                         fontWeight={"700"}
@@ -784,10 +795,7 @@ const Index = ({
                     <TabPanel
                       w={"100%"}
                       as={Grid}
-                      templateColumns={{
-                        base: "repeat(4, 1fr)",
-                        md: "repeat(5, 1fr)",
-                      }}
+                      templateColumns={{ base: "repeat(4, 1fr)", md: "repeat(5, 1fr)" }}
                       bgColor={"#F7F7F7"}
                       borderRadius={"30px"}
                       padding={"15px"}
@@ -849,15 +857,12 @@ const Index = ({
                                 >
                                   <Text
                                     textAlign="center"
-                                    color="#3646B3"
+                                    color="#006A71"
                                     fontSize="9px"
                                     transition="all 0.3s ease"
                                   >
                                     {item?.title
-                                      ? `${item?.title?.slice(
-                                        0,
-                                        showHistory ? 10 : 20
-                                      )}...`
+                                      ? `${item?.title?.slice(0, showHistory ? 10 : 20)}...`
                                       : "بدون نام"}
                                   </Text>
                                 </HStack>
@@ -875,7 +880,7 @@ const Index = ({
                                   }}
                                 >
                                   <IoEllipsisHorizontalSharp
-                                    color="#3646B3"
+                                    color="#006A71"
                                     size="20px"
                                   />
                                 </Box>
@@ -885,14 +890,7 @@ const Index = ({
                         </VStack>
                       )}
 
-                      <VStack
-                        as={GridItem}
-                        colSpan={{
-                          base: showHistory ? 3 : 4,
-                          md: showHistory ? 4 : 5,
-                        }}
-                        justifyContent={"start"}
-                      >
+                      <VStack as={GridItem} colSpan={{ base: showHistory ? 3 : 4, md: showHistory ? 4 : 5 }} justifyContent={'start'}>
                         <Box
                           w={"100%"}
                           ref={chatContainerRef}
@@ -914,7 +912,7 @@ const Index = ({
                                     chat.role === 2 ? "flex-start" : "flex-end"
                                   }
                                   border={".3px"}
-                                  bgColor={chat.role === 2 ? "#3646B3" : "none"}
+                                  bgColor={chat.role === 2 ? "#00464B" : "none"}
                                   mx={"15px"}
                                   py={"5px"}
                                   borderRadius={"20px"}
@@ -1004,13 +1002,13 @@ const Index = ({
                                           alignItems={"center"}
                                           justifyContent={"space-between"}
                                           pb={continueQuestion ? "0px" : "15px"}
-                                          overflow={"hidden"}
+                                          overflow={'hidden'}
                                         >
                                           <Stack>
                                             <HStack gap={"15px"}>
                                               <Button
-                                                bgColor={"#DFE3FF"}
-                                                color={"#3646B3"}
+                                                bgColor={"#82E5BE"}
+                                                color={"#006A71"}
                                                 borderRadius={"18px"}
                                                 fontSize={{
                                                   base: "10px",
@@ -1024,10 +1022,8 @@ const Index = ({
                                                   base: "129px",
                                                   md: "180px",
                                                 }}
-                                                fontWeight={"500"}
-                                                onClick={(e) =>
-                                                  handleSubmitDeep()
-                                                }
+                                                fontWeight={"600"}
+                                                onClick={e => handleSubmitDeep()}
                                               >
                                                 بررسی عمیق‌تر
                                               </Button>
@@ -1078,7 +1074,7 @@ const Index = ({
                                               <Button
                                                 bgColor={"white"}
                                                 color={
-                                                  (chat?.is_like != 'null' && chat?.is_like) 
+                                                  chat?.is_like != 'null' && chat?.is_like
                                                     ? "green"
                                                     : "#CCCCCC"
                                                 }
@@ -1116,7 +1112,7 @@ const Index = ({
                                               <Button
                                                 bgColor={"white"}
                                                 color={
-                                                  (chat?.is_like != 'null' && !chat?.is_like) 
+                                                  (chat?.is_like != 'null' && !chat?.is_like)
                                                     ? "red"
                                                     : "#CCCCCC"
                                                 }
@@ -1140,7 +1136,7 @@ const Index = ({
                                                       <path
                                                         d="M10.1855 10.459L18.8438 19.349"
                                                         stroke={
-                                                          (chat?.is_like != 'null' && !chat?.is_like)  
+                                                          chat?.is_like != 'null' && !chat?.is_like
                                                             ? "red"
                                                             : "#999999"
                                                         }
@@ -1151,7 +1147,7 @@ const Index = ({
                                                       <path
                                                         d="M18.8457 10.459L10.1875 19.349"
                                                         stroke={
-                                                          (chat?.is_like != 'null' && !chat?.is_like)  
+                                                          chat?.is_like != 'null' && !chat?.is_like
                                                             ? "red"
                                                             : "#999999"
                                                         }
@@ -1164,7 +1160,7 @@ const Index = ({
                                                       opacity="0.5"
                                                       d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z"
                                                       stroke={
-                                                        (chat?.is_like != 'null' && !chat?.is_like)  
+                                                        chat?.is_like != 'null' && !chat?.is_like
                                                           ? "red"
                                                           : "#A1A1A1"
                                                       }
@@ -1195,7 +1191,7 @@ const Index = ({
                                           </Stack>
                                           {!continueQuestion && (
                                             <Button
-                                              bgColor={"#3646B3"}
+                                              bgColor={"#006A71"}
                                               color={"white"}
                                               fontSize={"14px"}
                                               fontWeight={"500"}
@@ -1203,7 +1199,7 @@ const Index = ({
                                               width={"180px"}
                                               onClick={(e) => {
                                                 if (isUserLogin) {
-                                                  continueConversation();
+                                                  continueConversation()
                                                 } else {
                                                   router.push("/login");
                                                 }
@@ -1239,6 +1235,7 @@ const Index = ({
                     </TabPanel>
                     {continueQuestion && (
                       <VStack
+
                         mb={{ base: "80px", md: "15px" }}
                         gap={0}
                         alignItems={"center"}
@@ -1299,7 +1296,7 @@ const Index = ({
                           {...register("search")}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                              handleAiResponse();
+                              handleClickAiSearch();
                             }
                           }}
                         />
@@ -1307,7 +1304,7 @@ const Index = ({
                           w={"100%"}
                           justifyContent={"end"}
                           alignItems={"end"}
-                          mt={{ base: "0px", md: "0px" }}
+                          mt={{ base: "0px", md: "7px" }}
                         >
                           <HStack
                             height={"100%"}
@@ -1322,8 +1319,6 @@ const Index = ({
                                 alignItems={"center"}
                                 gap={"5px"}
                                 bgColor={"#FFFFFF0D"}
-                                border={"1px"}
-                                borderColor={"#3646B3"}
                                 borderRadius={"10px"}
                                 padding={"5px"}
                               >
@@ -1334,12 +1329,14 @@ const Index = ({
                                       size={
                                         currentSize == "base" ? "14px" : "22px"
                                       }
-                                      color="#3646B3"
+                                      color="#006A71"
                                     />
                                   }
-                                  bgColor={"#3646B333"}
-                                  color={"#081438"}
-                                  borderRadius={"6px"}
+                                  bgColor={"#0098751A"}
+                                  color={"#006A71"}
+                                  borderRadius={"15px"}
+                                  border={'1px'}
+                                  borderColor={'#006A71'}
                                   onClick={(e) => handleClickSearch()}
                                   fontSize={{ base: "6px", md: "14px" }}
                                   height={{ base: "22px", md: "30px" }}
@@ -1350,7 +1347,9 @@ const Index = ({
                                 <Button
                                   height={{ base: "22px", md: "30px" }}
                                   fontSize={{ base: "6px", md: "14px" }}
-                                  borderRadius={"6px"}
+                                  borderRadius={"15px"}
+                                  border={'1px'}
+                                  borderColor={'#006A71'}
                                   onClick={(e) => handleClickSemanticSearch()}
                                   leftIcon={
                                     <svg
@@ -1370,26 +1369,26 @@ const Index = ({
                                       />
                                       <path
                                         d="M15.5129 16.6387L12.0137 13.2129"
-                                        stroke="#3646B3"
+                                        stroke="#006A71"
                                         stroke-width="1.5"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                       />
                                       <path
                                         d="M13.9003 8.745C13.9003 12.2326 11.0124 15.0598 7.45013 15.0598C3.88782 15.0598 1 12.2326 1 8.745C1 5.25742 3.88782 2.43018 7.45013 2.43018"
-                                        stroke="#3646B3"
+                                        stroke="#006A71"
                                         stroke-width="1.5"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                       />
                                       <path
                                         d="M11.1696 0.232422L11.61 2.01061C11.9087 3.21516 12.8889 4.15473 14.1454 4.44107L16.0003 4.86329L14.1454 5.28552C12.8889 5.57185 11.9087 6.51142 11.61 7.71597L11.1696 9.49416L10.7292 7.71597C10.4305 6.51142 9.45034 5.57185 8.1938 5.28552L6.33887 4.86329L8.1938 4.44107C9.45034 4.15473 10.4305 3.21516 10.7292 2.01061L11.1696 0.232422Z"
-                                        fill="#3646B3"
+                                        fill="#006A71"
                                       />
                                     </svg>
                                   }
-                                  bgColor={"#3646B333"}
-                                  color={"#081438"}
+                                  bgColor={"#0098751A"}
+                                  color={"#006A71"}
                                   width={{ base: "50px", md: "auto" }}
                                 >
                                   معنایی
@@ -1410,8 +1409,8 @@ const Index = ({
                                 <Button
                                   w={{ base: "87px", md: "109px" }}
                                   height={{ base: "32px", md: "40px" }}
-                                  color={"#3646B3"}
-                                  borderRadius="8px"
+                                  color={"#006A71"}
+                                  borderRadius="20px"
                                   rightIcon={
                                     <IoSearch
                                       fontSize={{
@@ -1447,14 +1446,14 @@ const Index = ({
                               hasArrow
                             >
                               <Button
-                                bgColor={"#081438"}
+                                bgColor={"#00464B"}
                                 w={{ base: "80px", md: "179px" }}
                                 height={{ base: "32px", md: "40px" }}
                                 width={{ base: "150px" }}
                                 fontSize={{ base: "12px", md: "14px" }}
                                 fontWeight={"700"}
-                                color={"white"}
-                                borderRadius="10px"
+                                color={"#82E5BE"}
+                                borderRadius="20px"
                                 leftIcon={
                                   currentSize != "base" ? (
                                     <svg
@@ -1466,7 +1465,7 @@ const Index = ({
                                     >
                                       <path
                                         d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z"
-                                        fill="#29CCCC"
+                                        fill="#82E5BE"
                                       />
                                     </svg>
                                   ) : (
@@ -1479,7 +1478,7 @@ const Index = ({
                                     >
                                       <path
                                         d="M2.89814 0.694336L3.15614 1.86452C3.33111 2.6572 3.90526 3.2755 4.64132 3.46393L5.72791 3.74179L4.64132 4.01964C3.90526 4.20807 3.33111 4.82638 3.15614 5.61906L2.89814 6.78924L2.64013 5.61906C2.46516 4.82638 1.89102 4.20807 1.15496 4.01964L0.0683594 3.74179L1.15496 3.46393C1.89102 3.2755 2.46516 2.6572 2.64013 1.86452L2.89814 0.694336Z"
-                                        fill="#29CCCC"
+                                        fill="#82E5BE"
                                       />
                                     </svg>
                                   )
@@ -1497,7 +1496,7 @@ const Index = ({
                                         fill-rule="evenodd"
                                         clip-rule="evenodd"
                                         d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z"
-                                        fill="white"
+                                        fill="#82E5BE"
                                       />
                                     </svg>
                                   ) : (
@@ -1512,7 +1511,7 @@ const Index = ({
                                         fill-rule="evenodd"
                                         clip-rule="evenodd"
                                         d="M0.950104 4.21324L7.71712 0.8768C8.07107 0.70229 8.47266 0.983484 8.47266 1.40591V3.14211C8.47266 3.50913 8.2339 3.82507 7.90256 3.89633L5.42594 4.42925C5.11027 4.49708 5.11027 4.98763 5.42594 5.05555L7.90256 5.58848C8.2339 5.65973 8.47266 5.97557 8.47266 6.3427V8.0788C8.47266 8.50122 8.07107 8.78251 7.71712 8.60791L0.950104 5.27156C0.531765 5.06524 0.531765 4.41947 0.950104 4.21324"
-                                        fill="white"
+                                        fill="#82E5BE"
                                       />
                                     </svg>
                                   )
@@ -1542,10 +1541,10 @@ const Index = ({
               className="questionlist"
             >
               <HStack mb={"10px"} ml={"20px"}>
-                <IoSearch color={"#3646B3"} fontSize={"22px"} />
+                <IoSearch color={"#006A71"} fontSize={"22px"} />
                 <Text
                   fontSize={{ base: "20px", md: "30px" }}
-                  color={"#3646B3"}
+                  color={"#006A71"}
                   whiteSpace={"nowrap"}
                 >
                   نتایج جستجو بین سوالات
@@ -1598,7 +1597,7 @@ const Index = ({
                         fontFamily="iransans"
                         fontWeight="500"
                         fontSize="20px"
-                        color="#3646B3"
+                        color="#006A71"
                         opacity={0} // hidden initially
                         transition="opacity 0.4s ease" // smooth fade on leave
                         _groupHover={{
@@ -1612,7 +1611,7 @@ const Index = ({
                     )}
 
                     <IconButton
-                      icon={<IoOptionsOutline color="#3646B3" />}
+                      icon={<IoOptionsOutline color="#006A71" />}
                       fontSize="31px"
                     />
                   </HStack>
@@ -1623,7 +1622,7 @@ const Index = ({
                   as={HStack}
                   justifyContent={"space-between"}
                   w={"calc( 100% - 40px )"}
-                  bgColor={"#3646B31A"}
+                  bgColor={"#006A7133"}
                   overflow={"hidden"}
                   height={"60px"}
                   borderRadius={"10px"}
@@ -1635,7 +1634,7 @@ const Index = ({
                   />
                   <Box>
                     <IoMdClose
-                      color="#3646B3"
+                      color="#006A71"
                       fontSize={"24px"}
                       width={"fit-content"}
                       cursor={"pointer"}
