@@ -271,6 +271,8 @@ const Index = () => {
       menuDefault={true}
       register={registerSearch}
       watchSearch={watchSearch}
+      isUserLogin={isUserLogin}
+      setIsUserLogin={setIsUserLogin}
     >
       <Head>
         <title>
