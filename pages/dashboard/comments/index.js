@@ -12,17 +12,20 @@ import {
   useBreakpointValue,
   VStack
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import RightSidebar from "../rightSidebar";
 
 const Index = () => {
   const { t } = useTranslation();
 
+  const [isUserLogin, setIsUserLogin] = useState('')
+
   const isMobile = useBreakpointValue({ base: true, md: false });
 
 
   return (
-    <MainLayout menuDefault={true}>
+    <MainLayout menuDefault={true} isUserLogin={isUserLogin} setIsUserLogin={setIsUserLogin}>
       {isMobile
         ? <MobileUserPage />
         : <Box
@@ -57,7 +60,7 @@ const Index = () => {
                     <HStack w={'100%'} justifyContent={'space-between'} paddingX={'16px'}>
                       <HStack color="#979797" alignItems={'baseline'}>
                         <Text height={'20px'} fontWeight={'800'} fontSize={'18px'}>مرتب سازی براساس</Text>
-                        <Select bgColor={'white'} color={'#3646B3'} height={'40px'} width={'90px'}>
+                        <Select bgColor={'white'} color={'#006A71'} height={'40px'} width={'90px'}>
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>

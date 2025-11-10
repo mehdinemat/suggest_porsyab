@@ -14,7 +14,7 @@ import {
   useBreakpointValue,
   VStack
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GoPencil } from "react-icons/go";
 import { IoArrowBack, IoClose } from "react-icons/io5";
@@ -23,6 +23,8 @@ import RightSidebar from "../rightSidebar";
 
 const Index = () => {
   const { t } = useTranslation();
+
+  const [isUserLogin, setIsUserLogin] = useState('')
 
   const { data: dataQuestion, isLoading: isLoadingQuestion } = useSWR(`user/client/my-questions`)
 
@@ -34,7 +36,7 @@ const Index = () => {
   }, [dataQuestion])
 
   return (
-    <MainLayout menuDefault={true}>
+    <MainLayout menuDefault={true} isUserLogin={isUserLogin} setIsUserLogin={setIsUserLogin}>
       {
         isMobile
           ? <MobileUserPage />

@@ -12,6 +12,7 @@ import {
   useBreakpointValue,
   VStack
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
 import RightSidebar from "../rightSidebar";
@@ -19,13 +20,15 @@ import RightSidebar from "../rightSidebar";
 const Index = () => {
   const { t } = useTranslation();
 
+  const [isUserLogin, setIsUserLogin] = useState('')
+
   const isMobile = useBreakpointValue({ base: true, md: false });
 
 
   const { data: dataAnswer, isLoading: isLoadingAnswer } = useSWR(`user/client/my-answers`)
 
   return (
-    <MainLayout menuDefault={true}>
+    <MainLayout menuDefault={true} isUserLogin={isUserLogin} setIsUserLogin={setIsUserLogin}>
       {isMobile
         ? <MobileUserPage />
         : <Box

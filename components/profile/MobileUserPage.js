@@ -109,7 +109,7 @@ const MobileUserPage = ({ dataSaved }) => {
         <Link href="/dashboard/questions">
           <Button
             variant="ghost"
-            bg={getLastPathSegment(activePage) === "questions" ? "#4A58BA" : "transparent"}
+            bg={getLastPathSegment(activePage) === "questions" ? "#19797F" : "transparent"}
             color={getLastPathSegment(activePage) === "questions" ? "#29CCCC" : "gray.500"}
             borderRadius={'999px'}
             display="flex"
@@ -132,7 +132,7 @@ const MobileUserPage = ({ dataSaved }) => {
         <Link href="/dashboard/answers">
           <Button
             variant="ghost"
-            bg={getLastPathSegment(activePage) === "answers" ? "#4A58BA" : "transparent"}
+            bg={getLastPathSegment(activePage) === "answers" ? "#19797F" : "transparent"}
             color={getLastPathSegment(activePage) === "answers" ? "#29CCCC" : "gray.500"}
             borderRadius={'999px'}
             display="flex"
@@ -155,7 +155,7 @@ const MobileUserPage = ({ dataSaved }) => {
         <Link href="/dashboard/comments">
           <Button
             variant="ghost"
-            bg={getLastPathSegment(activePage) === "comments" ? "#4A58BA" : "transparent"}
+            bg={getLastPathSegment(activePage) === "comments" ? "#19797F" : "transparent"}
             color={getLastPathSegment(activePage) === "comments" ? "#29CCCC" : "gray.500"}
             borderRadius={'999px'}
             display="flex"
@@ -178,7 +178,7 @@ const MobileUserPage = ({ dataSaved }) => {
         <Link href="/dashboard/likes">
           <Button
             variant="ghost"
-            bg={getLastPathSegment(activePage) === "likes" ? "#4A58BA" : "transparent"}
+            bg={getLastPathSegment(activePage) === "likes" ? "#19797F" : "transparent"}
             color={getLastPathSegment(activePage) === "likes" ? "#29CCCC" : "gray.500"}
             borderRadius={'999px'}
             display="flex"
