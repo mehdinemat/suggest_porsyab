@@ -284,7 +284,7 @@ const Index = () => {
           {dataQuestion?.data?.result?.[0]?.title ||
             dataQuestion?.data?.result?.[0]?.content}
         </title>
-        <link rel="icon" href="/porsyab_header.png" />
+        <link rel="icon" href="/logoheader.png" />
       </Head>
       <Box
         marginTop={{ base: "0px", md: "10px" }}

@@ -679,7 +679,7 @@ const Index = ({
           )}{" "}
           :{filters?.search}
         </title>
-        <link rel="icon" href="/porsyab_header.png" />
+        <link rel="icon" href="/logoheader.png" />
       </Head>
       <Box
         w="100%"

@@ -178,7 +178,7 @@ export default function Home({ children }) {
         <title>
           {t("parsa")} | {t("main_page")}
         </title>
-        <link rel="icon" href="/question.png" />
+        <link rel="icon" href="/logoheader.png" />
       </Head>
       <Header
         data={dataGeneral?.data}
