@@ -65,7 +65,7 @@ const Index = () => {
                     <HStack w={'100%'} justifyContent={'space-between'} paddingX={'16px'}>
                       <HStack color="#979797" alignItems={'baseline'}>
                         <Text height={'20px'} fontWeight={'800'} fontSize={'18px'}>مرتب سازی براساس</Text>
-                        <Select bgColor={'white'} height={'40px'} width={'90px'} color={'#3646B3'}>
+                        <Select bgColor={'white'} height={'40px'} width={'90px'} color={'#006A71'}>
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
@@ -83,7 +83,7 @@ const Index = () => {
                   <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"} padding={'20px'}>
                     <VStack w={'100%'} alignItems={'start'} justifyContent={'space-between'} height={'100%'}>
                       <VStack w={'100%'} alignItems={'start'}>
-                        <HStack color={'#3646B3'} w={'100%'} alignItems={'center'} justifyContent={'start'} gap={0} fontWeight={'600'} fontSize={'16px'}>
+                        <HStack color={'#006A71'} w={'100%'} alignItems={'center'} justifyContent={'start'} gap={0} fontWeight={'600'} fontSize={'16px'}>
                           <IconButton icon={<GoPencil />} variant={'ghost'} />
                           <Text>ویرایش سوال</Text>
                         </HStack>
@@ -108,7 +108,7 @@ const Index = () => {
                         </Select>
                       </VStack>
                       <VStack w={'100%'}>
-                        <Button bgColor={'#3646B3'} fontWeight={'800'} fontSize={'14px'} mt={'24px'} leftIcon={<IoArrowBack />} w={'100%'} height={'49px'}>ثبت و ادامه</Button>
+                        <Button bgColor={'#006A71'} fontWeight={'800'} fontSize={'14px'} mt={'24px'} leftIcon={<IoArrowBack />} w={'100%'} height={'49px'}>ثبت و ادامه</Button>
                         <Button color={'#FF0000'} fontWeight={'800'} fontSize={'14px'} mt={'8px'} leftIcon={<IoClose />} w={'100%'} variant={'ghost'}>حذف این سوال</Button>
                       </VStack>
                     </VStack>

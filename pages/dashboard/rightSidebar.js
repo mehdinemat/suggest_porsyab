@@ -76,13 +76,13 @@ const RightSidebar = () => {
       borderColor={"gray.200"}
       padding={"10px"}
       pt={"10px"}
-      bgColor={"#3646B3"}
+      bgColor={'#006A71'}
       height={'calc( 100vh - 70px )'}
     >
       <Card bgColor={'#F7F7F71A'} height={'360px'} width={'100%'} borderRadius={'10px'} position={'relative'} as={VStack} cursor={'pointer'}>
         <HStack w={'100%'} justifyContent={'space-between'}>
           <Button position={'absolute'} top={'10px'} right={'10px'} bg={'#F9C96D1A'} color={'#F9C96D'} variant={'outline'} borderRadius={'5px'} w={'70px'} h={'22px'} fontSize={'8px'} leftIcon={<Image src="/orange_star.png" w={'10px'} h={'10px'} />}>سطح مبتدی</Button>
-          <IconButton icon={<IoPencil />} bgColor={'#3646B3'} position={'absolute'} top={'10px'} left={'10px'} height={'25px'} width={'22px'} borderRadius={'5px'} />
+          <IconButton icon={<IoPencil />} bgColor={'#006A71'} position={'absolute'} top={'10px'} left={'10px'} height={'25px'} width={'22px'} borderRadius={'5px'} />
         </HStack>
         <Box border={'5px solid #F9C96D'} borderRadius={'100%'} mt={'30px'}
           boxShadow="0px 0px 133.2px 2px #F9C96D"
@@ -94,8 +94,8 @@ const RightSidebar = () => {
         <Text color={'white'} fontSize={'15px'} fontWeight={'900'} onClick={e => handleClickProfile()} >{dataMe?.data?.[0]?.first_name} {dataMe?.data?.[0]?.last_name}</Text>
         <Text fontWeight={'300'} fontSize={'10px'} color={'white'} onClick={e => handleClickProfile()} >{dataMe?.data?.[0]?.email}</Text>
         <HStack w={'100%'} padding={'10px'}>
-          <Button bgColor={'#3646B3'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollower()}>دنبال کننده‌ها</Button>
-          <Button bgColor={'#3646B3'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollowing()}>دنبال شونده‌ها</Button>
+          <Button bgColor={'#006A71'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollower()}>دنبال کننده‌ها</Button>
+          <Button bgColor={'#006A71'} fontSize={'10px'} w={'100%'} onClick={e => handleClickFollowing()}>دنبال شونده‌ها</Button>
         </HStack>
       </Card>
       {/* <Text fontWeight={'bold'} fontSize={'20px'}>حسن الماسی</Text>
@@ -129,7 +129,7 @@ const RightSidebar = () => {
                 icon={item?.icon}
                 color={
                   getLastPathSegment(activePage) == item?.link
-                    ? "#3646B3"
+                    ? "#006A71"
                     : "white"
                 }
                 fontSize={"20px"}
@@ -138,7 +138,7 @@ const RightSidebar = () => {
                 fontWeight={"extrabold"}
                 color={
                   getLastPathSegment(activePage) == item?.link
-                    ? "#3646B3"
+                    ? "#006A71"
                     : "white"
                 }
                 fontSize={"10px"}

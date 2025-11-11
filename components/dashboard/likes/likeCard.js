@@ -100,7 +100,7 @@ const LikeCard = () => {
               <path d="M0.75 5.75L5.75 10.75L0.75 5.75ZM0.75 5.75L5.75 0.75L0.75 5.75ZM0.75 5.75L9.5 5.75L0.75 5.75ZM14.0833 5.75L12 5.75L14.0833 5.75Z" fill="white" />
               <path d="M0.75 5.75L5.75 10.75M0.75 5.75L5.75 0.75M0.75 5.75L9.5 5.75M14.0833 5.75L12 5.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>}
-            bgColor="#29CCCC"
+            bgColor="#006A71"
             w={{ base: "123px", md: "100%" }}
             h={{ base: "27px", md: "39px" }}
             borderRadius="10px"

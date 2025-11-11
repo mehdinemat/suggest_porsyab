@@ -61,7 +61,7 @@ const MobileUserPage = ({ dataSaved }) => {
         <CommentCard titleFontSize={'7px'} fontSize="10px" dateFontSize="10px" />
       </Box>}
 
-      {getLastPathSegment(activePage) === "likes" && <Box as={VStack} w={'100%'} height={'calc( 100vh - 140px )'} padding={'16px'} gap={'30px'} overflowY={'auto'} mt={'60px'} padding={'15px'} mb={'90px'}>
+      {getLastPathSegment(activePage) === "likes" && <Box as={VStack} w={'100%'} height={'calc( 100vh - 140px )'} gap={'30px'} overflowY={'auto'} mt={'60px'} padding={'15px'} mb={'90px'}>
         <LikeCard />
         <LikeCard />
         <LikeCard />
