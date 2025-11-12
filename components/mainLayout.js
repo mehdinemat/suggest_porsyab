@@ -263,7 +263,7 @@ const MainLayout = ({
                   <InputGroup width="490px" height="60px" ref={inputRef}>
                     <Input
                       border="1px"
-                      borderColor="#3646B366"
+                      borderColor="#006A7166"
                       height="60px"
                       width="490px"
                       placeholder="جستجو..."

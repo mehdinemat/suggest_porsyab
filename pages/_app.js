@@ -56,14 +56,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}>
-      <UserProvider>
-        <QueryParamProvider adapter={Adapter} options={{ enableBatching: true }}>
-          <SWRConfig value={{ fetcher }}>
+      <QueryParamProvider adapter={Adapter} options={{ enableBatching: true }}>
+        <SWRConfig value={{ fetcher }}>
+          <UserProvider>
             <AppWrapper Component={Component} pageProps={pageProps} />
-          </SWRConfig>
-          <Fonts lang={locale || "en"} />
-        </QueryParamProvider>
-      </UserProvider>
+          </UserProvider>
+        </SWRConfig>
+        <Fonts lang={locale || "en"} />
+      </QueryParamProvider>
     </ChakraProvider>
   );
 }

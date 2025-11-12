@@ -180,6 +180,7 @@ const Index = () => {
       onSuccess: () => {
         mutateQuestion();
         muatteAnswer();
+        mutateAnswerLike()
         mutateLike();
       },
     });
@@ -191,6 +192,7 @@ const Index = () => {
     onSuccess: () => {
       mutateQuestion();
       muatteAnswer();
+      mutateAnswerLike()
       mutateLike();
       resetComment();
     },
@@ -207,15 +209,17 @@ const Index = () => {
   };
 
   const handleAddAction = (type, action, id) => {
+    setLike(true)
     triggerAddLike({
       table_id: id || query?.id,
       table_type: type,
       type_param: action,
     });
   };
-  const handleUpdateAction = (type, action, action_id) => {
+  const handleUpdateAction = (action_id) => {
+    setLike(!like);
     triggerUpdateLike({
-      action_id,
+      action_id
     });
   };
 
@@ -264,8 +268,8 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    console.log(dataMe?.data?.[0]?.username);
-  }, [dataMe]);
+    console.log(dataAnswerLike?.data?.result?.find((like) => (like?.user__username == dataMe?.data?.[0]?.username))?.id);
+  }, [dataMe, dataAnswerLike]);
 
   const handleLikeQuestion = () => {
     setLike(!like);
@@ -709,7 +713,7 @@ const Index = () => {
                                 >
                                   <Button
                                     bgColor={"white"}
-                                    color={!like ? "#CCCCCC" : "green.300"}
+                                    color={dataAnswerLike?.data?.result?.find((like) => (like?.user__username == dataMe?.data?.[0]?.username))?.id ? "green.300" : "#CCCCCC"}
                                     fontWeight={"500"}
                                     fontSize={"16px"}
                                     borderRadius={"18px"}
@@ -719,7 +723,7 @@ const Index = () => {
                                         fontSize={"25px"}
                                       />
                                     }
-                                    onClick={(e) => handleLikeQuestion()}
+                                    onClick={(e) => { dataAnswerLike?.data?.result?.find((like) => (like?.user__username == dataMe?.data?.[0]?.username))?.id ? handleUpdateAction(dataAnswerLike?.data?.result?.find((like) => (like?.user__username == dataMe?.data?.[0]?.username))?.id) : handleAddAction('answer', 'like', dataQuestionAnswer?.data?.[answerPage]?.id) }}
                                   >
                                     پسند
                                   </Button>
