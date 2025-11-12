@@ -256,7 +256,7 @@ export default function Home({ children }) {
                       <Button
                         height={"32px"}
                         width={"178px"}
-                        bgColor={"#3646B3"}
+                        bgColor={"#006A71"}
                         borderRadius={"15px"}
                         fontSize={"16px"}
                         onClick={() => setSize(size + 1)}
@@ -267,7 +267,7 @@ export default function Home({ children }) {
                         height={"32px"}
                         width={"178px"}
                         bgColor={"#3646B31A"}
-                        color={"#3646B3"}
+                        color={"#006A71"}
                         variant={"outline"}
                         borderRadius={"15px"}
                         fontSize={"16px"}

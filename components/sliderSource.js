@@ -54,7 +54,7 @@ const SliderSource = ({
           fontWeight={"700"}
           fontSize={"22px"}
           fontFamily={"morabba"}
-          color={"#3646B3"}
+          color={"#006A71"}
         >
           {title}
         </Text>

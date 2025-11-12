@@ -39,7 +39,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title, link, b
     <VStack
       w={"100%"}
       border={"1px"}
-      borderColor={"#3646B3"}
+      borderColor={"#006A71"}
       borderRadius={"16px"}
       p={'30px'}
       alignItems={"start"}
@@ -48,7 +48,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title, link, b
       position={'relative'}
     >
       <HStack w={"100%"} justifyContent={"space-between"} >
-        <Text fontWeight={"700"} color={'#3646B3'} fontSize={"22px"} fontFamily={'morabba'} bgColor={bgColor} position={'absolute'} top={'-20px'} px={'10px'} mx={'10px'} right={'20px'}>
+        <Text fontWeight={"700"} color={'#006A71'} fontSize={"22px"} fontFamily={'morabba'} bgColor={bgColor} position={'absolute'} top={'-20px'} px={'10px'} mx={'10px'} right={'20px'}>
           {title}
         </Text>
       </HStack>

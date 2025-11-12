@@ -653,7 +653,7 @@ const MainLayout = ({
                     <IconButton
                       icon={<IoCall color="#009875" fontSize={"20px"} />}
                     />
-                    <Text fontSize={"18px"}>ParsaQa@info.com</Text>
+                    <Text fontSize={"18px"}>Porsyab@info.com</Text>
                   </HStack>
 
                   <Grid
