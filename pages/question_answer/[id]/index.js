@@ -960,7 +960,7 @@ const Index = () => {
                             h="100%"
                             p="20px"
                             bgColor="#F7F7F7"
-                            borderRadius="10px"
+                            borderRadius="30px"
                             as="form"
                             display="flex"
                             flexDirection="column"
