@@ -441,7 +441,7 @@ const MainLayout = ({
         scrollBehavior="smooth"
       >
         {/* Main content area */}
-        <VStack height={"calc( 100vh )"} w={"100%"} gap={0} scrollSnapAlign="start"
+        <VStack height={"calc( 100vh )"} w={"100%"} gap={0}
           scrollSnapStop="always"
           display="flex"
           flexDirection="column" align="stretch"      // 👈 allows children to fill width

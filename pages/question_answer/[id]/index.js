@@ -311,67 +311,7 @@ const Index = () => {
       >
         <HStack w={"100%"} alignItems={"start"} gap={"20px"}>
           <VStack w={"100%"}>
-            {/* <Grid
-              templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
-              gap={"2px"}
-              w={"100%"}
-            >
-              <GridItem colSpan={{ base: "2", md: "3" }}>
-                {isLoadingQuestion ? (
-                  <Spinner />
-                ) : (
-                  <VStack
-                    w={"100%"}
-                    alignItems={"start"}
-                    justifyContent={"start"}
-                    h={"100%"}
-                  >
-                    <Text>{dataQuestion?.data?.result?.[0]?.title}</Text>
-                    <HStack w={"100%"}>
-                      <HStack w={"100%"} justifyContent={"space-between"}>
 
-                        <HStack
-                          w={"100%"}
-                          justifyContent={"end"}
-                          display={{ base: "none", md: "flex" }}
-                        >
-                          <Text fontSize={"sm"} color={"gray.400"}>
-                            {moment(
-                              dataQuestion?.data?.result?.[0]?.created_at
-                            ).format("jYYYY/jMM/jDD")}
-                          </Text>
-                        </HStack>
-                      </HStack>
-                      <Button
-                        width={{ base: "152px", md: "189px" }}
-                        height={"50px"}
-                        bgColor={"#F9C96D"}
-                        color={"black"}
-                        fontWeight={"400"}
-                        fontSize={"12px"}
-                        size={"sm"}
-                        lineHeight={"100%"}
-                        letterSpacing={0}
-                        borderRadius={"10px"}
-                        onClick={(e) => handleNewQuestionButton()}
-                      >
-                        {t("ask_your_question")}
-                      </Button>
-                    </HStack>
-                  </VStack>
-                )}
-              </GridItem>
-              <GridItem
-                as={Stack}
-                alignItems={"end"}
-                display={{ base: "none" }}
-              >
-                <Button bgColor={"#F9C96D"} fontWeight={"normal"}>
-                  {t("ask_your_question")}
-                </Button>
-              </GridItem>
-            </Grid>
-            <Divider my={"10px"} /> */}
             <Grid
               templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
               gap={{ base: "10px", md: "20px" }}
@@ -385,80 +325,14 @@ const Index = () => {
                 colSpan={"3"}
                 w={"100%"}
               >
-                {/* {slidesToShow == 1 && (
-                  <VStack gap={0}>
-                    <IconButton
-                      icon={<IoArrowUp color="gray" />}
-                      variant={"outline"}
-                      colorScheme="gray"
-                      borderRadius={"100%"}
-                      size={"sm"}
-                      onClick={(e) =>
-                        handleAddAction("question", "save_message")
-                      }
-                    />
-                    <IconButton
-                      icon={<IoArrowDown color="gray" />}
-                      variant={"outline"}
-                      colorScheme="gray"
-                      borderRadius={"100%"}
-                      size={"sm"}
-                    />
-                    <IconButton
-                      icon={<IoBookmarkOutline color="gray" />}
-                      size={"sm"}
-                      onClick={(e) =>
-                        handleAddAction("question", "save_message")
-                      }
-                    />
-                  </VStack>
-                )} */}
+
 
                 {isLoadingQuestion ? (
                   <Spinner />
                 ) : (
                   <VStack w={"100%"} alignItems={"start"}>
                     <HStack alignItems={"start"} w={"100%"}>
-                      {/* {slidesToShow != 1 && (
-                        <VStack>
-                          <IconButton
-                            icon={
-                              <IoChevronUpOutline
-                                color={
-                                  dataQuestion?.data?.result?.[0]?.is_user_liked
-                                    ? "orange"
-                                    : "gray"
-                                }
-                              />
-                            }
-                            variant={"outline"}
-                            colorScheme={
-                              dataQuestion?.data?.result?.[0]?.is_user_liked
-                                ? "orange"
-                                : "gray"
-                            }
-                            border={'none'}
-                            size={"sm"}
-                            onClick={(e) => {
-                              if (dataQuestion?.data?.result?.[0]?.is_user_liked) {
-                                handleUpdateAction("question", "like", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id);
-                              } else {
-                                handleAddAction("question", "like");
-                              }
-                            }}
-                          />
-                          <Text>{dataQuestionLike?.data?.count}</Text>
-                          <IconButton
-                            icon={<IoChevronDown rowDown color="gray" />}
-                            variant={"outline"}
-                            colorScheme="gray"
-                            border={'none'}
-                            size={"sm"}
 
-                          />
-
-                        </VStack>
-                      )} */}
                       <HStack
                         alignItems={"start"}
                         bgColor={"#006A711A"}
@@ -482,37 +356,6 @@ const Index = () => {
                             {dataQuestion?.data?.result?.[0]?.content}
                           </Text>
 
-                          {/* <HStack w={'100%'} justifyContent={'space-between'}>
-                            <HStack
-                              cursor={"pointer"}
-                              onClick={(e) =>
-                                handleClickSource(
-                                  dataQuestion?.data?.result?.[0]?.source
-                                )
-                              }
-                            >
-                              <Avatar
-                                w={"28px"}
-                                h={"28px"}
-                                display={{ base: "none", md: "flex" }}
-                              />
-                              <Text
-                                minW={"150px"}
-                                color={"gray.400"}
-                                fontSize={"16px"}
-                              >
-                                {dataQuestion?.data?.result?.[0]?.source}
-                              </Text>
-                            </HStack>
-                            <HStack>
-                              <Text fontSize={"sm"} color={"gray.400"}>
-                                {moment(
-                                  dataQuestion?.data?.result?.[0]?.created_at
-                                ).format("jYYYY/jMM/jDD")}
-                              </Text>
-                            </HStack>
-
-                          </HStack> */}
                         </VStack>
                         <Text
                           whiteSpace={"nowrap"}
@@ -577,80 +420,9 @@ const Index = () => {
                       mb={"10px"}
                       mr={{ base: "0px", md: "0px" }}
                     >
-                      {/* <HStack
-                        w={"100%"}
-                        justifyContent={"space-between"}
-                        my={"10px"}
-                      >
-                        <Text fontWeight={"bold"} fontSize={"18px"}>
-                          {t(dataQuestionAnswer?.data?.length == 1 ? "answer_one" : "answers")}
-                        </Text>
-                      </HStack> */}
-                      {/* {dataQuestionAnswer?.data?.map((answer) => ( */}
+
                       <HStack alignItems={"start"} gap={"10px"} w={"100%"}>
-                        {/* <VStack>
-                              <IconButton
-                                icon={
-                                  <IoArrowUp
-                                    color={
-                                      answer?.is_user_liked
-                                        ? "orange"
-                                        : "gray"
-                                    }
-                                  />
-                                }
-                                variant={"outline"}
-                                colorScheme={
-                                  answer?.is_user_liked
-                                    ? "orange"
-                                    : "gray"
-                                }
-                                borderRadius={"100%"}
-                                size={"sm"}
-                                onClick={(e) => {
-                                  if (answer?.is_user_liked) {
-                                    handleUpdateAction("answer", "like", dataAnswerLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id);
-                                  } else {
-                                    handleAddAction("answer", "like", answer?.id);
-                                  }
-                                }}
-                              />
-                              <Text>{dataAnswerLike?.data?.count}</Text>
-                              <IconButton
-                                icon={<IoArrowDown color="gray" />}
-                                variant={"outline"}
-                                colorScheme="gray"
-                                borderRadius={"100%"}
-                                size={"sm"}
-                              />
-                              <IconButton
-                                icon={
-                                  answer?.is_user_saved ? (
-                                    <IoBookmark color="orange" onClick={(e) => {
-                                      if (answer?.is_user_saved) {
-                                        // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
-                                      } else {
-                                        handleAddAction("answer", "save_message", answer?.id)
-                                      }
-                                    }
-                                    } />
-                                  ) : (
-                                    <IoBookmarkOutline
-                                      color="gray"
-                                      onClick={(e) => {
-                                        if (answer?.is_user_saved) {
-                                          // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
-                                        } else {
-                                          handleAddAction("answer", "save_message", answer?.id)
-                                        }
-                                      }
-                                      }
-                                    />
-                                  )
-                                }
-                                size={"lg"}
-                              />
-                            </VStack> */}
+
                         <VStack
                           w={"100%"}
                           alignItems={"start"}
@@ -878,24 +650,7 @@ const Index = () => {
                         </HStack>
                         {/* <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} /> */}
                       </VStack>
-                      // <VStack w={'100%'}>
-                      //   <HStack w={'100%'} justifyContent={'space-between'}>
-                      //     <HStack>
-                      //       <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>پاسخ ها</Text>
-                      //       <Text fontSize={'14px'} color={'#999999'}>5 پاسخ</Text>
-                      //     </HStack>
-                      //     <Text
-                      //       fontWeight={"700"}
-                      //       fontSize={"12px"}
-                      //       color="#3646B3"
-                      //       cursor={"pointer"}
-                      //       onClick={(e) => router.push("/references")}
-                      //     >
-                      //       {t("show_all")}
-                      //     </Text>
-                      //   </HStack>
-                      //
-                      // </VStack>
+
                     )}
                     <Grid
                       templateColumns={{
@@ -1022,66 +777,6 @@ const Index = () => {
                 )}
               </GridItem>
 
-              {/* <GridItem>
-                <Box
-                  as={VStack}
-                  alignItems={"start"}
-                  border={"1px"}
-                  borderColor={"gray.200"}
-                  h={"min-content"}
-                  borderRadius={"15px"}
-                  padding={"20px"}
-                  w={{ base: "fit-content", md: "100%" }}
-                >
-                  <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
-                    {t("related_questions")}
-                  </Text>
-                  {dataQuestionSimilar?.data
-                    ?.slice(0, 5)
-                    ?.map((similar, index) => (
-                      <HStack
-                        w={"100%"}
-                        py={"5px"}
-                        alignItems={"start"}
-                        borderBottom={index != 4 && "1px"}
-                        borderBottomColor={"gray.200"}
-                        cursor={"pointer"}
-                        onClick={(e) => handleSimilarClick(similar?.id)}
-                      >
-                        <Text fontSize={"14px"}>{similar?.content?.substring(0, 100)}</Text>
-                      </HStack>
-                    ))}
-                </Box>
-                <Box
-                  as={VStack}
-                  alignItems={"start"}
-                  border={"1px"}
-                  borderColor={"gray.200"}
-                  h={"min-content"}
-                  borderRadius={"15px"}
-                  padding={"20px"}
-                  my={"20px"}
-                >
-                  <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
-                    {t("most_viewed_questions")}
-                  </Text>
-                  {dataQuestionSimilar?.data
-                    ?.slice(5, 10)
-                    ?.map((related, index) => (
-                      <VStack
-                        w={"100%"}
-                        alignItems={"start"}
-                        borderBottom={index != 4 && "1px"}
-                        borderBottomColor={"gray.200"}
-                        py={"5px"}
-                        cursor={"pointer"}
-                        onClick={(e) => handleSimilarClick(related?.id)}
-                      >
-                        <Text fontSize={"14px"}>{related?.content?.substring(0, 100)}</Text>
-                      </VStack>
-                    ))}
-                </Box>
-              </GridItem> */}
             </Grid>
           </VStack>
         </HStack>
