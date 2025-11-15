@@ -208,9 +208,9 @@ const Index = () => {
     triggerAnswer({ ...e, id: query?.id, lang: "fa" });
   };
 
-  const handleAddAction = (type, action, id, comment = false) => {
+  const handleAddAction = (type, action, id, content = false) => {
     setLike(true)
-    if (!comment) {
+    if (!content) {
       triggerAddLike({
         table_id: id || query?.id,
         table_type: type,
