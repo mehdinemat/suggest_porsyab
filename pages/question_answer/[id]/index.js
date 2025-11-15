@@ -54,13 +54,13 @@ const postRequest = (url, { arg: { id, ...data } }) => {
 };
 const postActionRequest = (
   url,
-  { arg: { table_id, table_type, type_param, ...data } }
+  { arg: { table_id, table_type, type_param, content, ...data } }
 ) => {
   return axios.post(
     baseUrl +
     url +
     `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
-    data,
+    content,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -208,13 +208,22 @@ const Index = () => {
     triggerAnswer({ ...e, id: query?.id, lang: "fa" });
   };
 
-  const handleAddAction = (type, action, id) => {
+  const handleAddAction = (type, action, id, comment = false) => {
     setLike(true)
-    triggerAddLike({
-      table_id: id || query?.id,
-      table_type: type,
-      type_param: action,
-    });
+    if (!comment) {
+      triggerAddLike({
+        table_id: id || query?.id,
+        table_type: type,
+        type_param: action,
+      });
+    } else {
+      triggerAddLike({
+        table_id: id || query?.id,
+        table_type: type,
+        type_param: action,
+        content
+      });
+    }
   };
   const handleUpdateAction = (action_id) => {
     setLike(!like);
@@ -920,7 +929,7 @@ const Index = () => {
                             {/* {t("show_all")} */}
                           </Text>
                         </HStack>
-                        <CommentCard t={t} />
+                        <CommentCard t={t} handleAddAction={handleAddAction} id={dataQuestionAnswer?.data?.[answerPage]?.id} />
                       </GridItem>
                       <GridItem
                         colSpan={{ base: 3, md: 2 }}
