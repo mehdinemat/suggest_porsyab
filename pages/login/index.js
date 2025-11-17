@@ -50,7 +50,7 @@ const Index = () => {
         if (data?.data?.status) {
           if (data?.data?.data?.otp_sended) {
             router.push(
-              `/two_step_login/verify_code?username=${getValues("username")}`
+              `/two_step_login/verify_code?username=${encodeURIComponent(fullNumber)}`
             );
           } else {
             localStorage.setItem("token", data?.data?.data?.access_token);
