@@ -114,7 +114,7 @@ const MainLayout = ({
   const [showMenu, setShowMenu] = useState(false);
 
   const router = useRouter();
-  const { locale, asPath } = router;
+  const { locale, asPath , query } = router;
 
   const [filters, setFilters] = useQueryParams({
     search: withDefault(StringParam, ""),
@@ -209,6 +209,22 @@ const MainLayout = ({
     ref: inputRef,
     handler: () => setShowInput(false),
   });
+
+  useEffect(() => {
+
+    const container = scrollContainerRef.current;
+
+    if (container) {
+      // Sometimes you need a small delay to allow content to render
+      setTimeout(() => {
+        container.scrollTo({
+          top: 0, // scroll to bottom
+          behavior: "auto", // smooth can conflict with scroll-snap
+        });
+      }, 50);
+    }
+  }, [query?.id]);
+
 
   return (
     <VStack
