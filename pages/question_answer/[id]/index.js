@@ -221,7 +221,7 @@ let botMessage = "";
       }
     }
 
-    }
+    }, refreshInterval:false , revalidateOnFocus:false
   });
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
@@ -539,7 +539,7 @@ let botMessage = "";
                           <Box position="relative" w="100%">
                             <HStack w="100%" justifyContent="space-between" position="relative">
                               {/* Left section */}
-                              {dataQuestionAnswer?.data?.[answerPage]?.source && <HStack>
+                              {dataQuestionAnswer?.data?.[answerPage]?.source && <HStack cursor={'pointer'} onClick={e=>window.open(dataQuestionAnswer?.data?.[answerPage]?.source , '_blank')}>
                                 <Avatar w="28px" h="28px" />
                                 <Text fontSize="16px" color="#999999">
                                   {dataQuestionAnswer?.data?.[answerPage]?.source}
