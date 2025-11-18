@@ -87,6 +87,9 @@ const Index = () => {
   const [like, setLike] = useState(false);
   const [answerPage, setAnswerPage] = useState(0)
 
+  const [summerize ,setSummerize] = useState('')
+  const [loadingSummerize , setLoadingSummerize ] = useState(false)
+
   const [contentTest, setContentTest] = useState(
     "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرن گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی،"
   );
@@ -129,13 +132,97 @@ const Index = () => {
     data: dataQuestion,
     isLoading: isLoadingQuestion,
     mutate: mutateQuestion,
-  } = useSWR(query?.id && `user/question?id=${query?.id}`);
+  } = useSWR(query?.id && `user/question?id=${query?.id}` , null , {
+    
+  });
 
   const {
     data: dataQuestionAnswer,
     isLoading: isLoadingQuestionAnswer,
     mutate: muatteAnswer,
-  } = useSWR(query?.id && `user/question/answer?question_id=${query?.id}`);
+  } = useSWR(query?.id && `user/question/answer?question_id=${query?.id}` , null , {
+     onSuccess:async(data)=>{
+
+      if(data?.data?.[0]?.content?.length < 700) return
+
+      setLoadingSummerize(true)
+      const res = await fetch(
+      `https://parsa.api.t.etratnet.ir/user/general/summerize`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          content: data?.data?.[0]?.content
+        }),
+      }
+    );
+
+      if (!res.body) {
+      console.error("No streaming body in response");
+      return;
+    }
+let botMessage = "";
+     const reader = res.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let buffer = "";
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = !!doneReading;
+      if (value) buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() ?? "";
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line.startsWith("data:")) continue;
+
+        const jsonStr = line.replace(/^data:\s*/, "");
+        if (jsonStr === "[DONE]") {
+          done = true;
+          break;
+        }
+
+        try {
+          const parsed = JSON.parse(jsonStr);
+          if (parsed.error) {
+            console.error("Stream error:", parsed.error);
+            done = true;
+            break;
+          }
+
+          if (!parsed?.chunk) {
+            // setConditionStream(parsed?.state);
+          }
+
+          if (parsed.token) {
+            setLoadingSummerize(false)
+            botMessage += parsed.token;
+            setSummerize(botMessage);
+          }
+
+          if (parsed?.state == "is_metadata") {
+            setMetaData(parsed.metadata);
+          }
+
+          if (parsed.done) {
+            setChatDone(true);
+            done = true;
+            break;
+          }
+        } catch (err) {
+          console.error("Could not parse stream JSON:", jsonStr, err);
+        }
+      }
+    }
+
+    }
+  });
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
@@ -284,6 +371,7 @@ const Index = () => {
     setLike(!like);
   };
 
+
   return (
     <MainLayout
       menuDefault={true}
@@ -350,7 +438,7 @@ const Index = () => {
                           <Text
                             lineHeight={"taller"}
                             textAlign={"justify"}
-                            fontSize={{ base: "16px", md: "21px" }}
+                            fontSize={{ base: "16px", md: "22px" }}
                             fontWeight={"700"}
                           >
                             {dataQuestion?.data?.result?.[0]?.content}
@@ -411,6 +499,25 @@ const Index = () => {
                         />
                       </HStack>
                     </HStack>
+
+                    {loadingSummerize ? <Spinner/>:  summerize &&<VStack
+                        alignItems={"start"}
+                        bgColor={"#006A711A"}
+                        padding={"20px"}
+                        borderRadius={"30px"}
+                        w={"100%"}
+                      >
+                        <Badge bgColor={'white'} color={'#3646B3'}borderRadius={'5px'} mb={'20px'}>
+                         <HStack padding={'5px'}>
+                           <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z" fill="#3646B3"/>
+</svg>
+<Text fontSize={'16px'} >پاسخ خلاصه شده</Text>
+                         </HStack>
+                        </Badge>
+                        <Text fontSize={{base:'12px' ,md:'18px'}} fontWeight={"600"}>{summerize}</Text>
+                      </VStack>}
+
                     <Box
                       w={{ base: "100%", md: "100%" }}
                       padding={{ base: "none", md: "0px" }}
