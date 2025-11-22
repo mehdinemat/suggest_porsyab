@@ -98,6 +98,10 @@ const sendAudio = async (url, { arg }) => {
   return res.json();
 };
 
+
+   
+
+
 const Index = ({
   children,
   filters,
@@ -171,6 +175,15 @@ const Index = ({
     `${sourceParams}`,
     fetcherWithTiming
   );
+
+  const offset = 20
+const items = dataQuestionSearch?.data?.data ?? []
+const count = items.length
+
+const visibleItems = items.slice(0, 5)
+
+const scaleBase = 0.9      // smallest card size
+const scaleStep = 0.02    
 
   const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(isUserLogin && `user/chat/`, postRequest1)
 
@@ -790,7 +803,7 @@ const Index = ({
                         }}
                         cursor={"pointer"}
                       >
-                        نتایج بین سوالات پارسا
+                        نتایج بین سوالات پرسیاب
                       </Text>
                     </HStack>
                   </TabList>
@@ -1536,6 +1549,63 @@ const Index = ({
               </VStack>
             )}
 
+               
+<Box
+  position="relative"
+  w="100%"
+  h="fit-content"
+  bgColor="#E6F1F1"
+  borderRadius="50px"
+  p="25px"
+>
+  <Text
+    color="black"
+    fontFamily="morabba"
+    fontWeight="800"
+    fontSize="22px"
+    mb="20px"
+  >
+    سوالات بی پاسخ
+  </Text>
+
+
+<Box position="relative" h={`${offset * count - 150}px`} mt={'50px'}>
+  {visibleItems.map((item, index) => {
+    const top = (count - index * 10)
+    console.log(top)
+    const scale = scaleBase + index * scaleStep
+    // index 0 => 0.9
+    // index 1 => 0.92
+    // index 2 => 0.94
+    // index 3 => 0.96
+    // index 4 => 0.98
+
+    return (
+      <Box
+        key={index}
+        position="absolute"
+        top={`${top}px`}
+        left="0"
+        right="0"
+        zIndex={index + 1}
+        transform={`scale(${scale})`}
+        transformOrigin="top center"
+      >
+        <QuestionCard
+          data={item}
+          limit={true}
+          t={t}
+          bgColor="#F7F7F7"
+        />
+      </Box>
+    )
+  })}
+</Box>
+
+</Box>
+
+
+
             <Flex
               flexDir={{ base: "column", md: "row" }}
               w={"100%"}
@@ -1657,6 +1727,7 @@ const Index = ({
               padding={"14px"}
               borderRadius={"15px"}
             >
+             
               <HStack w={"100%"} justifyContent={"space-between"}></HStack>
               {isLoadingQuestionSearch ? (
                 <HStack

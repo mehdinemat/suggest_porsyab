@@ -522,7 +522,7 @@ const Index = () => {
                       w={{ base: "100%", md: "100%" }}
                       padding={{ base: "none", md: "0px" }}
                       px={{ base: "5px", md: "20px" }}
-                      bgColor={"#F7F7F7"}
+                      bgColor={"#F7F7F7"} 
                       borderRadius={"30px"}
                       mb={"10px"}
                       mr={{ base: "0px", md: "0px" }}
@@ -831,7 +831,7 @@ const Index = () => {
                           {/* Box with scrollable answers */}
                           <Box
                             w="100%"
-                            h="100%"
+                            h="fit-content"
                             p="20px"
                             bgColor="#F7F7F7"
                             borderRadius="30px"

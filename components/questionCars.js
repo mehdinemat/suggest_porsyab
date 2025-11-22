@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { IoEyeOutline } from "react-icons/io5";
 
-const QuestionCard = ({ data, t, type = "question", bgColor }) => {
+const QuestionCard = ({ data, t, type = "question", bgColor  , limit=false}) => {
   const router = useRouter();
 
   const handleQuestionRouter = (id) => {
@@ -60,7 +60,7 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
           lineHeight={"taller"}
           textAlign={"justify"}
         >
-          {data?.content}
+          {data?.content?.slice(0 , limit ? 150:data?.content?.length)}
         </Text>
 
         <Divider borderColor={'#00000017'} />
@@ -80,7 +80,7 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
             </HStack>
 
             <Wrap spacing="8px" w={"100%"}>
-              {data?.tags?.map((item, index) => (
+              {data?.tags?.slice(0 , limit ?5 :data?.tags?.length)?.map((item, index) => (
                 <Badge
                   // onClick={(e) => handleClickTags(item)}
                   _hover={{ bgColor: "#29cccc38", color: "#1a7c7c" }}
