@@ -1,19 +1,9 @@
 import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
-import { Geist, Geist_Mono } from "next/font/google";
 import { useRouter } from "next/router";
 import { FaHeadphonesAlt } from "react-icons/fa";
 import { IoCalendarOutline, IoDocuments, IoTime } from "react-icons/io5";
 import { MdKeyboardVoice } from "react-icons/md";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const menuList = [
   {
