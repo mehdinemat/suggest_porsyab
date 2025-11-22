@@ -32,7 +32,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, t }) => {
         onClick={() => onPageChange(1)}
         variant={currentPage === 1 ? 'solid' : 'outline'}
         // colorScheme={currentPage === 1 ? 'blue' : 'gray'}
-        bgColor={currentPage === 1 ? '#3646B3' : '#E5E5E5'}
+        bgColor={currentPage === 1 ? '#006A71' : '#E5E5E5'}
         borderColor={'gray.200'}
         size="sm"
         borderRadius={'11px'}
@@ -51,7 +51,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, t }) => {
             key={page}
             onClick={() => onPageChange(page)}
             variant={currentPage === page ? 'solid' : 'outline'}
-            bgColor={currentPage == page ? '#3646B3' : '#E5E5E5'}
+            bgColor={currentPage == page ? '#006A71' : '#E5E5E5'}
             borderColor={'gray.200'}
             // colorScheme={currentPage === page ? '#29CCCC' : 'gray'}
             size="sm"
@@ -66,7 +66,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, t }) => {
         <Button
           onClick={() => onPageChange(totalPages)}
           variant={currentPage === totalPages ? 'solid' : 'outline'}
-          bgColor={currentPage == totalPages ? '#3646B3' : '#E5E5E5'}
+          bgColor={currentPage == totalPages ? '#006A71' : '#E5E5E5'}
           borderColor={'gray.200'}
           size="sm"
           borderRadius={'11px'}
@@ -75,7 +75,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, t }) => {
         </Button>
       )}
 
-      <IconButton icon={<IoChevronBack />} bgColor='#3646B3' color={'white'} variant={'outline'} onClick={() => onPageChange(currentPage + 1)} isDisabled={currentPage === totalPages} size={'sm'} borderRadius={'11px'}>
+      <IconButton icon={<IoChevronBack />} bgColor='#006A71' color={'white'} variant={'outline'} onClick={() => onPageChange(currentPage + 1)} isDisabled={currentPage === totalPages} size={'sm'} borderRadius={'11px'}>
       </IconButton>
 
 
