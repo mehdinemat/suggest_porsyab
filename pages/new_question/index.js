@@ -173,7 +173,7 @@ const Index = () => {
             w={"100%"}
             maxW="container.xl"
             bgColor={"#F3F3F3"}
-            borderRadius={"15px"}
+            borderRadius={"30px"}
             mx="auto"
             mt={{ base: "80px", md: "120px" }}
             mb={"20px"}
@@ -495,7 +495,7 @@ const Index = () => {
                   />
 
                   <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
-                    <Button bgColor={"#3646B3"} type={"submit"} leftIcon={<GoArrowLeft />}>
+                    <Button bgColor={"#006A71"} type={"submit"} leftIcon={<GoArrowLeft />} borderRadius={'15px'}>
                       {t("submit_your_question")}
                     </Button>
                   </HStack>
@@ -513,7 +513,7 @@ const Index = () => {
             w={"100%"}
             bgColor={"#3646B31A"}
             mb={"20px"}
-            borderRadius={"15px"}
+            borderRadius={"30px"}
             padding={"20px"}
           >
             <GridItem
@@ -530,7 +530,7 @@ const Index = () => {
                 fontSize={"30px"}
                 w={"100%"}
                 alignItems={"start"}
-                color={"#3646B3"}
+                color={"#006A71"}
               >
                 چگونه سؤال مؤثرتری بپرسیم؟
               </Text>
