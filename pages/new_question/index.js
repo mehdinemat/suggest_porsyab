@@ -157,7 +157,7 @@ const Index = () => {
   }, [dataSearchQuestion]);
 
   return (
-    <MainLayout menuDefault={true}>
+    <MainLayout menuDefault={true} setIsUserLogin={setIsUserLogin} isUserLogin={isUserLogin}>
       <Head>
         <title>{t("submit_your_question")}</title>
         <link rel="icon" href="/question.png" />
