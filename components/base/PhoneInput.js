@@ -47,26 +47,27 @@ export default function PhoneInput({ fullNumber, setFullNumber }) {
       />
       {/* <InputRightElement width="8rem" pl={2} top={"5px"}> */}
       {/* </InputRightElement> */}
-      <Select
-        border={'1px'}
-        borderColor={'#B7B7B7'}
-        borderRadius={'10px'}
-        w={'150px'}
-        value={country?.code}
-        onChange={handleCountryChange}
-        fontSize="sm"
-        bg="transparent"
-        height={"46px"}
-        pl={0}
-        _hover={{ border: "none" }}
-        _focusVisible={{ border: "none" }}
-      >
-        {countries.map((c) => (
-          <option key={c.code} value={c.code}>
-            {c.label} ({c.dialCode})
-          </option>
-        ))}
-      </Select>
+     <Select
+  border="1px"
+  borderColor="#B7B7B7"
+  borderRadius="10px"
+  w="150px"
+  value={country?.code}
+  onChange={handleCountryChange}
+  fontSize="sm"
+  bg="transparent"
+  height="46px"
+  pl={0}
+  _hover={{ border: "none" }}
+  _focusVisible={{ border: "none" }}
+>
+  {countries.map((c) => (
+    <option key={c.code} value={c.code}>
+      {c.code === 'IR' ? '🇮🇷 ' : ''} ({c.dialCode})
+    </option>
+  ))}
+</Select>
+
     </HStack>
   );
 }

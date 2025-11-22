@@ -12,13 +12,14 @@ const IsLogin = ({ type }) => {
       <Box
         w={{ base: "fit-content", md: "fit-content" }}
         padding={"20px"}
-        bgColor={"#3646B3"}
-        borderRadius={"15px"}
+        bgColor={"#006A71"}
+        borderRadius={"30px"}
         my={{ base: "0px", md: "0px" }}
         mt={{ base: "80px", md: "120px" }}
+        h={'130px'}
         position={'absolute'}
       >
-        <HStack>
+        <HStack w={'100%'} height={'100%'}>
           <VStack w={"100%"} alignItems={"start"}>
             <Text
               fontWeight={"bold"}
@@ -34,11 +35,14 @@ const IsLogin = ({ type }) => {
           </VStack>
           <Button
             onClick={e => router.push('/login')}
-            bgColor={"#29CCCC"}
+            bgColor={"#82E5BE"}
             fontWeight={"normal"}
             p={"10px"}
-            w={{ base: "200px", md: "150px" }}
-            size={"sm"}
+            w={{ base: "200px", md: "200px" }}
+            size={"md"}
+            borderRadius={'15px'}
+            h={'40px'}
+           
           >
             {t("log_in_to_your_account")}
           </Button>

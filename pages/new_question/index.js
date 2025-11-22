@@ -503,77 +503,7 @@ const Index = () => {
                 {/* </Masonry> */}
               </form>
             </Box>
-            <GridItem
-              colSpan={3}
-              paddingTop={"20px"}
-              mb={"10px"}
-              height="456px"
-            >
-              <VStack w="100%" h="100%" spacing="0" align="stretch">
-                <Text fontSize={"22px"} fontWeight={"800"}>
-                  پرسش‌های مرتبط
-                </Text>
-                <Box
-                  w="100%"
-                  h="100%"
-                  p="20px"
-                  borderRadius="10px"
-                  as="form"
-                  display="flex"
-                  flexDirection="column"
-                  overflowY="auto"
-                >
-                  {/* Scrollable area: calculate height dynamically */}
-                  <VStack
-                    w="100%"
-                    gap="10px"
-                    flex="1"
-                    minH="0" // important for scroll inside flex container
-                    pb="10px"
-                  >
-                    {answer?.map((item, idx) => (
-                      <HStack
-                        key={idx}
-                        bgColor="white"
-                        padding="10px"
-                        borderRadius="10px"
-                        w="100%"
-                      >
-                        <HStack w="100%" alignItems="start">
-                          <Text fontSize="14px" fontWeight={"400"}>
-                            {item}
-                          </Text>
-                        </HStack>
-                        <Divider orientation="vertical" />
-                        <VStack
-                          w="100%"
-                          justifyContent="end"
-                          flex={1}
-                          alignItems={"start"}
-                          fontSize={"12px"}
-                          fontWeight={"400"}
-                        >
-                          <Text
-                            whiteSpace={"nowrap"}
-                            color="#999999"
-                            lineHeight={"192%"}
-                          >
-                            5 پاسخ
-                          </Text>
-                          <Text
-                            whiteSpace={"nowrap"}
-                            color="#999999"
-                            lineHeight={"192%"}
-                          >
-                            اسلام کوئست
-                          </Text>
-                        </VStack>
-                      </HStack>
-                    ))}
-                  </VStack>
-                </Box>
-              </VStack>
-            </GridItem>
+         
           </Grid>
           <Box
             as={Grid}

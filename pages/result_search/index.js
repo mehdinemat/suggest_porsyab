@@ -162,9 +162,9 @@ const Index = ({
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}` +
+    `user/question/${filters?.search_type =='semantic_search' ? `semantic-search`:`search`}?${filters?.search_type =='semantic_search' ?'k=20' :`page=${(page - 1) * 10}`}` +
     `&search_type=${filters?.search_type || ""}` +
-    `&content=${filters?.search || ""}` +
+    `&${filters?.search_type =='semantic_search'  ? 'query':'content'}=${filters?.search || ""}` +
     `&lang=${locale}` +
     `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
     `&model_name=${filters?.model || ""}` +
@@ -220,6 +220,7 @@ const Index = ({
             role: 3,
             content: "",
             level: (chatHistory?.length ?? 0) + 2,
+            is_like:"null"
           },
         ]);
 
@@ -344,6 +345,7 @@ const Index = ({
       return [...base, newUserMsg];
     });
 
+
     // add placeholder assistant message
     const streamId = userId + 1;
     let botMessage = "";
@@ -354,6 +356,7 @@ const Index = ({
         role: 3,
         content: "",
         level: (chatHistory?.length ?? 0) + 2,
+        is_like:"null"
       },
     ]);
 
@@ -482,6 +485,7 @@ const Index = ({
         role: 3,
         content: "",
         level: (chatHistory?.length ?? 0) + 2,
+        is_like:'null'
       },
     ]);
 
@@ -1108,6 +1112,7 @@ const Index = ({
                                                 >
                                                   مفید بود
                                                 </Text>
+                                      {console.log(chat)}
                                               </Button>
                                               <Button
                                                 bgColor={"white"}
@@ -1136,7 +1141,7 @@ const Index = ({
                                                       <path
                                                         d="M10.1855 10.459L18.8438 19.349"
                                                         stroke={
-                                                          chat?.is_like != 'null' && !chat?.is_like
+                                                          (chat?.is_like != 'null' && !chat?.is_like)
                                                             ? "red"
                                                             : "#999999"
                                                         }
@@ -1147,7 +1152,7 @@ const Index = ({
                                                       <path
                                                         d="M18.8457 10.459L10.1875 19.349"
                                                         stroke={
-                                                          chat?.is_like != 'null' && !chat?.is_like
+                                                          (chat?.is_like != 'null' && !chat?.is_like)
                                                             ? "red"
                                                             : "#999999"
                                                         }
@@ -1160,7 +1165,7 @@ const Index = ({
                                                       opacity="0.5"
                                                       d="M14.2607 1.50098C21.2711 1.50103 27.0215 7.34769 27.0215 14.6436C27.0213 21.9393 21.271 27.7851 14.2607 27.7852C7.25041 27.7852 1.50014 21.9393 1.5 14.6436C1.5 7.34766 7.25033 1.50098 14.2607 1.50098Z"
                                                       stroke={
-                                                        chat?.is_like != 'null' && !chat?.is_like
+                                                        (chat?.is_like != 'null' && !chat?.is_like)
                                                           ? "red"
                                                           : "#A1A1A1"
                                                       }
@@ -1452,7 +1457,7 @@ const Index = ({
                                 width={{ base: "150px" }}
                                 fontSize={{ base: "12px", md: "14px" }}
                                 fontWeight={"700"}
-                                color={"#82E5BE"}
+                                color={"white"}
                                 borderRadius="20px"
                                 leftIcon={
                                   currentSize != "base" ? (
@@ -1496,7 +1501,7 @@ const Index = ({
                                         fill-rule="evenodd"
                                         clip-rule="evenodd"
                                         d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z"
-                                        fill="#82E5BE"
+                                        fill="white"
                                       />
                                     </svg>
                                   ) : (
@@ -1511,7 +1516,7 @@ const Index = ({
                                         fill-rule="evenodd"
                                         clip-rule="evenodd"
                                         d="M0.950104 4.21324L7.71712 0.8768C8.07107 0.70229 8.47266 0.983484 8.47266 1.40591V3.14211C8.47266 3.50913 8.2339 3.82507 7.90256 3.89633L5.42594 4.42925C5.11027 4.49708 5.11027 4.98763 5.42594 5.05555L7.90256 5.58848C8.2339 5.65973 8.47266 5.97557 8.47266 6.3427V8.0788C8.47266 8.50122 8.07107 8.78251 7.71712 8.60791L0.950104 5.27156C0.531765 5.06524 0.531765 4.41947 0.950104 4.21324"
-                                        fill="#82E5BE"
+                                        fill="white"
                                       />
                                     </svg>
                                   )
@@ -1663,7 +1668,7 @@ const Index = ({
                 </HStack>
               ) : (
                 <VStack display={{ base: "none", md: "flex" }} w={"100%"}>
-                  {dataQuestionSearch?.data?.data?.result?.map(
+                  {dataQuestionSearch?.data?.data?.map(
                     (item, index) => (
                       <QuestionCard
                         key={index}
@@ -1673,7 +1678,7 @@ const Index = ({
                       />
                     )
                   )}
-                  <Stack
+                 { filters?.search_type !='semantic_search' && <Stack
                     w={"100%"}
                     justifyContent={"center"}
                     alignItems={"center"}
@@ -1688,13 +1693,13 @@ const Index = ({
                       onPageChange={setPage}
                       t={t}
                     />
-                  </Stack>
+                  </Stack>}
                 </VStack>
               )}
             </VStack>
 
             <VStack display={{ base: "flex", md: "none" }} width={"100%"}>
-              {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
+              {dataQuestionSearch?.data?.result?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
             </VStack>

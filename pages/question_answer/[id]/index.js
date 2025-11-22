@@ -83,7 +83,7 @@ const Index = () => {
   const [isInputOpen, setIsInputOpen] = useState(false);
   const [comment, setComment] = useState("");
 
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
   const [like, setLike] = useState(false);
   const [answerPage, setAnswerPage] = useState(0)
 
@@ -515,7 +515,7 @@ const Index = () => {
                           <Text fontSize={'16px'} >پاسخ خلاصه شده</Text>
                         </HStack>
                       </Badge>
-                      <Text fontSize={{ base: '12px', md: '18px' }} fontWeight={"600"}>{summerize}</Text>
+                      <Text fontSize={{ base: '12px', md: '18px' }} fontWeight={"600"} align={'justify'}>{summerize}</Text>
                     </VStack>}
 
                     <Box
@@ -686,12 +686,13 @@ const Index = () => {
                       <Box
                         w={{ base: "100%", md: "100%" }}
                         padding={"20px"}
-                        bgColor={"#3646B3"}
-                        borderRadius={"15px"}
+                        bgColor={"#006A71"}
+                        borderRadius={"30px"}
                         my={{ base: "0px", md: "0px" }}
                         mr={{ base: "0px", md: "0px" }}
+                         h={'130px'}
                       >
-                        <HStack>
+                        <HStack h={'100%'}>
                           <VStack w={"100%"} alignItems={"start"}>
                             <Text
                               fontWeight={"bold"}
@@ -707,11 +708,13 @@ const Index = () => {
                           </VStack>
                           <Button
                             onClick={(e) => router.push("/login")}
-                            bgColor={"#29CCCC"}
+                            bgColor={"#82E5BE"}
                             fontWeight={"normal"}
                             p={"10px"}
-                            w={{ base: "200px", md: "150px" }}
-                            size={"sm"}
+                            w={{ base: "200px", md: "180px" }}
+                            h={'40px'}
+                            size={"md"}
+                            borderRadius={'15px'}
                           >
                             {t("log_in_to_your_account")}
                           </Button>

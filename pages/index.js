@@ -3,6 +3,7 @@ import MainLayout from "@/components/mainLayout";
 import {
   Box,
   Button,
+  Center,
   Grid,
   GridItem,
   HStack,
@@ -88,7 +89,7 @@ export default function Home({ children }) {
   };
 
   const { data, size, setSize, error, isLoading, isValidating } =
-    useSWRInfinite(getKey);
+    useSWRInfinite(getKey , null , {keepPreviousData:true});
 
   const questions = data ? data?.flatMap((page) => page?.data?.result) : [];
 
@@ -178,7 +179,7 @@ export default function Home({ children }) {
         <title>
           {t("parsa")} | {t("main_page")}
         </title>
-        <link rel="icon" href="/logoheader.png" />
+        <link rel="icon" href="/logoheader2.png" />
       </Head>
       <Header
         data={dataGeneral?.data}
@@ -228,7 +229,7 @@ export default function Home({ children }) {
             area={{ base: "main", md: "auto" }}
           >
             {!filters?.search ? (
-              isValidating ? (
+              false ? (
                 <HStack
                   w={"100%"}
                   alignItems={"center"}
@@ -245,12 +246,13 @@ export default function Home({ children }) {
                     w={"100%"}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    mt={"45px"}
+                    mt={"5px"}
                   >
                     {isValidating && (
-                      <Box w="200px" mx="auto">
-                        <Lottie animationData={animationData} loop={true} />
-                      </Box>
+                      <Center>
+                        {/* <Lottie animationData={animationData} loop={true} /> */}
+                        <Spinner/>
+                      </Center>
                     )}
                     <HStack>
                       <Button
